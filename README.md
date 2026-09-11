@@ -251,14 +251,6 @@ python build/make-icons.py
 - [SheetJS](https://sheetjs.com/) - Excel import/export
 - [GitHub REST API](https://docs.github.com/rest) - update check
 
-## How it was built
-
-Lab Ledger is the work of a dental technician, not of a software house. Part of
-the code was written with the help of Claude, Anthropic's AI assistant. The
-decisions about what the app should do, the review of what came out, and the
-testing at the bench are the author's, and so is the responsibility for the
-result.
-
 ## Contributing
 
 Contributions are welcome - especially translations. See
@@ -268,12 +260,11 @@ the bench rather than from the code: [docs/IDEAS.md](docs/IDEAS.md).
 ## License
 
 Lab Ledger is **source-available**, not open source: free to use in your own
-lab, not free to resell. Version 1.3.0 onwards is covered by the
+lab, not free to resell. It is covered by the
 [Business Source License 1.1](LICENSE).
 
 - **Any dental laboratory or practice may use it in production, free** - on as
-  many computers and sites as you like - and may pay someone to install, host,
-  maintain or customise it.
+  many computers and sites as you like.
 - **What needs a commercial licence** is offering Lab Ledger, or a modified
   version of it, to third parties for money: as a product, a hosted service,
   bundled with hardware, or built into another product. Write to

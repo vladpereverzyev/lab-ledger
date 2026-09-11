@@ -50,11 +50,6 @@ All notable changes to Lab Ledger are documented here. The format is based on
   of its way, on macOS it opens the image, on Linux it shows the file, because
   an AppImage needs its execute bit set by hand. Nothing is fetched and nothing
   is installed unless that button is pressed.
-- **Says where the code comes from.** Part of Lab Ledger was written with the
-  help of Claude, Anthropic's AI assistant. All five READMEs now say so plainly,
-  along with what stays human: the decisions, the review and the testing at the
-  bench.
-
 ### Changed
 - The copyright notice in the workbook header and in `docs/IDEAS.md` uses the
   real © symbol, as the footer already did.
@@ -90,8 +85,8 @@ All notable changes to Lab Ledger are documented here. The format is based on
 
 ### Licence
 - **Business Source License 1.1.** Any dental laboratory or practice may use Lab
-  Ledger at work, free, on as many computers and sites as it likes, and may pay
-  anyone it wants to install or customise it. What the licence stops is someone
+  Ledger at work, free, on as many computers and sites as it likes. What the
+  licence stops is someone
   taking the code and selling it on - as a product, a hosted service, bundled
   with hardware, or built into another program; that needs a commercial licence
   from info@vladpereverzyev.com. This is source-available, not open source, and
