@@ -17,7 +17,7 @@ What you expected to happen.
 
 **Environment**
 - OS: <e.g. Windows 11>
-- App version: <e.g. 1.0.1>
+- App version: <e.g. 1.3.3>
 
 **Screenshots**
 If helpful, add screenshots.

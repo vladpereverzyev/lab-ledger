@@ -261,14 +261,6 @@ python build/make-icons.py
 - [SheetJS](https://sheetjs.com/) - import/export Excel
 - [API REST GitHub](https://docs.github.com/rest) - recherche de mises à jour
 
-## Comment il a été écrit
-
-Lab Ledger est le travail d'un prothésiste dentaire, pas d'une société de
-logiciels. Une partie du code a été écrite avec l'aide de Claude, l'assistant
-IA d'Anthropic. Les décisions sur ce que le logiciel doit faire, la relecture de
-ce qui en est sorti et les essais à la paillasse sont celles de l'auteur, tout
-comme la responsabilité du résultat.
-
 ## Contribuer
 
 Les contributions sont bienvenues, surtout les traductions. Voir
@@ -277,12 +269,11 @@ Les contributions sont bienvenues, surtout les traductions. Voir
 ## Licence
 
 Lab Ledger est **source-available**, pas open source : libre d'usage dans votre
-propre laboratoire, pas libre à la revente. À partir de la version 1.3.0
-s'applique la [Business Source License 1.1](LICENSE).
+propre laboratoire, pas libre à la revente. La
+[Business Source License 1.1](LICENSE) s'applique.
 
 - **Tout laboratoire dentaire ou cabinet peut l'utiliser en production,
-  gratuitement** - sur autant de postes et de sites qu'il veut - et peut payer
-  quelqu'un pour l'installer, l'héberger, l'entretenir ou l'adapter.
+  gratuitement** - sur autant de postes et de sites qu'il veut.
 - **Une licence commerciale est nécessaire** pour fournir Lab Ledger, ou une
   version modifiée, à des tiers contre paiement : comme produit, comme service
   hébergé, avec du matériel ou intégré à un autre logiciel. Écrivez à
