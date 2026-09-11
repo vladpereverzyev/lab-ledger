@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lab Ledger</title>
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Nothing behind this until someone signs in. -->
+    <div class="gate" id="gate" hidden>
+      <div class="gate-card">
+        <div id="gateSetup" hidden>
+          <h2 data-i18n="auth_setup_title">Set up Lab Ledger</h2>
+          <p class="hint top" data-i18n="auth_setup_hint"></p>
+          <h3 data-i18n="auth_business">The lab</h3>
+          <div class="form">
+            <label class="full"><span data-i18n="auth_bizname">Business name</span><input type="text" id="gBiz" /></label>
+            <label><span data-i18n="fld_vat">VAT number</span><input type="text" id="gVat" /></label>
+            <label><span data-i18n="fld_phone">Phone</span><input type="text" id="gPhone" /></label>
+            <label class="full"><span data-i18n="fld_address">Address</span><input type="text" id="gAddr" /></label>
+            <label class="full"><span data-i18n="fld_email">Email</span><input type="email" id="gEmail" /></label>
+          </div>
+          <h3 data-i18n="auth_admin">Administrator</h3>
+          <div class="form">
+            <label><span data-i18n="auth_firstname">First name</span><input type="text" id="gFirst" /></label>
+            <label><span data-i18n="auth_lastname">Last name</span><input type="text" id="gLast" /></label>
+            <label class="full"><span data-i18n="auth_username">Username</span><input type="text" id="gUser" autocomplete="username" /></label>
+            <label><span data-i18n="auth_password">Password</span><input type="password" id="gPass" autocomplete="new-password" /></label>
+            <label><span data-i18n="auth_password2">Repeat password</span><input type="password" id="gPass2" autocomplete="new-password" /></label>
+          </div>
+          <p class="gate-error" id="gSetupError" hidden></p>
+          <button class="btn primary wide" id="gCreate" data-i18n="auth_create">Create and start</button>
+        </div>
+
+        <div id="gateLogin" hidden>
+          <h2 id="gateBiz"></h2>
+          <div class="form stack">
+            <label><span data-i18n="auth_username">Username</span><input type="text" id="lUser" autocomplete="username" /></label>
+            <label><span data-i18n="auth_password">Password</span><input type="password" id="lPass" autocomplete="current-password" /></label>
+          </div>
+          <p class="gate-error" id="gLoginError" hidden></p>
+          <p class="gate-hint" id="gateHint" hidden></p>
+          <button class="btn primary wide" id="gLogin" data-i18n="auth_login">Sign in</button>
+        </div>
+
+        <p class="gate-foot" id="gateFoot"></p>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-view="works" data-i18n="tab_works">Works</button>
+        <button class="tab" data-view="summary" data-i18n="tab_summary">Summary</button>
+        <button class="tab" data-view="catalog" data-i18n="tab_catalog">Catalog</button>
+      </nav>
+
+      <!-- Fixed-width buttons: the label changes with the language, the layout
+           does not. Long translations are clipped, never reflow the toolbar. -->
+      <div class="topbar-actions">
+        <button class="btn ghost fixed" id="btnImportXlsx" data-i18n="import_excel">Import Excel</button>
+        <button class="btn ghost fixed" id="btnExportXlsx" data-i18n="export_excel">Export Excel</button>
+        <button class="btn ghost fixed" id="btnImportJson" data-i18n="import_backup">Import backup</button>
+        <button class="btn ghost fixed" id="btnExportJson" data-i18n="backup">Backup</button>
+        <button class="btn ghost square" id="btnTheme" data-i18n-title="tip_theme" title="Light / dark theme" aria-label="Theme"></button>
+        <button class="btn ghost square" id="btnLang" data-i18n-title="tip_lang" title="Change language">EN</button>
+        <div class="usermenu-wrap">
+          <button class="btn ghost user" id="btnUser" data-i18n-title="auth_switch" title="Switch user" hidden></button>
+          <div class="usermenu" id="userMenu" hidden>
+            <div class="usermenu-head" id="userMenuHead"></div>
+            <button class="usermenu-item" id="miSwitch" data-i18n="auth_switch">Switch user</button>
+            <button class="usermenu-item" id="miLogout" data-i18n="auth_logout">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ======================= WORKS ======================= -->
+      <section class="view active" id="view-works">
+        <div class="toolbar">
+          <div class="seg" id="workSec" role="group">
+            <button class="seg-btn" data-v="in" data-i18n="sec_in">Incoming</button>
+            <button class="seg-btn active" data-v="out" data-i18n="sec_out">Outgoing</button>
+          </div>
+          <button class="btn primary fixed" id="btnNewWork" data-i18n="new_work">+ New work</button>
+          <input type="search" id="search" class="search" data-i18n-ph="search_ph" placeholder="Search" />
+          <select id="fYear" class="filter w-short"></select>
+          <select id="fMonth" class="filter w-mid"></select>
+          <select id="fWho" class="filter w-mid"></select>
+          <select id="fShip" class="filter w-mid"></select>
+          <select id="fRedo" class="filter w-mid"></select>
+        </div>
+        <p class="hint top" id="inHint" data-i18n="in_hint" hidden></p>
+        <div class="bulkbar" id="bulkBar" hidden>
+          <span id="bulkCount"></span>
+          <button class="btn small primary" id="btnMarkDone" data-i18n="sel_done" hidden>Mark as done</button>
+          <button class="btn small primary" id="btnShipSelected" data-i18n="sel_ship">Ship together</button>
+          <button class="btn small ghost" id="btnClearSel" data-i18n="sel_clear">Clear</button>
+        </div>
+        <div class="table-wrap">
+          <table class="grid fixed" id="worksTable">
+            <!-- Percentages, not pixels: the columns keep their place in every
+                 language and at every window width. -->
+            <colgroup>
+              <col style="width:3%" /><col style="width:8%" /><col style="width:11%" />
+              <col style="width:9%" /><col style="width:11%" /><col style="width:7%" />
+              <col style="width:9%" /><col style="width:11%" /><col style="width:8%" />
+              <col style="width:9%" /><col style="width:8%" /><col style="width:6%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="check"><input type="checkbox" id="selAll" /></th>
+                <th data-i18n="th_date">Date</th>
+                <th data-i18n="th_client">Client</th>
+                <th data-i18n="th_patient">Patient</th>
+                <th data-i18n="th_work">Work</th>
+                <th class="num" data-i18n="th_units">Units</th>
+                <th data-i18n="th_doneby">Done by</th>
+                <th data-i18n="th_shipping">Shipping</th>
+                <th class="num" data-i18n="th_matcost">Mat. cost</th>
+                <th class="num" data-i18n="th_listprice">List price</th>
+                <th class="num" data-i18n="th_margin">Margin</th>
+                <th class="center" data-i18n="th_actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="worksBody"></tbody>
+          </table>
+          <div class="empty" id="worksEmpty" data-i18n="works_empty" hidden>No works recorded yet.</div>
+        </div>
+        <!-- Same colgroup as the table above, so each total sits under the
+             column it totals. Its horizontal scroll follows the table. -->
+        <div class="totals-wrap" id="totalsWrap">
+          <table class="grid fixed totals-table">
+            <colgroup>
+              <col style="width:3%" /><col style="width:8%" /><col style="width:11%" />
+              <col style="width:9%" /><col style="width:11%" /><col style="width:7%" />
+              <col style="width:9%" /><col style="width:11%" /><col style="width:8%" />
+              <col style="width:9%" /><col style="width:8%" /><col style="width:6%" />
+            </colgroup>
+            <tbody id="worksTotals"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ======================= SUMMARY ======================= -->
+      <section class="view" id="view-summary">
+        <div class="toolbar">
+          <label class="lbl" data-i18n="year">Year</label>
+          <select id="rYear" class="filter w-short"></select>
+          <span class="spacer"></span>
+        </div>
+
+        <h2 class="section-title" data-i18n="sec_activity">Activity</h2>
+        <div class="cards" id="statCards"></div>
+
+        <div class="charts">
+          <div class="chart-box wide">
+            <h3 data-i18n="chart_revenue_cost">Revenue and material cost by month</h3>
+            <div class="chart-canvas tall"><canvas id="chRevenue"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_margin_month">Margin by month</h3>
+            <div class="chart-canvas"><canvas id="chMargin"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_cumulative">Cumulative profit vs running costs</h3>
+            <div class="chart-canvas"><canvas id="chCumulative"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_top_types">Top work types by revenue</h3>
+            <div class="chart-canvas"><canvas id="chTypes"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_by_client">Revenue share by client</h3>
+            <div class="chart-canvas"><canvas id="chClients"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_by_operator">Works by operator</h3>
+            <div class="chart-canvas"><canvas id="chOperators"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_op_types">What each operator makes</h3>
+            <div class="chart-canvas"><canvas id="chOpTypes"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 data-i18n="chart_structure">Where the revenue goes</h3>
+            <div class="chart-canvas"><canvas id="chStructure"></canvas></div>
+          </div>
+        </div>
+
+        <h2 class="section-title" data-i18n="sec_profit">Profitability</h2>
+        <div class="cards" id="profitCards"></div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 data-i18n="pl_title">Profit and loss</h3></div>
+          <div class="table-wrap flat">
+            <table class="grid fixed" id="plTable">
+                <colgroup><col style="width:28%" /><col style="width:18%" /><col style="width:18%" /><col style="width:18%" /><col style="width:18%" /></colgroup>
+              <thead>
+                <tr>
+                  <th data-i18n="pl_item">Item</th>
+                  <th class="num" data-i18n="pl_year">Year</th>
+                  <th class="num" data-i18n="pl_month">Month</th>
+                  <th class="num" data-i18n="pl_day">Working day</th>
+                  <th class="num" data-i18n="pl_pct">% of revenue</th>
+                </tr>
+              </thead>
+              <tbody id="plBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= CATALOG ======================= -->
+      <section class="view" id="view-catalog">
+        <nav class="pills" id="catPills">
+          <button class="pill active" data-sec="clients" data-i18n="cat_clients">Clients</button>
+          <button class="pill" data-sec="worktypes" data-i18n="cat_worktypes">Work types</button>
+          <button class="pill" data-sec="materials" data-i18n="cat_materials">Materials</button>
+          <button class="pill" data-sec="operators" data-i18n="cat_operators">Operators</button>
+          <button class="pill" data-sec="couriers" data-i18n="cat_couriers">Couriers</button>
+          <button class="pill" data-sec="costs" data-i18n="cat_costs">Running costs</button>
+          <button class="pill" data-sec="tax" data-i18n="cat_tax">Taxes and calendar</button>
+          <button class="pill admin-only" data-sec="users" data-i18n="cat_users">Users</button>
+          <button class="pill admin-only" data-sec="history" data-i18n="cat_history">History</button>
+          <button class="pill" data-sec="settings" data-i18n="cat_settings">Settings</button>
+        </nav>
+
+        <!-- Clients -->
+        <div class="cat-sec active" id="sec-clients">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_clients">Clients</h3>
+              <button class="btn small" id="btnNewClient" data-i18n="add">+ Add</button>
+            </div>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="clientsTable">
+                <colgroup><col style="width:20%" /><col style="width:22%" /><col style="width:13%" /><col style="width:13%" /><col style="width:18%" /><col style="width:10%" /><col style="width:4%" /></colgroup>
+                <thead>
+                  <tr><th data-i18n="th_name">Name</th><th data-i18n="th_email">Email</th><th data-i18n="th_phone">Phone</th><th data-i18n="th_vat">VAT</th><th data-i18n="th_address">Address</th><th data-i18n="th_note">Note</th><th class="center" data-i18n="th_actions">Actions</th></tr>
+                </thead>
+                <tbody id="clientsBody"></tbody>
+              </table>
+              <div class="empty" id="clientsEmpty" data-i18n="clients_empty" hidden>No clients yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Work types -->
+        <div class="cat-sec" id="sec-worktypes">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_worktypes">Work types</h3>
+              <button class="btn small" id="btnNewType" data-i18n="add">+ Add</button>
+            </div>
+            <p class="hint top" data-i18n="worktypes_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="typesTable">
+                <colgroup><col style="width:22%" /><col style="width:30%" /><col style="width:11%" /><col style="width:11%" /><col style="width:11%" /><col style="width:9%" /><col style="width:6%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_work">Work</th>
+                    <th data-i18n="th_bom">Materials used</th>
+                    <th class="num" data-i18n="th_matcost">Mat. cost</th>
+                    <th class="num" data-i18n="th_price">List price</th>
+                    <th class="num" data-i18n="th_margin">Margin</th>
+                    <th class="num" data-i18n="th_marginpct">Margin %</th>
+                    <th class="center"></th>
+                  </tr>
+                </thead>
+                <tbody id="typesBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materials -->
+        <div class="cat-sec" id="sec-materials">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_materials">Materials</h3>
+              <button class="btn small" id="btnNewMaterial" data-i18n="add">+ Add</button>
+            </div>
+            <p class="hint top" data-i18n="materials_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="materialsTable">
+                <colgroup><col style="width:26%" /><col style="width:12%" /><col style="width:14%" /><col style="width:10%" /><col style="width:12%" /><col style="width:20%" /><col style="width:6%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_material">Material</th>
+                    <th class="num" data-i18n="th_packcost">Pack cost</th>
+                    <th class="num" data-i18n="th_pieces">Units per pack</th>
+                    <th data-i18n="th_unit">Unit</th>
+                    <th class="num" data-i18n="th_unitcost">Cost per unit</th>
+                    <th data-i18n="th_note">Note</th>
+                    <th class="center"></th>
+                  </tr>
+                </thead>
+                <tbody id="materialsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operators -->
+        <div class="cat-sec" id="sec-operators">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_operators">Operators</h3>
+              <button class="btn small" id="btnNewOperator" data-i18n="add">+ Add</button>
+            </div>
+            <p class="hint top" data-i18n="op_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="operatorsTable">
+                <colgroup><col style="width:26%" /><col style="width:68%" /><col style="width:6%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_name">Name</th>
+                    <th data-i18n="th_optypes">Work types handled</th>
+                    <th class="center"></th>
+                  </tr>
+                </thead>
+                <tbody id="operatorsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Couriers -->
+        <div class="cat-sec" id="sec-couriers">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_couriers">Couriers</h3>
+              <button class="btn small" id="btnNewCourier" data-i18n="add">+ Add</button>
+            </div>
+            <ul class="chips" id="couriersList"></ul>
+          </div>
+        </div>
+
+        <!-- Running costs -->
+        <div class="cat-sec" id="sec-costs">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_costs">Running costs</h3>
+              <button class="btn small" id="btnNewCost" data-i18n="add">+ Add</button>
+            </div>
+            <p class="hint top" data-i18n="costs_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="costsTable">
+                <colgroup><col style="width:18%" /><col style="width:24%" /><col style="width:12%" /><col style="width:12%" /><col style="width:13%" /><col style="width:13%" /><col style="width:8%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_category">Category</th>
+                    <th data-i18n="th_name">Name</th>
+                    <th class="num" data-i18n="th_amount">Amount</th>
+                    <th data-i18n="th_period">Period</th>
+                    <th class="num" data-i18n="per_year">Yearly</th>
+                    <th class="num" data-i18n="per_month">Monthly</th>
+                    <th class="center"></th>
+                  </tr>
+                </thead>
+                <tbody id="costsBody"></tbody>
+                <tfoot id="costsFoot"></tfoot>
+              </table>
+              <div class="empty" id="costsEmpty" data-i18n="costs_empty" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Taxes and calendar -->
+        <div class="cat-sec" id="sec-tax">
+          <div class="two-col">
+            <div class="panel">
+              <div class="panel-head"><h3 data-i18n="tax_regime">Tax regime</h3></div>
+              <div class="seg wide" id="taxRegime" role="group">
+                <button class="seg-btn" data-v="flat" data-i18n="tax_flat">Flat rate</button>
+                <button class="seg-btn" data-v="standard" data-i18n="tax_standard">Standard</button>
+              </div>
+              <div class="form stack">
+                <label id="rowCoefficient"><span data-i18n="tax_coefficient">Taxable share of revenue (%)</span>
+                  <input type="number" id="taxCoefficient" min="0" max="100" step="1" />
+                </label>
+                <label id="rowFlatRate"><span data-i18n="tax_flatrate">Substitute tax (%)</span>
+                  <input type="number" id="taxFlatRate" min="0" max="100" step="0.5" />
+                </label>
+                <label id="rowIncomeRate"><span data-i18n="tax_incomerate">Income tax (%)</span>
+                  <input type="number" id="taxIncomeRate" min="0" max="100" step="0.5" />
+                </label>
+                <label><span data-i18n="tax_socialrate">Social contributions (%)</span>
+                  <input type="number" id="taxSocialRate" min="0" max="100" step="0.5" />
+                </label>
+              </div>
+              <p class="hint" data-i18n="tax_hint"></p>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h3 data-i18n="cal_title">Working calendar</h3></div>
+              <div class="form stack">
+                <label><span data-i18n="cal_days">Days per week</span>
+                  <input type="number" id="calDays" min="1" max="7" step="1" />
+                </label>
+                <label><span data-i18n="cal_weeks">Weeks per year</span>
+                  <input type="number" id="calWeeks" min="1" max="52" step="1" />
+                </label>
+                <label><span data-i18n="cal_hours">Hours per day</span>
+                  <input type="number" id="calHours" min="1" max="24" step="0.5" />
+                </label>
+              </div>
+              <div class="kv"><span data-i18n="cal_workdays">Working days per year</span><b id="calTotal">-</b></div>
+              <p class="hint" data-i18n="cal_hint"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users -->
+        <div class="cat-sec" id="sec-users">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="cat_users">Users</h3>
+              <button class="btn small" id="btnNewUser" data-i18n="user_add">+ Add operator</button>
+            </div>
+            <p class="hint top" data-i18n="user_perms_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="usersTable">
+                <colgroup><col style="width:24%" /><col style="width:18%" /><col style="width:16%" /><col style="width:36%" /><col style="width:6%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_name">Name</th>
+                    <th data-i18n="auth_username">Username</th>
+                    <th data-i18n="th_role">Role</th>
+                    <th data-i18n="th_perms">Can do</th>
+                    <th class="center"></th>
+                  </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="cat-sec" id="sec-history">
+          <div class="panel">
+            <div class="panel-head"><h3 data-i18n="cat_history">History</h3></div>
+            <p class="hint top" data-i18n="hist_hint"></p>
+            <div class="table-wrap flat">
+              <table class="grid compact fixed" id="historyTable">
+                <colgroup><col style="width:16%" /><col style="width:18%" /><col style="width:28%" /><col style="width:38%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="hist_when">When</th>
+                    <th data-i18n="hist_who">Who</th>
+                    <th data-i18n="hist_what">What</th>
+                    <th data-i18n="th_note">Note</th>
+                  </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+              </table>
+              <div class="empty" id="historyEmpty" data-i18n="hist_empty" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="cat-sec" id="sec-settings">
+          <div class="panel">
+            <div class="panel-head"><h3 data-i18n="cat_settings">Settings</h3></div>
+            <label class="switch">
+              <input type="checkbox" id="setAutoUpdate" />
+              <span data-i18n="set_autoupdate">Check for updates on startup</span>
+            </label>
+            <p class="hint" data-i18n="set_autoupdate_hint"></p>
+            <div class="kv"><span data-i18n="set_version">Version</span><b id="setVersion">-</b></div>
+            <div class="kv"><span data-i18n="set_license">License</span><b id="setLicense">-</b></div>
+            <div class="kv"><span data-i18n="set_apiversion">GitHub API version</span><b id="setApiVersion">-</b></div>
+            <div class="kv"><span data-i18n="set_datafile">Data file</span><b id="setDataPath" class="path">-</b></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3 data-i18n="set_excel">Companion Excel file</h3></div>
+            <label class="switch">
+              <input type="checkbox" id="setExcelOn" />
+              <span data-i18n="set_excel">Companion Excel file</span>
+            </label>
+            <p class="hint" data-i18n="set_excel_hint"></p>
+            <div class="kv"><span id="excelPath" class="path">-</span>
+              <span class="nowrap">
+                <button class="btn small" id="btnExcelChoose" data-i18n="set_excel_choose">Choose file</button>
+                <button class="btn small" id="btnExcelNow" data-i18n="set_excel_now">Write it now</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="appfoot">
+      <span id="copyright"></span>
+      <button class="verlink" id="btnUpdate" data-i18n-title="update_check" title="Check for updates">v-</button>
+    </footer>
+
+    <!-- ======================= Work modal ======================= -->
+    <div class="modal-backdrop" id="workModal" hidden>
+      <div class="modal">
+        <h3 id="modalTitle">New work</h3>
+        <div class="form">
+          <label><span data-i18n="fld_date">Date</span>
+            <input type="date" id="mDate" />
+          </label>
+          <label><span data-i18n="fld_client">Client</span>
+            <select id="mClient"></select>
+          </label>
+          <label class="full"><span data-i18n="fld_patient">Patient / case ID</span>
+            <input type="text" id="mPatient" data-i18n-ph="fld_patient_ph" />
+          </label>
+          <label><span data-i18n="fld_work">Work</span>
+            <select id="mWork"></select>
+          </label>
+          <label><span data-i18n="fld_units">Units</span>
+            <input type="number" id="mUnits" min="0" step="1" value="1" />
+          </label>
+          <label><span data-i18n="fld_doneby">Done by</span>
+            <select id="mWho"></select>
+          </label>
+          <div class="form-sec full">
+            <label class="switch">
+              <input type="checkbox" id="mRedo" />
+              <span data-i18n="type_redo">Redo</span>
+            </label>
+            <p class="hint" id="mRedoHint" data-i18n="redo_hint" hidden></p>
+          </div>
+
+          <div class="form-sec full">
+            <label class="switch">
+              <input type="checkbox" id="mShipped" />
+              <span data-i18n="fld_shipped">Shipped</span>
+            </label>
+          </div>
+          <label><span data-i18n="fld_shipdate">Ship date</span>
+            <input type="date" id="mShipDate" />
+          </label>
+          <label><span data-i18n="fld_courier">Courier</span>
+            <input type="text" id="mCourier" list="courierList" />
+            <datalist id="courierList"></datalist>
+          </label>
+          <label class="full"><span data-i18n="fld_tracking">Tracking number</span>
+            <input type="text" id="mTracking" />
+          </label>
+          <label class="full"><span data-i18n="fld_note">Note</span>
+            <input type="text" id="mNote" />
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="mCancel" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="mSave" data-i18n="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Ship together modal ======================= -->
+    <div class="modal-backdrop" id="shipModal" hidden>
+      <div class="modal">
+        <h3 data-i18n="modal_shiptitle">Ship these works together</h3>
+        <p class="hint top" data-i18n="shiptitle_hint"></p>
+        <div class="shiplist" id="shipList"></div>
+        <div class="form">
+          <label><span data-i18n="fld_shipdate">Ship date</span>
+            <input type="date" id="sDate" />
+          </label>
+          <label><span data-i18n="fld_courier">Courier</span>
+            <input type="text" id="sCourier" list="courierList" />
+          </label>
+          <label class="full"><span data-i18n="fld_tracking">Tracking number</span>
+            <input type="text" id="sTracking" />
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="sCancel" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="sSave" data-i18n="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Client modal ======================= -->
+    <div class="modal-backdrop" id="clientModal" hidden>
+      <div class="modal">
+        <h3 id="clientModalTitle">New client</h3>
+        <div class="form">
+          <label><span data-i18n="fld_name">Name</span><input type="text" id="cName" /></label>
+          <label><span data-i18n="fld_vat">VAT number</span><input type="text" id="cVat" /></label>
+          <label><span data-i18n="fld_email">Email</span><input type="email" id="cEmail" /></label>
+          <label><span data-i18n="fld_phone">Phone</span><input type="text" id="cPhone" /></label>
+          <label class="full"><span data-i18n="fld_address">Address</span><input type="text" id="cAddress" /></label>
+          <label class="full"><span data-i18n="fld_note">Note</span><input type="text" id="cNote" /></label>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="cCancel" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="cSave" data-i18n="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Bill of materials modal ======================= -->
+    <div class="modal-backdrop" id="bomModal" hidden>
+      <div class="modal wide">
+        <h3 id="bomTitle">Materials</h3>
+        <table class="grid compact bom fixed">
+          <colgroup><col style="width:42%" /><col style="width:14%" /><col style="width:16%" /><col style="width:16%" /><col style="width:12%" /></colgroup>
+          <thead>
+            <tr>
+              <th data-i18n="th_material">Material</th>
+              <th class="num" data-i18n="bom_qty">Qty</th>
+              <th class="num" data-i18n="th_unitcost">Cost per unit</th>
+              <th class="num" data-i18n="bom_cost">Cost</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="bomBody"></tbody>
+        </table>
+        <div class="empty small" id="bomEmpty" data-i18n="bom_empty" hidden></div>
+        <div class="bom-foot">
+          <button class="btn small" id="bomAdd" data-i18n="bom_add">+ Add material</button>
+          <span class="spacer"></span>
+          <span class="lbl" data-i18n="bom_total">Material cost per unit</span>
+          <b id="bomTotal">-</b>
+        </div>
+        <div class="modal-actions">
+          <button class="btn primary" id="bomClose" data-i18n="close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Operator work types ======================= -->
+    <div class="modal-backdrop" id="opModal" hidden>
+      <div class="modal">
+        <h3 id="opTitle">Work types</h3>
+        <p class="hint top" data-i18n="op_hint"></p>
+        <div class="checklist" id="opList"></div>
+        <div class="modal-actions">
+          <button class="btn primary" id="opClose" data-i18n="close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= New operator ======================= -->
+    <div class="modal-backdrop" id="userModal" hidden>
+      <div class="modal">
+        <h3 data-i18n="modal_newuser">New operator</h3>
+        <div class="form">
+          <label><span data-i18n="auth_firstname">First name</span><input type="text" id="uFirst" /></label>
+          <label><span data-i18n="auth_lastname">Last name</span><input type="text" id="uLast" /></label>
+          <label><span data-i18n="auth_username">Username</span><input type="text" id="uUser" /></label>
+          <label><span data-i18n="auth_password">Password</span><input type="password" id="uPass" /></label>
+        </div>
+        <p class="hint top" data-i18n="user_perms_hint"></p>
+        <div class="checklist" id="uPerms"></div>
+        <p class="gate-error" id="uError" hidden></p>
+        <div class="modal-actions">
+          <button class="btn ghost" id="uCancel" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="uSave" data-i18n="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Update modal ======================= -->
+    <div class="modal-backdrop" id="updateModal" hidden>
+      <div class="modal">
+        <h3 data-i18n="update_title">Updates</h3>
+        <div class="update-state" id="updateState"></div>
+        <div class="kv"><span data-i18n="update_current">Installed version</span><b id="updCurrent">-</b></div>
+        <div class="kv"><span data-i18n="update_latest">Latest release</span><b id="updLatest">-</b></div>
+        <p class="hint" id="copyrightModal"></p>
+        <div class="modal-actions">
+          <button class="btn ghost" id="updClose" data-i18n="close">Close</button>
+          <button class="btn ghost" id="updNotes" data-i18n="update_notes">Release notes</button>
+          <button class="btn primary" id="updDownload" data-i18n="update_download">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="vendor/chart.umd.min.js"></script>
+    <script src="i18n.js"></script>
+    <script src="auth.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+__pycache__/
+release/
+dist/
+*.log
+npm-debug.log*
+
+# Local app data (never versioned)
+data.json
+*.local.json

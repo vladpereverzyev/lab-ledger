@@ -1,0 +1,578 @@
+:root {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --ink: #14181f;
+  --ink-soft: #667085;
+  --line: #e4e7ec;
+  --line-soft: #eef1f4;
+  --brand: #2f6bff;
+  --brand-dark: #1f53d8;
+  --ok: #4f9e86;
+  --warn: #c99447;
+  --danger: #cc6a6a;
+  --chip: #eef2ff;
+  --th-bg: #fafbfc;
+  --row-hover: #f8fafc;
+  --veil: rgba(244, 246, 249, .55);
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  --radius: 10px;
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+input, select, textarea, button { font-family: inherit; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- Topbar ----------------
+   Every control here has a fixed width. Labels change length when the
+   language changes; the layout must not move a single pixel. */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  z-index: 5;
+}
+.tabs { display: flex; gap: 4px; }
+.tab {
+  border: none; background: transparent; padding: 8px 10px; border-radius: 8px;
+  font-size: 14px; color: var(--ink-soft); cursor: pointer; font-weight: 600;
+  width: 118px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tab:hover { background: var(--bg); }
+.tab.active { background: var(--ink); color: var(--panel); }
+
+.topbar-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+  white-space: nowrap;
+}
+.btn:hover { border-color: #cdd3dd; background: var(--row-hover); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.primary:hover { background: var(--brand-dark); }
+.btn.ghost { background: transparent; }
+.btn.fixed { width: 124px; overflow: hidden; text-overflow: ellipsis; }
+.btn.square { width: 36px; padding: 8px 0; text-align: center; }
+.btn.small { padding: 5px 10px; font-size: 12px; }
+.btn.icon { padding: 3px 7px; font-size: 13px; border: none; background: transparent; color: var(--ink-soft); }
+.btn.icon:hover { background: var(--bg); color: var(--ink); }
+.btn.danger, .btn.icon.danger:hover { color: var(--danger); }
+.btn.link {
+  border: none; background: transparent; padding: 2px 0; color: var(--brand);
+  font-weight: 600; text-align: left; white-space: normal; cursor: pointer;
+}
+.btn.link:hover { text-decoration: underline; background: transparent; }
+
+/* ---------------- Segmented control ---------------- */
+.seg { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 2px; }
+.seg.wide { display: flex; }
+.seg.wide .seg-btn { flex: 1; }
+.seg-btn {
+  border: none; background: transparent; color: var(--ink-soft); cursor: pointer;
+  padding: 5px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 600; white-space: nowrap;
+  min-width: 78px;
+}
+/* In a toolbar the segmented control sits next to real buttons, so it has to
+   be exactly as tall as they are. */
+.toolbar .seg { padding: 0; }
+.toolbar .seg-btn { padding: 8px 14px; border-radius: 7px; min-width: 92px; }
+.seg-btn:hover { color: var(--ink); }
+.seg-btn.active { background: var(--panel); color: var(--ink); box-shadow: var(--shadow); }
+
+/* ---------------- Views ---------------- */
+main { flex: 1; overflow: auto; padding: 18px; display: flex; flex-direction: column; }
+.view { display: none; }
+.view.active { display: block; }
+/* The works view is a column that fills the window: toolbar on top, totals
+   pinned at the bottom, and the table taking everything in between. */
+#view-works.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.section-title {
+  font-size: 13px; text-transform: uppercase; letter-spacing: .6px;
+  color: var(--ink-soft); margin: 26px 0 10px; font-weight: 700;
+}
+.section-title:first-of-type { margin-top: 0; }
+
+/* ---------------- Toolbar ---------------- */
+.toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.search {
+  flex: 1 1 200px; min-width: 160px; padding: 8px 12px; border: 1px solid var(--line);
+  border-radius: 8px; font-size: 14px; background: var(--panel); color: var(--ink);
+}
+.filter {
+  padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel); color: var(--ink); font-size: 13px;
+}
+.filter.w-short { width: 104px; }
+.filter.w-mid { width: 150px; }
+.lbl { color: var(--ink-soft); font-weight: 600; font-size: 13px; }
+.spacer { flex: 1; }
+
+.totals-wrap {
+  margin-top: 10px; overflow: hidden;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.totals-table { min-width: 1120px; }
+.totals-table td {
+  border-bottom: none; padding: 11px 12px; color: var(--ink-soft); font-size: 13px;
+}
+.totals-table tbody tr:hover { background: none; }
+.totals-table b { color: var(--ink); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.totals-table b.pos { color: var(--ok); }
+.totals-table b.neg { color: var(--danger); }
+
+.appfoot {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 16px; border-top: 1px solid var(--line); background: var(--panel);
+  color: var(--ink-soft); font-size: 11px; letter-spacing: .2px;
+}
+.appfoot a { color: inherit; text-decoration: none; cursor: pointer; }
+.appfoot a:hover, .hint a:hover { color: var(--ink); }
+.hint a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+/* The author's name and the licence are the same line the footer carries, so
+   they read the same way here: no rule under them, the colour does the work. */
+#copyrightModal a, .kv b a { color: inherit; text-decoration: none; cursor: pointer; }
+.kv b a:hover { color: var(--ink-soft); }
+
+.verlink {
+  margin-left: auto;
+  border: none; background: none; padding: 0; cursor: pointer; font: inherit;
+  color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.verlink:hover { color: var(--ink); }
+.verlink.has-update { color: var(--brand); font-weight: 700; }
+.verlink.has-update::after { content: " •"; }
+
+/* ---------------- Tables ---------------- */
+.table-wrap {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: auto; box-shadow: var(--shadow);
+}
+.table-wrap.flat { border: none; border-radius: 0; box-shadow: none; background: transparent; }
+table.grid { width: 100%; border-collapse: collapse; }
+/* A fixed layout is the only way a column stays put: with the automatic one the
+   width follows the content, and the content changes with the language - the
+   headers translate and even the money is formatted differently. */
+table.grid.fixed { table-layout: fixed; }
+/* Below this the percentages would squeeze a header into an ellipsis, so the
+   wrapper scrolls sideways instead of lying about what the column says. */
+#worksTable { min-width: 1120px; }
+table.grid.fixed th, table.grid.fixed td { overflow: hidden; text-overflow: ellipsis; }
+table.grid th, table.grid td {
+  padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line-soft); white-space: nowrap;
+}
+table.grid th {
+  position: sticky; top: 0; background: var(--th-bg); font-size: 11px; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--ink-soft); z-index: 1; border-bottom: 1px solid var(--line);
+}
+table.grid.compact th, table.grid.compact td { padding: 6px 10px; }
+table.grid tbody tr:hover { background: var(--row-hover); }
+table.grid tfoot td { border-bottom: none; border-top: 1px solid var(--line); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.center { text-align: center; }
+.nowrap { white-space: nowrap; }
+.muted { color: var(--ink-soft); }
+.strong, table.grid tr.strong td { font-weight: 700; }
+table.grid tr.rule td { border-top: 1px solid var(--line); font-weight: 600; }
+.neg { color: var(--danger); }
+.pos { color: var(--ok); }
+.empty { padding: 36px; text-align: center; color: var(--ink-soft); }
+.empty.small { padding: 18px; font-size: 13px; }
+
+.badge { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: .4px; vertical-align: 1px; }
+.badge.redo { background: #fbe9e9; color: #b06060; }
+.chip { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; }
+.chip.ok { background: #e8f6f1; color: #4f8f7c; }
+.chip.muted { background: var(--bg); color: var(--ink-soft); }
+
+.cell-input, .cell-select {
+  width: 96px; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px;
+  font-size: 13px; background: var(--panel); color: var(--ink);
+}
+.cell-input { text-align: right; }
+.cell-input.text { width: 100%; min-width: 120px; text-align: left; }
+.cell-input.text.narrow { min-width: 80px; width: 90px; }
+.cell-select { width: auto; min-width: 120px; }
+.cell-select.narrow { min-width: 92px; }
+
+/* The works table scrolls inside its own box, so the toolbar, the selection bar
+   and the totals never move and the header row never slides under anything. */
+#view-works .table-wrap { flex: 1; min-height: 160px; }
+
+.bulkbar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  padding: 8px 12px; border: 1px solid var(--brand); border-radius: 8px;
+  background: var(--chip); font-size: 13px; color: var(--ink);
+}
+.bulkbar b { font-variant-numeric: tabular-nums; }
+
+table.grid th.check, table.grid td.check { width: 34px; padding-right: 0; text-align: center; }
+table.grid input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--brand); cursor: pointer; }
+table.grid tbody tr.picked { background: var(--chip); }
+
+.shiplist { max-height: 180px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 14px; }
+.shiprow {
+  display: grid; grid-template-columns: 84px 1fr 1fr 1.2fr; gap: 10px;
+  padding: 6px 10px; font-size: 12.5px; border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap; overflow: hidden;
+}
+.shiprow:last-child { border-bottom: none; }
+.shiprow span { overflow: hidden; text-overflow: ellipsis; }
+
+/* Incoming work has no courier: the shipping column steps aside. */
+#worksTable.hide-ship th:nth-child(8), #worksTable.hide-ship td:nth-child(8) { display: none; }
+
+.checklist { max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.checklist .switch { padding: 4px 0; font-size: 13px; }
+
+/* ---------------- One dropdown for every choice ----------------
+   The native select is kept as the value holder and hidden; the button and the
+   panel below are ours, so a filter, a cell and the user menu all open the same
+   rounded list instead of three different ones drawn by the system. */
+.dd { position: relative; display: inline-block; }
+.dd select { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+.dd-btn {
+  width: 100%; text-align: left; cursor: pointer; font: inherit;
+  padding: 8px 28px 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel); color: var(--ink); font-size: 13px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dd-btn::after {
+  content: ""; position: absolute; right: 11px; top: 50%; width: 7px; height: 7px;
+  margin-top: -5px; border-right: 1.5px solid var(--ink-soft); border-bottom: 1.5px solid var(--ink-soft);
+  transform: rotate(45deg); pointer-events: none;
+}
+.dd-btn:hover { border-color: #cdd3dd; }
+.dd-btn:disabled { background: var(--bg); color: var(--ink-soft); cursor: default; }
+.dd-panel {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 70; min-width: 100%;
+  max-height: 300px; overflow: auto; padding: 6px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(16, 24, 40, .18);
+}
+.dd-item {
+  display: block; width: 100%; text-align: left; border: none; background: none;
+  padding: 7px 10px; border-radius: 7px; cursor: pointer; font: inherit;
+  font-size: 13px; color: var(--ink); white-space: nowrap;
+}
+.dd-item:hover { background: var(--bg); }
+.dd-item.on { background: var(--chip); font-weight: 600; }
+
+/* The wrapper carries the select's own classes, so the sizing rules still
+   apply - but to the box the user can see. */
+.dd.cell-select { width: auto; min-width: 120px; padding: 0; border: none; background: none; }
+.dd.cell-select .dd-btn { padding: 4px 24px 4px 6px; border-radius: 6px; }
+.dd.cell-select.narrow { min-width: 92px; }
+.dd.filter { padding: 0; border: none; background: none; }
+
+/* ---------------- Cards ---------------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap: 10px; }
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.card .k { color: var(--ink-soft); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+.card .v { font-size: 22px; font-weight: 700; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.4px; }
+.card .v.accent { color: var(--brand); }
+.card .v.pos { color: var(--ok); }
+.card .v.neg { color: var(--danger); }
+.card .s { color: var(--ink-soft); font-size: 11.5px; margin-top: 4px; }
+
+/* ---------------- Charts ---------------- */
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.chart-box {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px 10px; box-shadow: var(--shadow);
+}
+.chart-box.wide { grid-column: 1 / -1; }
+.chart-box h3 { margin: 0 0 12px; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.chart-canvas { position: relative; height: 210px; }
+.chart-canvas.tall { height: 260px; }
+
+/* ---------------- Panels / catalog ---------------- */
+.pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.pill {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink-soft);
+  padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.pill:hover { color: var(--ink); }
+.pill.active { background: var(--ink); border-color: var(--ink); color: var(--panel); }
+.cat-sec { display: none; }
+.cat-sec.active { display: grid; gap: 12px; }
+
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.panel-head h3 { margin: 0; font-size: 15px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { background: var(--chip); border-radius: 999px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.chips li button { border: none; background: none; cursor: pointer; color: var(--danger); font-weight: 700; padding: 0; }
+
+.hint { color: var(--ink-soft); font-size: 12px; margin: 12px 0 0; line-height: 1.5; }
+.hint.top { margin: 0 0 12px; }
+
+.kv {
+  display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+  padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-soft);
+}
+.kv b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.kv b.path { font-weight: 400; font-size: 12px; word-break: break-all; text-align: right; }
+
+.switch { display: flex; align-items: center; gap: 9px; font-size: 14px; cursor: pointer; }
+.switch input { width: 16px; height: 16px; accent-color: var(--brand); }
+.form-sec .hint { margin-top: 8px; }
+
+/* ---------------- Modal ---------------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, .45);
+  display: flex; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+}
+.modal {
+  background: var(--panel); border-radius: 14px; padding: 22px; width: 480px; max-width: 100%;
+  max-height: 92vh; overflow: auto; box-shadow: 0 20px 44px rgba(0, 0, 0, .22);
+}
+.modal.wide { width: 620px; }
+.modal h3 { margin: 0 0 16px; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form.stack { grid-template-columns: 1fr; }
+.form label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+.form label.full, .form .full { grid-column: 1 / -1; }
+.form input, .form select {
+  padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+  font-size: 14px; color: var(--ink); background: var(--panel);
+}
+.form input:disabled { background: var(--bg); color: var(--ink-soft); }
+.form-sec { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 2px; }
+/* A switch inside the form is a row, not a stacked field like the others. */
+.form label.switch { flex-direction: row; align-items: center; gap: 9px; font-size: 14px; color: var(--ink); }
+.form label.switch input { width: 16px; height: 16px; flex: none; }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+table.bom { margin-bottom: 8px; }
+.bom-foot { display: flex; align-items: center; gap: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.bom-foot b { font-variant-numeric: tabular-nums; }
+
+.update-state { padding: 12px 14px; border-radius: 8px; background: var(--bg); font-weight: 600; margin-bottom: 12px; }
+.update-state.new { background: #e7f0ff; color: var(--brand-dark); }
+.update-state.ok { background: #e6fcf5; color: #0b7a5d; }
+.update-state.warn { background: #fff4e6; color: #b45309; }
+
+/* ---------------- The gate ---------------- */
+/* The app stays where it is and goes out of focus behind the card, rather than
+   being covered by a slab of colour. */
+.gate {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--veil);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  display: flex; align-items: center; justify-content: center; overflow: auto; padding: 30px 20px;
+}
+.gate-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  padding: 28px 30px 30px; width: 460px; max-width: 100%;
+  box-shadow: 0 24px 60px rgba(16, 24, 40, .22);
+  margin: auto;
+}
+.gate-card.setup { width: 560px; }
+.gate-card h2 {
+  font-size: 18px; margin: 0 0 18px; color: var(--ink);
+  letter-spacing: -.2px; text-align: center;
+}
+.gate-card .form { gap: 14px; }
+.gate-card .form label span { font-size: 11.5px; }
+.gate-card .form input { padding: 10px 12px; }
+.gate-card h3 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+  color: var(--ink-soft); margin: 22px 0 10px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line-soft);
+}
+.gate-card h3:first-of-type { margin-top: 0; }
+.gate-error {
+  margin: 12px 0 0; padding: 9px 12px; border-radius: 8px;
+  background: #fbe9e9; color: #a05252; font-size: 13px;
+}
+:root[data-theme="dark"] .gate-error { background: #33211f; color: #d69090; }
+.gate-foot { color: var(--ink-soft); font-size: 11px; margin: 20px 0 0; text-align: center; }
+.gate-hint {
+  margin: 12px 0 0; padding: 9px 12px; border-radius: 8px; background: var(--chip);
+  color: var(--ink-soft); font-size: 12.5px; text-align: center;
+}
+.btn.wide { width: 100% !important; margin-top: 18px; padding: 11px; font-size: 14px; }
+/* Who is at the bench, always in the same corner. */
+/* Initials, nothing else. Who it is and what they may do belongs in the menu,
+   not in the corner of every screen. */
+.btn.user {
+  width: 36px; padding: 8px 0; text-align: center; letter-spacing: .3px;
+  background: var(--ink); border-color: var(--ink); color: var(--panel);
+}
+.btn.user:hover { background: var(--ink); border-color: var(--ink); opacity: .88; }
+.usermenu-wrap { position: relative; }
+.usermenu {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: 236px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(16, 24, 40, .18); padding: 6px; overflow: hidden;
+}
+.usermenu-head {
+  padding: 8px 10px 10px; border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 6px; font-size: 13.5px; font-weight: 700;
+}
+.usermenu-item {
+  display: block; width: 100%; text-align: left; border: none; background: none;
+  padding: 8px 10px; border-radius: 7px; cursor: pointer; font: inherit; font-size: 13px; color: var(--ink);
+}
+.usermenu-item:hover { background: var(--bg); }
+
+/* ---------------- What each role may see ----------------
+   Permissions are classes on <body>: a control that should disappear does so
+   here, so a new button is covered by the rule rather than by another branch
+   in the code. */
+body.not-admin .admin-only { display: none !important; }
+body.no-export #btnImportXlsx, body.no-export #btnExportXlsx,
+body.no-export #btnImportJson, body.no-export #btnExportJson { display: none; }
+body.no-editworks #btnNewWork, body.no-editworks .bulkbar,
+body.no-editworks #worksTable th.check, body.no-editworks #worksTable td.check { display: none; }
+body.no-editworks #worksBody .btn.icon:not(.danger) { display: none; }
+body.no-delworks #worksBody .btn.icon.danger { display: none; }
+body.no-money #worksTable th:nth-child(9), body.no-money #worksTable td:nth-child(9),
+body.no-money #worksTable th:nth-child(10), body.no-money #worksTable td:nth-child(10),
+body.no-money #worksTable th:nth-child(11), body.no-money #worksTable td:nth-child(11),
+body.no-money .totals { display: none; }
+body.no-money #typesTable th:nth-child(3), body.no-money #typesTable td:nth-child(3),
+body.no-money #typesTable th:nth-child(4), body.no-money #typesTable td:nth-child(4),
+body.no-money #typesTable th:nth-child(5), body.no-money #typesTable td:nth-child(5),
+body.no-money #typesTable th:nth-child(6), body.no-money #typesTable td:nth-child(6) { display: none; }
+body.no-editcatalog #view-catalog .btn.small,
+body.no-editcatalog #view-catalog .btn.icon.danger { display: none; }
+body.no-editcatalog #view-catalog .cell-input,
+body.no-editcatalog #view-catalog .cell-select { pointer-events: none; background: var(--bg); }
+
+/* ---------------- Toast ---------------- */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #111827; color: #fff; padding: 10px 18px; border-radius: 8px;
+  font-size: 13px; z-index: 100; box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+}
+
+
+/* ===================================================================
+   Fitting the screen it is actually on
+   -------------------------------------------------------------------
+   Three sizes, not a hundred: a wide desk, a laptop or tablet, and a
+   phone. The widths pinned in JavaScript so the layout would not move
+   between languages have to give way below a laptop, which is why the
+   rules here carry !important - they are undoing an inline style, on
+   purpose and only when the screen is too small for it.
+   =================================================================== */
+
+/* --- laptops and tablets ----------------------------------------- */
+@media (max-width: 1100px) {
+  .charts { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; gap: 10px; }
+  .topbar-actions { margin-left: auto; flex-wrap: wrap; }
+  .tab { width: auto !important; min-width: 96px; }
+}
+
+/* --- small tablets: the toolbar stops being one line -------------- */
+@media (max-width: 900px) {
+  main { padding: 12px; }
+  .btn.fixed { width: auto !important; }
+  .filter, .search { width: auto !important; flex: 1 1 140px; min-width: 120px; }
+  .toolbar .seg-btn { min-width: 0; flex: 1; }
+  .toolbar .seg { flex: 1 1 180px; }
+  .cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .chart-canvas, .chart-canvas.tall { height: 200px; }
+  .modal, .modal.wide { width: 100%; }
+  .form { grid-template-columns: 1fr; }
+  .gate { padding: 16px; }
+  .gate-card { padding: 22px 20px 24px; }
+}
+
+/* --- phones: the tables stop being tables ------------------------- */
+@media (max-width: 760px) {
+  .topbar { padding: 8px 12px; }
+  .tabs { order: 1; width: 100%; }
+  .tab { flex: 1; }
+  .topbar-actions { order: 2; width: 100%; margin-left: 0; }
+  .btn.fixed { flex: 1 1 auto; }
+
+  /* A row becomes a card, and every value carries the name of its column. */
+  table.grid, table.grid.fixed { display: block; table-layout: auto; min-width: 0 !important; }
+  table.grid colgroup, table.grid thead { display: none; }
+  table.grid tbody, table.grid tfoot { display: block; }
+  table.grid tr {
+    display: block; padding: 8px 10px; margin-bottom: 8px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+  }
+  table.grid td {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    width: auto !important; padding: 4px 0; border: none; white-space: normal;
+    text-align: right; overflow: visible; text-overflow: clip;
+  }
+  table.grid td::before {
+    content: attr(data-label); flex: none; max-width: 45%;
+    color: var(--ink-soft); font-size: 11px; text-transform: uppercase;
+    letter-spacing: .4px; text-align: left;
+  }
+  table.grid td:empty { display: none; }
+  table.grid td.check { justify-content: flex-start; }
+  table.grid td.check::before { content: none; }
+  table.grid .cell-input, table.grid .cell-select { width: auto !important; min-width: 0; flex: 1 1 auto; max-width: 60%; }
+  #worksTable.hide-ship td:nth-child(8) { display: none; }
+
+  #view-works.active { display: block; }
+  #view-works .table-wrap { max-height: none; border: none; background: none; box-shadow: none; }
+  .table-wrap { border: none; background: none; box-shadow: none; }
+  .panel { padding: 12px; }
+  .totals-wrap { border: none; background: none; box-shadow: none; margin-top: 4px; }
+  .totals-table { min-width: 0 !important; }
+  .totals-table td[colspan] { font-weight: 700; color: var(--ink); }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .card .v { font-size: 19px; }
+  .chart-canvas, .chart-canvas.tall { height: 180px; }
+  .pills { gap: 5px; }
+  .pill { flex: 1 1 auto; }
+  .shiprow { grid-template-columns: 1fr 1fr; }
+  .appfoot { flex-wrap: wrap; gap: 4px 10px; }
+}
+
+/* --- very small phones -------------------------------------------- */
+@media (max-width: 420px) {
+  .cards { grid-template-columns: 1fr; }
+  .tab { font-size: 13px; padding: 8px 4px; }
+  table.grid td::before { max-width: 50%; }
+}
+
+/* ---------------- Dark ---------------- */
+:root[data-theme="dark"] {
+  --bg: #0e1116; --panel: #171b22; --ink: #e7ebf1; --ink-soft: #98a2b3;
+  --line: #262c36; --line-soft: #1f242c; --chip: #1c2536;
+  --th-bg: #1b2029; --row-hover: #1c212a; --shadow: none;
+  --veil: rgba(10, 13, 18, .55);
+  color-scheme: dark;
+}
+:root[data-theme="dark"] .badge.redo { background: #33211f; color: #d69090; }
+:root[data-theme="dark"] .chip.ok { background: #172a24; color: #79c0aa; }
+:root[data-theme="dark"] .update-state.new { background: #16233d; color: #8fb4ff; }
+:root[data-theme="dark"] .update-state.ok { background: #10291f; color: #4fd1a5; }
+:root[data-theme="dark"] .update-state.warn { background: #33250f; color: #ffc078; }

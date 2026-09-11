@@ -1,0 +1,55 @@
+name: Deploy browser demo (GitHub Pages)
+
+# Publishes the live browser demo at https://<user>.github.io/lab-ledger/
+# The site is assembled from the app source in src/ plus the demo-only shim in
+# web/demo.js - no framework, no build tooling, just a copy + one <script> line.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "web/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble demo site
+        run: |
+          set -e
+          mkdir -p site
+          cp -r src/. site/
+          cp web/demo.js site/demo.js
+          cp web/sample-data.js site/sample-data.js
+          # The favicons ship inside src/assets and are already linked from
+          # index.html, so the copy above is all the icon work there is.
+          # Load the browser demo shim right before the app script.
+          sed -i 's#<script src="app.js"></script>#<script src="sample-data.js"></script>\n    <script src="demo.js"></script>\n    <script src="app.js"></script>#' site/index.html
+          # Demo-specific tab title.
+          sed -i 's#<title>Lab Ledger</title>#<title>Lab Ledger - Live Demo</title>#' site/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,21 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Lab Ledger mark: an "L" whose three ledger lines also read as an "E".
+       Traced from lab_ledger_icon_2048.png at 1:8 scale, so every proportion -
+       padding, stroke weight, the rounded foot of the L and the small fillet
+       on its inner corner - is the artwork's own. Only the black tile is
+       rounded, so the icon reads as an app icon on any background. -->
+  <rect width="256" height="256" rx="48" fill="#0a0a0a"/>
+  <g fill="#ffffff">
+    <path d="M69 65.25
+             A11.5 11.5 0 0 1 92 65.25
+             L92 175
+             A4.25 4.25 0 0 0 96.25 179.25
+             L175.375 179.25
+             A11.5 11.5 0 0 1 175.375 202.25
+             L80.5 202.25
+             A11.5 11.5 0 0 1 69 190.75
+             Z"/>
+    <rect x="100.625" y="53.75" width="86.25" height="23" rx="11.5"/>
+    <rect x="100.625" y="116.5" width="86.25" height="23" rx="11.5"/>
+  </g>
+</svg>
