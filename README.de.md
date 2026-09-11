@@ -16,7 +16,7 @@
 verlässt, und sieh, was am Jahresende wirklich übrig bleibt.
 
 <p align="center">
-  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="96" height="96">
+  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="160" height="160">
 </p>
 
 ### [**Live-Demo ausprobieren**](https://vladpereverzyev.github.io/lab-ledger/)

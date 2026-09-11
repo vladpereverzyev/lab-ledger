@@ -3,6 +3,20 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.2] - 2026-09-11
+
+### Changed
+- **A new installation starts empty.** Until now the app arrived with a catalog
+  already inside it - seventeen materials, thirty-three work types and two
+  operators - which is somebody else's lab, not yours. A fresh install now
+  opens on an empty Catalog: you enter the materials you actually buy, at the
+  prices you actually pay, and the work you actually make. The browser demo
+  keeps its sample lab, which is what a demo is for.
+- **An update never touches data that is already there.** The defaults are read
+  only when no data file exists, and the installer does not go near the folder
+  the data lives in. A lab that updates keeps every work, client, patient,
+  material, price and history entry it had.
+
 ## [1.3.1] - 2026-09-11
 
 ### Added

@@ -17,7 +17,7 @@ dentaires** : enregistrez ce qui sort de l'établi et voyez ce qu'il reste
 vraiment en fin d'année.
 
 <p align="center">
-  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="96" height="96">
+  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="160" height="160">
 </p>
 
 ### [**Essayer la démo en ligne**](https://vladpereverzyev.github.io/lab-ledger/)

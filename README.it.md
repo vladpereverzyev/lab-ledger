@@ -16,7 +16,7 @@
 che esce dal banco e scopri quanto resta davvero a fine anno.
 
 <p align="center">
-  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="96" height="96">
+  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="160" height="160">
 </p>
 
 ### [**Prova la demo live**](https://vladpereverzyev.github.io/lab-ledger/)

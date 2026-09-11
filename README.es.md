@@ -16,7 +16,7 @@
 registra lo que sale del banco y descubre qué queda realmente a final de año.
 
 <p align="center">
-  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="96" height="96">
+  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="160" height="160">
 </p>
 
 ### [**Prueba la demo en vivo**](https://vladpereverzyev.github.io/lab-ledger/)
