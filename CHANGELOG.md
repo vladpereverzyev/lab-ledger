@@ -3,6 +3,18 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.4] - 2026-09-11
+
+### Added
+- Published SHA-256 checksums alongside every release, so a downloaded file can
+  be checked before it is run.
+- Dependabot and CodeQL watch the dependencies and the code for known problems.
+
+### Changed
+- The security policy now states plainly what the password protects - the app's
+  screens and actions - and what protects the data itself: who is allowed to use
+  the computer, with a separate account per person and full-disk encryption.
+
 ## [1.3.3] - 2026-09-11
 
 ### Added

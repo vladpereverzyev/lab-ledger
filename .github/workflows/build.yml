@@ -32,6 +32,15 @@ jobs:
           # Do not attempt macOS code signing (no certificate configured).
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
+      # SHA-256 of every artifact this runner built, so a download can be
+      # verified against a published sum. One file per OS to avoid three jobs
+      # overwriting the same name on the release.
+      - name: Checksums
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'),c=require('crypto');const d='release';const out=[];for(const f of fs.readdirSync(d).sort()){const fp=d+'/'+f;if(!fs.statSync(fp).isFile()||f.startsWith('SHA256SUMS'))continue;out.push(c.createHash('sha256').update(fs.readFileSync(fp)).digest('hex')+'  '+f);}fs.writeFileSync(d+'/SHA256SUMS-'+process.env.RUNNER_OS+'.txt', out.join('\n')+'\n');"
+          cat "release/SHA256SUMS-$RUNNER_OS.txt"
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -42,6 +51,7 @@ jobs:
             release/*.zip
             release/*.AppImage
             release/*.deb
+            release/SHA256SUMS-*.txt
 
       # The notes are the CHANGELOG section for this tag, not auto-generated
       # ones: three matrix jobs publish to the same release, and generated
@@ -70,3 +80,4 @@ jobs:
             release/*.zip
             release/*.AppImage
             release/*.deb
+            release/SHA256SUMS-*.txt
