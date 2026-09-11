@@ -1,7 +1,7 @@
 {
   "name": "lab-ledger",
   "productName": "Lab Ledger",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Desktop app for a dental lab: works, patients, shipping, material costs from real pack prices, running costs, taxes and the profit that is actually left. All data stays local.",
   "author": "Vladyslav Pereverzyev",
   "license": "BUSL-1.1",

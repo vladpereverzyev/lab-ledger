@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.3.1] - 2026-09-11
 
 ### Added
 - **The update downloads itself.** Until now the dialog handed you a link and
