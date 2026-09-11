@@ -145,10 +145,10 @@ Catalog - each work type wired to the materials it consumes:
 
 ## Offline by design
 
-Lab Ledger is not a cloud product with an offline mode. It is an offline
-program, full stop. Your data lives in one JSON file on your computer; there is
-no account, no server, no telemetry, and nothing you type ever leaves the
-machine.
+Lab Ledger is not a cloud product with an offline mode. It is offline-first:
+your data lives in one JSON file on your computer; there is no account, no
+server, no telemetry, and nothing you type ever leaves the machine. The only
+network call is an optional update check, described below.
 
 There is exactly one exception, and it is opt-out: **the update check**. Once a
 day, if you leave it switched on, the app asks the public GitHub REST API which

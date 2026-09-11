@@ -3,6 +3,7 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, Menu, net } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
 const XLSX = require("xlsx");
 const { buildWorkbook } = require("./excel");
 
@@ -297,6 +298,48 @@ ipcMain.handle("update:check", async () => {
   }
 });
 
+// Fetch a small text file (the checksums list) from the same release.
+function getText(url) {
+  return new Promise((resolve, reject) => {
+    const request = net.request({ method: "GET", url });
+    request.setHeader("User-Agent", `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`);
+    const timer = setTimeout(() => { request.abort(); reject(new Error("timeout")); }, 8000);
+    request.on("response", (response) => {
+      let body = "";
+      response.on("data", (chunk) => { body += chunk; });
+      response.on("end", () => {
+        clearTimeout(timer);
+        if (response.statusCode < 200 || response.statusCode >= 300) return reject(new Error("HTTP " + response.statusCode));
+        resolve(body);
+      });
+    });
+    request.on("error", (err) => { clearTimeout(timer); reject(err); });
+    request.end();
+  });
+}
+
+// The SHA256SUMS file for this platform lives beside the asset in the release.
+function sumsUrlFor(assetUrl) {
+  const os = process.platform === "win32" ? "Windows" : process.platform === "darwin" ? "macOS" : "Linux";
+  return String(assetUrl).replace(/[^/]+$/, `SHA256SUMS-${os}.txt`);
+}
+
+// Verify the file just downloaded against the published sum. Returns
+// { verified: true } on a match; { verified: false } when the release carries
+// no sums (older releases); throws "checksum mismatch" when it does not match,
+// so the caller can delete the file and refuse to run it.
+async function verifyDownload(filePath, assetName, assetUrl) {
+  let text;
+  try { text = await getText(sumsUrlFor(assetUrl)); }
+  catch (_) { return { verified: false }; }
+  const line = text.split(/\r?\n/).map((l) => l.trim()).find((l) => l.endsWith(assetName));
+  if (!line) return { verified: false };
+  const expected = line.split(/\s+/)[0].toLowerCase();
+  const actual = crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+  if (expected !== actual) throw new Error("checksum mismatch");
+  return { verified: true };
+}
+
 // The download only ever starts because someone pressed the button: the app
 // still never fetches an installer on its own. It lands in the Downloads
 // folder under its published name, so it is an ordinary file the user can see,
@@ -334,7 +377,15 @@ ipcMain.handle("update:download", async (_event, asset) => {
           mainWindow.webContents.send("update:progress", { pct, done, total });
         }
       });
-      file.on("finish", () => resolve({ ok: true, path: target }));
+      file.on("finish", async () => {
+        try {
+          const v = await verifyDownload(target, path.basename(asset.name || ""), asset.url);
+          resolve({ ok: true, path: target, verified: !!v.verified });
+        } catch (err) {
+          try { fs.unlinkSync(target); } catch (_) {}
+          resolve({ ok: false, error: err.message });
+        }
+      });
       file.on("error", (err) => resolve({ ok: false, error: err.message }));
       response.on("error", (err) => {
         file.destroy();
