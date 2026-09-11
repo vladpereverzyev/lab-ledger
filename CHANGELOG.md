@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.3.3] - 2026-09-11
 
 ### Added
 - **A way back in when the administrator password is gone.** Setting the lab up
