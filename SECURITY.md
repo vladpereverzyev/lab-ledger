@@ -12,6 +12,29 @@ are in the README, section "GitHub API".
 
 The attack surface is therefore small, but we take any security issue seriously.
 
+## What the password protects, and what it does not
+
+The administrator password and the per-operator permissions protect the app's
+screens and actions: who can sign in, who can see prices and profit, who can add
+or edit works, delete them, change the catalog, export or back up. Passwords
+themselves are never stored, only a PBKDF2-SHA256 hash over a random per-user
+salt.
+
+They do not encrypt the files on disk. The data lives in a plain JSON file, and
+so does the administrator recovery code kept beside it, so anyone who can read
+that computer's files can read the data without going through the app. This is a
+deliberate choice for a tool that runs on a lab's own trusted machine: treat the
+password as a convenience barrier between people who already share that machine,
+not as protection against someone who has the files.
+
+What protects the data itself is who is allowed to use the computer: a separate
+operating-system account per person, full-disk encryption (BitLocker on Windows,
+FileVault on macOS, LUKS on Linux), and the usual physical security. If the
+machine is shared with people who should not see the numbers, or is a laptop that
+can be lost or stolen, turn on disk encryption. A JSON backup or the companion
+Excel file is a full copy of the same data, so keep it somewhere with the same
+care.
+
 ## Supported versions
 
 Only the latest release receives security fixes. Please update to the newest
