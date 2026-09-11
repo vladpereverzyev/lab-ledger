@@ -3,6 +3,27 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- **A way back in when the administrator password is gone.** Setting the lab up
+  now produces a recovery code - six groups of four, from an alphabet with no
+  I, O, 0 or 1 in it, because it gets read back over the phone. It is shown
+  once to be written down, and **Forgotten password?** on the sign-in screen
+  takes it and sets a new administrator password. A lab set up before this
+  version gets its code the first time the administrator signs in.
+- A copy of the code is kept in the app's data folder on that computer, so
+  whoever supports the lab can read it back when connected to the machine, and
+  an administrator can read it in **Catalog > Settings** at any time. It is
+  deliberately readable rather than secret: the data file beside it is plain
+  JSON, so hiding the code would protect nothing that is not already open -
+  what protects both is who is allowed to use that computer.
+- `npm test` - the first tests in the project, over the part that can lock a
+  lab out of its own archive: the shape of the code, that two are never alike,
+  that it verifies however it is typed back, that the clear text never reaches
+  the data file, that a wrong or empty code opens nothing, and that a reset
+  password really replaces the old one.
+
 ## [1.3.2] - 2026-09-11
 
 ### Changed

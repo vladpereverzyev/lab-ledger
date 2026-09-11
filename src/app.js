@@ -411,6 +411,8 @@ function openGate() {
   const first = !Auth.hasAdmin(state);
   $("#gateSetup").hidden = !first;
   $("#gateLogin").hidden = first;
+  $("#gateRecovery").hidden = true;
+  $("#gateReset").hidden = true;
   $(".gate-card").classList.toggle("setup", first);
   $("#gateBiz").textContent = state.users.business.name || "";
   $("#gateFoot").textContent = $("#copyright").textContent;
@@ -434,6 +436,11 @@ function bindGate() {
   $("#gCreate").addEventListener("click", createFirstAdmin);
   $("#gLogin").addEventListener("click", doLogin);
   $("#lPass").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+  $("#gForgot").addEventListener("click", (e) => { e.preventDefault(); showResetPanel(true); });
+  $("#rBack").addEventListener("click", (e) => { e.preventDefault(); showResetPanel(false); });
+  $("#gReset").addEventListener("click", resetWithCode);
+  $("#rPass2").addEventListener("keydown", (e) => { if (e.key === "Enter") resetWithCode(); });
+  $("#gRecDone").addEventListener("click", () => { $("#gateRecovery").hidden = true; closeGate(); });
   $("#btnUser").addEventListener("click", (e) => {
     e.stopPropagation();
     const m = $("#userMenu");
@@ -483,6 +490,67 @@ async function createFirstAdmin() {
   Auth.signIn(admin);
   Auth.logAction(state, "act_login");
   save();
+  await issueRecovery();
+}
+
+// Makes a code, keeps its hash in the data file and its clear text next to it,
+// and puts it on screen once. The panel is the last thing between setting the
+// lab up and using it, so it is read rather than clicked past.
+async function issueRecovery() {
+  const code = Auth.makeRecoveryCode();
+  state.users.recovery = await Auth.makeRecovery(code);
+  save();
+  if (window.api.saveRecovery) {
+    await window.api.saveRecovery({ code, business: state.users.business.name || "" });
+  }
+  $("#gRecCode").textContent = code;
+  $("#gateSetup").hidden = true;
+  $("#gateLogin").hidden = true;
+  $("#gateReset").hidden = true;
+  $("#gateRecovery").hidden = false;
+  $(".gate-card").classList.remove("setup");
+  $("#gate").hidden = false;
+}
+
+// The administrator can read the code back without hunting for a file - to
+// print it again, or to read it out to whoever is on the phone.
+async function showRecoveryInSettings(user) {
+  const row = $("#kvRecovery");
+  if (!row) return;
+  const admin = user && user.role === "admin";
+  row.hidden = !admin;
+  if (!admin || !window.api.readRecovery) return;
+  const r = await window.api.readRecovery();
+  $("#setRecovery").textContent = (r && r.ok && r.code) ? r.code : "-";
+}
+
+function showResetPanel(show) {
+  $("#gResetError").hidden = true;
+  $("#rCode").value = ""; $("#rPass").value = ""; $("#rPass2").value = "";
+  $("#gateLogin").hidden = show;
+  $("#gateReset").hidden = !show;
+  if (show) setTimeout(() => $("#rCode").focus(), 50);
+}
+
+// The code replaces the administrator password, and nothing else: an operator
+// who forgets theirs still goes to the administrator, which is the point of
+// having one.
+async function resetWithCode() {
+  $("#gResetError").hidden = true;
+  const pw = $("#rPass").value, pw2 = $("#rPass2").value;
+  if (!$("#rCode").value.trim() || !pw) return gateError("#gResetError", "auth_required");
+  if (pw.length < 6) return gateError("#gResetError", "auth_pwshort");
+  if (pw !== pw2) return gateError("#gResetError", "auth_pwmismatch");
+  if (!(await Auth.checkRecovery(state.users.recovery, $("#rCode").value))) {
+    return gateError("#gResetError", "rec_bad");
+  }
+  const admin = state.users.list.find((u) => u.role === "admin");
+  if (!admin) return gateError("#gResetError", "rec_bad");
+  await Auth.setPassword(admin, pw);
+  Auth.signIn(admin);
+  Auth.logAction(state, "act_recovery");
+  save();
+  showResetPanel(false);
   closeGate();
 }
 
@@ -496,6 +564,10 @@ async function doLogin() {
   Auth.signIn(user);
   Auth.logAction(state, "act_login");
   save();
+  // A lab that was set up before recovery codes existed gets one the first
+  // time its administrator signs in, rather than finding out it has none on
+  // the day it needs one.
+  if (user.role === "admin" && !state.users.recovery) return issueRecovery();
   closeGate();
 }
 
@@ -504,6 +576,7 @@ async function doLogin() {
 function applyPermissions() {
   const u = Auth.currentUser();
   const b = document.body;
+  showRecoveryInSettings(u);
   b.classList.toggle("no-money", !Auth.can("viewMoney"));
   b.classList.toggle("no-editworks", !Auth.can("editWorks"));
   b.classList.toggle("no-delworks", !Auth.can("delWorks"));

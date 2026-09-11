@@ -87,6 +87,45 @@ async function checkPassword(user, password) {
   return (await hashPassword(password, user.salt)) === user.hash;
 }
 
+async function setPassword(user, password) {
+  user.salt = randomSalt();
+  user.hash = await hashPassword(password, user.salt);
+}
+
+// --- recovery code ---------------------------------------------------------
+// Six groups of four. The alphabet has no I, O, 0 or 1 in it, because this
+// code is read back over the phone more often than it is typed off a screen.
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+function makeRecoveryCode() {
+  const b = new Uint8Array(24);
+  (window.crypto || {}).getRandomValues
+    ? window.crypto.getRandomValues(b)
+    : b.forEach((_, i) => { b[i] = Math.floor(Math.random() * 256); });
+  // 256 divides by 32, so the modulo does not favour the start of the alphabet.
+  const chars = Array.from(b, (x) => CODE_ALPHABET[x % CODE_ALPHABET.length]);
+  return [0, 4, 8, 12, 16, 20].map((i) => chars.slice(i, i + 4).join("")).join("-");
+}
+
+// Typed with spaces, lower case or the dashes left out: all the same code.
+function normalizeCode(code) {
+  return String(code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+async function makeRecovery(code) {
+  const salt = randomSalt();
+  return {
+    salt,
+    hash: await hashPassword(normalizeCode(code), salt),
+    createdAt: new Date().toISOString()
+  };
+}
+
+async function checkRecovery(rec, code) {
+  if (!rec || !rec.salt || !normalizeCode(code)) return false;
+  return (await hashPassword(normalizeCode(code), rec.salt)) === rec.hash;
+}
+
 // --- session ---------------------------------------------------------------
 function currentUser() { return session; }
 function signIn(user) { session = user; }
@@ -122,6 +161,7 @@ function logAction(state, actionKey, detail) {
 }
 
 window.LLAuth = {
-  PERMISSIONS, ensureUsersShape, hasAdmin, makeUser, checkPassword, allPermissions,
-  currentUser, signIn, signOut, displayName, can, isAdmin, logAction, hashPassword, randomSalt
+  PERMISSIONS, ensureUsersShape, hasAdmin, makeUser, checkPassword, setPassword, allPermissions,
+  currentUser, signIn, signOut, displayName, can, isAdmin, logAction, hashPassword, randomSalt,
+  makeRecoveryCode, makeRecovery, checkRecovery
 };

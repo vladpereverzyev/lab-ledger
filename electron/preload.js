@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld("api", {
   loadData: () => ipcRenderer.invoke("data:load"),
   saveData: (data) => ipcRenderer.invoke("data:save", data),
   dataPath: () => ipcRenderer.invoke("data:path"),
+  saveRecovery: (payload) => ipcRenderer.invoke("recovery:save", payload),
+  readRecovery: () => ipcRenderer.invoke("recovery:read"),
   exportJson: (data) => ipcRenderer.invoke("json:export", data),
   importJson: () => ipcRenderer.invoke("json:import"),
   exportXlsx: (payload) => ipcRenderer.invoke("xlsx:export", payload),

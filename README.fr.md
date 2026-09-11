@@ -90,6 +90,15 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
 - **Les mots de passe ne sont jamais enregistrés** : seulement PBKDF2-SHA256 sur
   un sel aléatoire par utilisateur, 150000 tours. Un mot de passe oublié se
   réinitialise, il ne se récupère pas.
+- **Un mot de passe d'administrateur oublié ne ferme pas l'archive.** La
+  configuration produit un **code de récupération**, affiché une fois pour être
+  noté, qui réinitialise le mot de passe de l'administrateur depuis l'écran de
+  connexion. Une copie reste dans le dossier de données de l'application sur cet
+  ordinateur, pour pouvoir être lue au téléphone, et l'administrateur la
+  retrouve dans **Catalogue > Réglages** quand il veut. Le fichier de données à
+  côté est du JSON en clair : le code n'est pas plus exposé que l'archive où il
+  vous ramène, et tous deux sont protégés par qui a le droit d'utiliser cet
+  ordinateur.
 - **L'historique** enregistre chaque modification avec qui et quand.
   L'administrateur le lit dans Catalogue > Historique.
 

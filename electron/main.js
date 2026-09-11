@@ -134,6 +134,70 @@ ipcMain.handle("data:save", async (_event, data) => {
 ipcMain.handle("data:path", async () => DATA_FILE);
 
 // ---------------------------------------------------------------------------
+// The recovery code, kept in clear next to the data file.
+//
+// It is deliberately a readable file and not a secret. The data file beside it
+// is plain JSON, so anyone who can open one can already open the other: hiding
+// this one would protect nothing that is not already open. What it buys is the
+// lab that phones up locked out on a Monday morning, and someone who can
+// connect to that computer, read the code back to them, and have them working
+// again in a minute.
+//
+// It carries the hidden attribute on Windows so it does not sit in plain view
+// of whoever goes browsing, and so nobody deletes it while tidying up.
+// ---------------------------------------------------------------------------
+const RECOVERY_FILE = path.join(app.getPath("userData"), "recovery.txt");
+
+function unhide(file) {
+  if (process.platform !== "win32" || !fs.existsSync(file)) return;
+  // Windows refuses to open a hidden file for writing, so the attribute comes
+  // off before a rewrite and goes back on after it.
+  try { require("child_process").execFileSync("attrib", ["-h", file], { windowsHide: true }); }
+  catch (_) {}
+}
+
+function hide(file) {
+  if (process.platform !== "win32") return;
+  try { require("child_process").execFileSync("attrib", ["+h", file], { windowsHide: true }); }
+  catch (_) {}
+}
+
+ipcMain.handle("recovery:save", async (_event, payload) => {
+  try {
+    const p = payload || {};
+    const body = [
+      "Lab Ledger - recovery code",
+      "",
+      "This code resets the administrator password on this computer, from the",
+      "sign-in screen: Forgotten password.",
+      "",
+      "  " + (p.code || ""),
+      "",
+      "Lab:     " + (p.business || "-"),
+      "Written: " + new Date().toISOString().slice(0, 10),
+      ""
+    ].join("\r\n");
+    unhide(RECOVERY_FILE);
+    fs.writeFileSync(RECOVERY_FILE, body, "utf8");
+    hide(RECOVERY_FILE);
+    return { ok: true, path: RECOVERY_FILE };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+});
+
+ipcMain.handle("recovery:read", async () => {
+  try {
+    if (!fs.existsSync(RECOVERY_FILE)) return { ok: false };
+    const text = fs.readFileSync(RECOVERY_FILE, "utf8");
+    const m = text.match(/\b[A-Z0-9]{4}(?:-[A-Z0-9]{4}){5}\b/);
+    return { ok: !!m, code: m ? m[0] : "", path: RECOVERY_FILE };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+});
+
+// ---------------------------------------------------------------------------
 // Companion workbook: pick where it lives, or write it now.
 // ---------------------------------------------------------------------------
 

@@ -418,6 +418,22 @@ table.bom { margin-bottom: 8px; }
   color: var(--ink-soft); font-size: 12.5px; text-align: center;
 }
 .btn.wide { width: 100% !important; margin-top: 18px; padding: 11px; font-size: 14px; }
+/* The code is meant to be copied onto paper, so it is set big, spaced and in
+   the one typeface where a five and an S cannot be mistaken for each other. */
+.reccode {
+  margin: 14px 0; padding: 14px 10px; border-radius: 10px;
+  background: var(--chip); border: 1px solid var(--line);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 18px; letter-spacing: 1.5px; text-align: center; color: var(--ink);
+  user-select: all; word-break: break-all;
+}
+.gate-forgot { text-align: center; margin-top: 14px; }
+.gate-forgot a { color: var(--ink-soft); text-decoration: none; cursor: pointer; }
+.gate-forgot a:hover { color: var(--ink); }
+#setRecovery {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 12px; user-select: all;
+}
 /* Who is at the bench, always in the same corner. */
 /* Initials, nothing else. Who it is and what they may do belongs in the menu,
    not in the corner of every screen. */

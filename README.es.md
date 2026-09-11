@@ -87,6 +87,15 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 - **Las contraseñas nunca se guardan**: solo PBKDF2-SHA256 sobre una sal
   aleatoria por usuario, 150000 vueltas. Una contraseña olvidada se reinicia, no
   se recupera.
+- **Una contraseña de administrador olvidada no te deja fuera del archivo.** Al
+  configurar el laboratorio se genera un **código de recuperación**, mostrado
+  una vez para apuntarlo, que restablece la contraseña del administrador desde
+  la pantalla de acceso. Queda una copia en la carpeta de datos de la
+  aplicación en ese ordenador, para poder leerla por teléfono, y el
+  administrador la encuentra en **Catálogo > Ajustes** cuando quiera. El
+  archivo de datos que está al lado es JSON en claro: el código no está más
+  expuesto que el archivo al que te devuelve, y a los dos los protege quién
+  puede usar ese ordenador.
 - **El historial** registra cada cambio con quién y cuándo. El administrador lo
   lee en Catálogo > Historial.
 

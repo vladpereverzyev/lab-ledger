@@ -84,6 +84,14 @@ Catalog - each work type wired to the materials it consumes:
   no price and margin columns, no prices in the catalog.
 - **Passwords are never stored** - only PBKDF2-SHA256 over a random per-user
   salt, 150000 rounds. A forgotten password can be reset, never recovered.
+- **A forgotten administrator password is not the end of the archive.** Setting
+  the lab up produces a **recovery code**, shown once to be written down and
+  kept, which resets the administrator password from the sign-in screen. A copy
+  stays in the app's data folder on that computer, so it can be read back over
+  the phone by whoever supports the lab - and an administrator can read it in
+  **Catalog > Settings** at any time. The data file sitting next to it is plain
+  JSON: the code is no more exposed than the archive it gets you back into, and
+  both are protected by who is allowed to use that computer.
 - **History** records every change with who made it and when: sign in and out,
   works added, edited, deleted, shipped or moved to outgoing, catalog and user
   changes. The administrator reads it in Catalog > History.

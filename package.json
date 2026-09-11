@@ -9,6 +9,7 @@
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
+    "test": "node --test test/*.test.js",
     "dist": "electron-builder --publish never",
     "dist:portable": "electron-builder --win portable --publish never"
   },

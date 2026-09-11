@@ -90,6 +90,15 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 - **Le password non vengono mai salvate**: si salva solo PBKDF2-SHA256 su un
   sale casuale per utente, 150000 giri. Una password dimenticata si azzera, non
   si recupera.
+- **Una password dell'amministratore dimenticata non ti chiude fuori
+  dall'archivio.** Alla configurazione il programma genera un **codice di
+  recupero**, mostrato una volta perché lo scrivi e lo tenga, che reimposta la
+  password dell'amministratore dalla schermata di accesso. Una copia resta
+  nella cartella dati del programma su quel computer, così chi assiste il
+  laboratorio può leggerla al telefono, e l'amministratore la ritrova in
+  **Catalogo > Impostazioni** quando vuole. Il file dei dati lì accanto è JSON
+  in chiaro: il codice non è più esposto dell'archivio in cui ti fa rientrare,
+  e tutti e due sono protetti da chi può usare quel computer.
 - **La cronologia** registra ogni modifica con chi l'ha fatta e quando: accessi
   e uscite, lavori aggiunti, modificati, eliminati, spediti o passati in uscita,
   modifiche al catalogo e agli utenti. L'amministratore la legge in

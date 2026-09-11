@@ -87,6 +87,15 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 - **Passwörter werden nie gespeichert**: nur PBKDF2-SHA256 über ein zufälliges
   Salt je Benutzer, 150000 Runden. Ein vergessenes Passwort wird zurückgesetzt,
   nicht wiederhergestellt.
+- **Ein vergessenes Administrator-Passwort sperrt niemanden aus dem Archiv
+  aus.** Bei der Einrichtung entsteht ein **Wiederherstellungscode**, einmal
+  angezeigt zum Aufschreiben, der das Administrator-Passwort vom
+  Anmeldebildschirm aus zurücksetzt. Eine Kopie bleibt im Datenordner der App
+  auf diesem Rechner, damit sie am Telefon vorgelesen werden kann, und der
+  Administrator findet sie jederzeit unter **Katalog > Einstellungen**. Die
+  Datendatei daneben ist reines JSON: der Code liegt nicht offener als das
+  Archiv, in das er zurückführt, und beide schützt, wer diesen Rechner benutzen
+  darf.
 - **Der Verlauf** hält jede Änderung fest, mit wem und wann. Der Administrator
   liest ihn unter Katalog > Verlauf.
 

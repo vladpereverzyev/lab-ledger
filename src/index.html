@@ -48,6 +48,31 @@
           <p class="gate-error" id="gLoginError" hidden></p>
           <p class="gate-hint" id="gateHint" hidden></p>
           <button class="btn primary wide" id="gLogin" data-i18n="auth_login">Sign in</button>
+          <p class="hint gate-forgot"><a href="#" id="gForgot" data-i18n="rec_forgot">Forgotten password?</a></p>
+        </div>
+
+        <!-- Shown once, right after the administrator is created: the code
+             that gets back in when the password is gone. -->
+        <div id="gateRecovery" hidden>
+          <h2 data-i18n="rec_title">Recovery code</h2>
+          <p class="hint top" data-i18n="rec_intro"></p>
+          <p class="reccode" id="gRecCode">-</p>
+          <p class="hint" data-i18n="rec_where"></p>
+          <button class="btn primary wide" id="gRecDone" data-i18n="rec_done">I have written it down</button>
+        </div>
+
+        <!-- Back in with the code instead of the password. -->
+        <div id="gateReset" hidden>
+          <h2 data-i18n="rec_resettitle">Reset the administrator password</h2>
+          <p class="hint top" data-i18n="rec_resethint"></p>
+          <div class="form stack">
+            <label><span data-i18n="rec_code">Recovery code</span><input type="text" id="rCode" autocomplete="off" spellcheck="false" /></label>
+            <label><span data-i18n="rec_newpass">New password</span><input type="password" id="rPass" autocomplete="new-password" /></label>
+            <label><span data-i18n="auth_password2">Repeat password</span><input type="password" id="rPass2" autocomplete="new-password" /></label>
+          </div>
+          <p class="gate-error" id="gResetError" hidden></p>
+          <button class="btn primary wide" id="gReset" data-i18n="rec_reset">Reset password</button>
+          <p class="hint gate-forgot"><a href="#" id="rBack" data-i18n="rec_back">Back to sign in</a></p>
         </div>
 
         <p class="gate-foot" id="gateFoot"></p>
@@ -479,6 +504,7 @@
             <p class="hint" data-i18n="set_autoupdate_hint"></p>
             <div class="kv"><span data-i18n="set_version">Version</span><b id="setVersion">-</b></div>
             <div class="kv"><span data-i18n="set_license">License</span><b id="setLicense">-</b></div>
+            <div class="kv" id="kvRecovery" hidden><span data-i18n="set_recovery">Recovery code</span><b id="setRecovery">-</b></div>
             <div class="kv"><span data-i18n="set_apiversion">GitHub API version</span><b id="setApiVersion">-</b></div>
             <div class="kv"><span data-i18n="set_datafile">Data file</span><b id="setDataPath" class="path">-</b></div>
           </div>
