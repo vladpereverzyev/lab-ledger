@@ -442,6 +442,36 @@ ipcMain.handle("json:import", async () => {
   }
 });
 
+// An encrypted backup: the renderer does the crypto and hands down the finished
+// text; the main process only writes it to the file the user picks. The live
+// data file is never touched by any of this.
+ipcMain.handle("json:exportEncrypted", async (_event, text) => {
+  const res = await dialog.showSaveDialog(mainWindow, {
+    title: "Export encrypted backup",
+    defaultPath: `lab-ledger-backup-${today()}.llb`,
+    filters: [{ name: "Lab Ledger backup", extensions: ["llb"] }]
+  });
+  if (res.canceled || !res.filePath) return { canceled: true };
+  fs.writeFileSync(res.filePath, text, "utf8");
+  return { ok: true, path: res.filePath };
+});
+
+// Import reads the file as plain text and lets the renderer decide whether it
+// is an encrypted backup (asking for the password) or plain JSON.
+ipcMain.handle("json:importText", async () => {
+  const res = await dialog.showOpenDialog(mainWindow, {
+    title: "Import backup",
+    properties: ["openFile"],
+    filters: [{ name: "Lab Ledger backup", extensions: ["llb", "json"] }]
+  });
+  if (res.canceled || res.filePaths.length === 0) return { canceled: true };
+  try {
+    return { ok: true, text: fs.readFileSync(res.filePaths[0], "utf8") };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+});
+
 // ---------------------------------------------------------------------------
 // Export Excel (.xlsx)
 // ---------------------------------------------------------------------------

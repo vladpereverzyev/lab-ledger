@@ -160,8 +160,60 @@ function logAction(state, actionKey, detail) {
   if (state.history.length > 2000) state.history.length = 2000;
 }
 
+// --- encrypted backup ------------------------------------------------------
+// AES-256-GCM over the whole archive, with a key stretched from a password the
+// user chooses (PBKDF2-SHA256). The salt and IV travel with the ciphertext; the
+// password never does, and a wrong one cannot decrypt. Used only for the
+// optional encrypted backup file - the live data file is never touched.
+const BACKUP_FORMAT = "lab-ledger-encrypted-backup";
+const BACKUP_ROUNDS = 210000;
+
+function b64encode(buf) {
+  const u8 = new Uint8Array(buf);
+  let s = "";
+  for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+function b64decode(str) {
+  return Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+}
+
+async function encryptBackup(obj, password) {
+  const subtle = window.crypto.subtle;
+  const enc = new TextEncoder();
+  const salt = window.crypto.getRandomValues(new Uint8Array(16));
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const baseKey = await subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
+  const key = await subtle.deriveKey(
+    { name: "PBKDF2", salt, iterations: BACKUP_ROUNDS, hash: "SHA-256" },
+    baseKey, { name: "AES-GCM", length: 256 }, false, ["encrypt"]);
+  const ct = await subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(obj)));
+  return JSON.stringify({
+    format: BACKUP_FORMAT, v: 1, kdf: "PBKDF2-SHA256", rounds: BACKUP_ROUNDS,
+    cipher: "AES-256-GCM", salt: b64encode(salt), iv: b64encode(iv), data: b64encode(ct)
+  }, null, 2);
+}
+
+function isEncryptedBackup(text) {
+  try { return JSON.parse(text).format === BACKUP_FORMAT; } catch (_) { return false; }
+}
+
+async function decryptBackup(text, password) {
+  const subtle = window.crypto.subtle;
+  const enc = new TextEncoder();
+  const p = JSON.parse(text);
+  if (!p || p.format !== BACKUP_FORMAT) throw new Error("not an encrypted backup");
+  const baseKey = await subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
+  const key = await subtle.deriveKey(
+    { name: "PBKDF2", salt: b64decode(p.salt), iterations: p.rounds || BACKUP_ROUNDS, hash: "SHA-256" },
+    baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const pt = await subtle.decrypt({ name: "AES-GCM", iv: b64decode(p.iv) }, key, b64decode(p.data));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
 window.LLAuth = {
   PERMISSIONS, ensureUsersShape, hasAdmin, makeUser, checkPassword, setPassword, allPermissions,
   currentUser, signIn, signOut, displayName, can, isAdmin, logAction, hashPassword, randomSalt,
-  makeRecoveryCode, makeRecovery, checkRecovery
+  makeRecoveryCode, makeRecovery, checkRecovery,
+  encryptBackup, decryptBackup, isEncryptedBackup
 };

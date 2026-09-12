@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld("api", {
   readRecovery: () => ipcRenderer.invoke("recovery:read"),
   exportJson: (data) => ipcRenderer.invoke("json:export", data),
   importJson: () => ipcRenderer.invoke("json:import"),
+  exportEncrypted: (text) => ipcRenderer.invoke("json:exportEncrypted", text),
+  importText: () => ipcRenderer.invoke("json:importText"),
   exportXlsx: (payload) => ipcRenderer.invoke("xlsx:export", payload),
   importXlsx: () => ipcRenderer.invoke("xlsx:import"),
   appInfo: () => ipcRenderer.invoke("app:info"),

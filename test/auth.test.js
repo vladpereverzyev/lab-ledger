@@ -64,3 +64,36 @@ test("a reset password replaces the old one and re-salts it", async () => {
   assert.ok(await Auth.checkPassword(user, "second-password"));
   assert.ok(!(await Auth.checkPassword(user, "first-password")));
 });
+
+// --- encrypted backup ------------------------------------------------------
+test("an encrypted backup comes back byte for byte with the right password", async () => {
+  const archive = { works: [{ id: "w1", client: "Röntgen", units: 3 }], schemaVersion: 1, note: "€ 1.234,50" };
+  const blob = await Auth.encryptBackup(archive, "correct horse battery staple");
+  assert.ok(Auth.isEncryptedBackup(blob));
+  const back = await Auth.decryptBackup(blob, "correct horse battery staple");
+  assert.deepStrictEqual(back, archive);
+});
+
+test("the clear archive is not anywhere in the encrypted file", async () => {
+  const archive = { secret: "PATIENT-NAME-12345", amount: 999 };
+  const blob = await Auth.encryptBackup(archive, "pw");
+  assert.ok(!blob.includes("PATIENT-NAME-12345"));
+  assert.ok(!blob.includes("999"));
+});
+
+test("the wrong password cannot open an encrypted backup", async () => {
+  const blob = await Auth.encryptBackup({ a: 1 }, "right-password");
+  await assert.rejects(() => Auth.decryptBackup(blob, "wrong-password"));
+});
+
+test("two backups of the same data differ (fresh salt and iv)", async () => {
+  const a = await Auth.encryptBackup({ a: 1 }, "pw");
+  const b = await Auth.encryptBackup({ a: 1 }, "pw");
+  assert.notStrictEqual(a, b);
+  assert.deepStrictEqual(await Auth.decryptBackup(a, "pw"), await Auth.decryptBackup(b, "pw"));
+});
+
+test("a plain JSON backup is not mistaken for an encrypted one", () => {
+  assert.ok(!Auth.isEncryptedBackup(JSON.stringify({ works: [] })));
+  assert.ok(!Auth.isEncryptedBackup("not even json"));
+});

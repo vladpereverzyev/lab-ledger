@@ -101,6 +101,8 @@
     dataPath: async () => "localStorage (browser demo)",
     exportJson: async () => unavailable(),
     importJson: async () => unavailable(),
+    exportEncrypted: async () => unavailable(),
+    importText: async () => unavailable(),
     exportXlsx: async () => unavailable(),
     importXlsx: async () => unavailable(),
     appInfo: async () => ({

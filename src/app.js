@@ -777,6 +777,7 @@ function bindUI() {
     const r = await window.api.exportJson(state);
     if (r && r.ok) toast(t("t_backupsaved"));
   });
+  $("#btnExportEnc").addEventListener("click", exportEncryptedBackup);
   $("#btnImportJson").addEventListener("click", importBackup);
 
   $("#btnTheme").addEventListener("click", cycleTheme);
@@ -2169,17 +2170,95 @@ async function downloadUpdate(asset) {
 // ===========================================================================
 // Export / import
 // ===========================================================================
-async function importBackup() {
-  const r = await window.api.importJson();
-  if (!r || r.canceled) return;
-  if (!r.ok) return toast(t("t_error") + r.error);
-  if (!r.data || !r.data.config) return toast(t("t_invalidbackup"));
-  state = r.data;
+// A little password modal that resolves to the typed password, or null if the
+// user backs out. With `confirm`, it asks twice and will not resolve until the
+// two match - used when a new encrypted backup is being written.
+function askPassword(opts) {
+  opts = opts || {};
+  return new Promise((resolve) => {
+    const modal = $("#pwModal"), i1 = $("#pwInput"), i2 = $("#pwInput2"),
+      err = $("#pwError"), ok = $("#pwOk"), cancel = $("#pwCancel");
+    $("#pwTitle").textContent = t(opts.title || "backup_encrypted");
+    $("#pwHint").textContent = opts.hint ? t(opts.hint) : "";
+    $("#pwConfirmRow").hidden = !opts.confirm;
+    i1.value = ""; i2.value = ""; err.hidden = true;
+    modal.hidden = false;
+    i1.focus();
+
+    function cleanup() {
+      modal.hidden = true;
+      ok.removeEventListener("click", onOk);
+      cancel.removeEventListener("click", onCancel);
+      modal.removeEventListener("click", onBackdrop);
+      i1.removeEventListener("keydown", onKey);
+      i2.removeEventListener("keydown", onKey);
+    }
+    function done(val) { cleanup(); resolve(val); }
+    function onOk() {
+      const pw = i1.value;
+      if (!pw) { err.textContent = t("t_enc_nopw"); err.hidden = false; return; }
+      if (opts.confirm && pw !== i2.value) { err.textContent = t("t_enc_mismatch"); err.hidden = false; return; }
+      done(pw);
+    }
+    function onCancel() { done(null); }
+    function onBackdrop(e) { if (e.target.id === "pwModal") done(null); }
+    function onKey(e) { if (e.key === "Enter") onOk(); else if (e.key === "Escape") done(null); }
+    ok.addEventListener("click", onOk);
+    cancel.addEventListener("click", onCancel);
+    modal.addEventListener("click", onBackdrop);
+    i1.addEventListener("keydown", onKey);
+    i2.addEventListener("keydown", onKey);
+  });
+}
+
+async function exportEncryptedBackup() {
+  const pw = await askPassword({ confirm: true, hint: "enc_export_hint" });
+  if (!pw) return;
+  let blob;
+  try {
+    blob = await window.LLAuth.encryptBackup(state, pw);
+  } catch (err) {
+    return toast(t("t_error") + err.message);
+  }
+  const r = await window.api.exportEncrypted(blob);
+  if (r && r.ok) toast(t("t_backupsaved"));
+}
+
+function applyImported(data) {
+  if (!data || !data.config) return toast(t("t_invalidbackup"));
+  state = data;
   ensureConfigShape();
   save();
   buildFilters();
   renderAll();
   toast(t("t_backupimported"));
+}
+
+async function importBackup() {
+  const r = await window.api.importText();
+  if (!r || r.canceled) return;
+  if (!r.ok) return toast(t("t_error") + r.error);
+
+  if (window.LLAuth.isEncryptedBackup(r.text)) {
+    // Give the password a few tries rather than sending the user back through
+    // the file picker on a typo.
+    for (let tries = 0; tries < 3; tries++) {
+      const pw = await askPassword({ hint: "enc_import_hint" });
+      if (!pw) return;
+      try {
+        return applyImported(await window.LLAuth.decryptBackup(r.text, pw));
+      } catch (_) {
+        toast(t("t_enc_wrongpw"));
+      }
+    }
+    return;
+  }
+
+  try {
+    applyImported(JSON.parse(r.text));
+  } catch (err) {
+    toast(t("t_invalidbackup"));
+  }
 }
 
 async function exportExcel() {

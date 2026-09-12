@@ -93,6 +93,7 @@
         <button class="btn ghost fixed" id="btnExportXlsx" data-i18n="export_excel">Export Excel</button>
         <button class="btn ghost fixed" id="btnImportJson" data-i18n="import_backup">Import backup</button>
         <button class="btn ghost fixed" id="btnExportJson" data-i18n="backup">Backup</button>
+        <button class="btn ghost fixed" id="btnExportEnc" data-i18n="backup_encrypted">Encrypted backup</button>
         <button class="btn ghost square" id="btnTheme" data-i18n-title="tip_theme" title="Light / dark theme" aria-label="Theme"></button>
         <button class="btn ghost square" id="btnLang" data-i18n-title="tip_lang" title="Change language">EN</button>
         <div class="usermenu-wrap">
@@ -691,6 +692,23 @@
         <div class="modal-actions">
           <button class="btn ghost" id="uCancel" data-i18n="cancel">Cancel</button>
           <button class="btn primary" id="uSave" data-i18n="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= Backup password ======================= -->
+    <div class="modal-backdrop" id="pwModal" hidden>
+      <div class="modal">
+        <h3 id="pwTitle" data-i18n="backup_encrypted">Encrypted backup</h3>
+        <p class="hint top" id="pwHint"></p>
+        <div class="form">
+          <label class="full"><span data-i18n="auth_password">Password</span><input type="password" id="pwInput" autocomplete="off" /></label>
+          <label class="full" id="pwConfirmRow"><span data-i18n="auth_password2">Repeat password</span><input type="password" id="pwInput2" autocomplete="off" /></label>
+        </div>
+        <p class="gate-error" id="pwError" hidden></p>
+        <div class="modal-actions">
+          <button class="btn ghost" id="pwCancel" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="pwOk" data-i18n="save">OK</button>
         </div>
       </div>
     </div>
