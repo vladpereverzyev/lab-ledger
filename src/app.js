@@ -138,13 +138,21 @@ function cycleLang() {
 // ===========================================================================
 window.addEventListener("DOMContentLoaded", init);
 
+// Data-file schema version. Bumped only when the on-disk shape changes in a way
+// an older app could not read. If a file says it was written by a newer schema,
+// this app will not save over it: it would drop what it does not understand.
+const SCHEMA_VERSION = 1;
+let schemaAhead = false;
+
 async function init() {
   applyTheme(currentTheme());
 
   const saved = await window.api.loadData();
   state = (saved && !saved.__error && saved.config) ? saved : { works: [], config: clone(window.DEFAULT_CONFIG) };
+  schemaAhead = Number((saved && saved.schemaVersion) || 0) > SCHEMA_VERSION;
   ensureConfigShape();
   Auth.ensureUsersShape(state);
+  if (!schemaAhead) state.schemaVersion = SCHEMA_VERSION;
 
   bindUI();
   bindGate();
@@ -155,6 +163,7 @@ async function init() {
 
   loadAppInfo();
   openGate();
+  if (schemaAhead) setTimeout(() => toast(t("t_schema_ahead")), 400);
 }
 
 // Fills in anything an older data file (or the browser demo) does not carry,
@@ -701,6 +710,9 @@ function cycleTheme() {
 // ===========================================================================
 let saveTimer = null;
 function save() {
+  // Never write over a file a newer version of the app saved: it would drop the
+  // fields this version does not know about.
+  if (schemaAhead) { toast(t("t_schema_ahead")); return; }
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
     const res = await window.api.saveData(state);
