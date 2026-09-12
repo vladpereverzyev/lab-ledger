@@ -1213,6 +1213,17 @@ function deleteWork(id) {
   if (!confirm(t("confirm_delwork"))) return;
   const w = state.works.find((x) => x.id === id);
   Auth.logAction(state, "act_work_del", w ? `${w.client} - ${w.work}` : "");
+  // A work carries money and history, so it is not thrown away: it moves to a
+  // separate archive in the same file, out of every list and total, where it
+  // can be recovered from a backup instead of being gone for good.
+  if (w) {
+    state.deletedWorks = state.deletedWorks || [];
+    state.deletedWorks.unshift(Object.assign({}, w, {
+      deletedAt: new Date().toISOString(),
+      deletedBy: Auth.displayName(Auth.currentUser()) || "-"
+    }));
+    if (state.deletedWorks.length > 5000) state.deletedWorks.length = 5000;
+  }
   state.works = state.works.filter((x) => x.id !== id);
   save();
   renderWorks();
