@@ -849,11 +849,14 @@ function bindUI() {
     save();
   });
   $("#setExcelOn").addEventListener("change", () => {
-    state.config.excel.enabled = $("#setExcelOn").checked;
+    const on = $("#setExcelOn").checked;
+    if (on && !confirm(t("excel_cloud_warn"))) { $("#setExcelOn").checked = false; return; }
+    state.config.excel.enabled = on;
     save();
   });
   $("#btnExcelChoose").addEventListener("click", async () => {
     if (!window.api.chooseExcel) return;
+    if (!confirm(t("excel_cloud_warn"))) return;
     const r = await window.api.chooseExcel();
     if (!r || r.canceled) return;
     state.config.excel.path = r.path;
