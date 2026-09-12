@@ -2245,40 +2245,52 @@ async function importExcel() {
   }
   if (!rows) return toast(t("t_nosheet"));
 
-  let added = 0;
+  // Build and validate every record first, without touching the archive: an
+  // imported file is outside data, so each field is trimmed and bounded, and
+  // nothing is written until the count is confirmed.
+  const cap = (v, n) => String(v == null ? "" : v).trim().slice(0, n);
+  const recs = [];
+  const newWorks = [];
+  const newOps = [];
+  const haveWork = new Set(state.config.works.map((x) => x.name));
+  const haveOp = new Set(operatorNames());
   rows.forEach((row) => {
-    const work = pick(row, ["work"]);
+    const work = cap(pick(row, ["work"]), 200);
     if (!work) return;
     const shipDate = normalizeDate(pick(row, ["ship date", "shipped on"]), "");
     const rec = {
       id: uid(),
       date: normalizeDate(pick(row, ["date"])),
-      client: String(pick(row, ["client"]) || "").trim(),
-      patient: String(pick(row, ["patient", "patient id", "case"]) || "").trim(),
-      work: String(work).trim(),
-      units: Number(pick(row, ["units"])) || 1,
-      doneBy: String(pick(row, ["done by", "operator"]) || "").trim(),
+      client: cap(pick(row, ["client"]), 200),
+      patient: cap(pick(row, ["patient", "patient id", "case"]), 200),
+      work,
+      units: Math.max(0, Math.min(100000, Math.round(Number(pick(row, ["units"])) || 1))),
+      doneBy: cap(pick(row, ["done by", "operator"]), 200),
       redo: !!String(pick(row, ["redo"]) || "").trim(),
-      courier: String(pick(row, ["courier"]) || "").trim(),
-      tracking: String(pick(row, ["tracking", "tracking number"]) || "").trim(),
-      note: String(pick(row, ["note", "notes"]) || "").trim()
+      courier: cap(pick(row, ["courier"]), 120),
+      tracking: cap(pick(row, ["tracking", "tracking number"]), 120),
+      note: cap(pick(row, ["note", "notes"]), 2000)
     };
     rec.shipped = !!(String(pick(row, ["shipped"]) || "").trim() || shipDate);
     rec.shipDate = rec.shipped ? (shipDate || rec.date) : "";
-
-    if (rec.work && !state.config.works.some((x) => x.name === rec.work))
-      state.config.works.push({ id: uid(), name: rec.work, listPrice: 0, bom: [] });
-    if (rec.doneBy && !operatorNames().includes(rec.doneBy))
-      state.config.operators.push({ id: uid(), name: rec.doneBy, works: [] });
-
-    state.works.push(rec);
-    added++;
+    if (rec.work && !haveWork.has(rec.work)) { haveWork.add(rec.work); newWorks.push(rec.work); }
+    if (rec.doneBy && !haveOp.has(rec.doneBy)) { haveOp.add(rec.doneBy); newOps.push(rec.doneBy); }
+    recs.push(rec);
   });
+
+  if (!recs.length) return toast(t("t_nosheet"));
+  const msg = t("import_confirm")
+    .replace("{n}", recs.length).replace("{w}", newWorks.length).replace("{o}", newOps.length);
+  if (!confirm(msg)) return;
+
+  newWorks.forEach((name) => state.config.works.push({ id: uid(), name, listPrice: 0, bom: [] }));
+  newOps.forEach((name) => state.config.operators.push({ id: uid(), name, works: [] }));
+  recs.forEach((rec) => state.works.push(rec));
 
   save();
   buildFilters();
   renderAll();
-  toast(`${t("t_imported")} ${added} ${t("t_imported_works")}`);
+  toast(`${t("t_imported")} ${recs.length} ${t("t_imported_works")}`);
 }
 
 // ===========================================================================
