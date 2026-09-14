@@ -3,6 +3,15 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.6] - 2026-09-14
+
+### Fixed
+- The tooltips on the edit, delete and remove icons were always in English;
+  they now follow the language.
+- The browser demo's banner (Live Demo, Download App, Reset Demo) and its
+  "available in the desktop app" notice were always in English; they are now
+  translated too.
+
 ## [1.4.5] - 2026-09-14
 
 ### Changed
