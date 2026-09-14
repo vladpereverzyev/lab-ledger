@@ -3,6 +3,18 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.7] - 2026-09-14
+
+### Fixed
+- The system dialogs to save and open files (backups, Excel export and import,
+  the automatic Excel copy) had English titles in every language; they now
+  follow the app's language.
+- A new material starts with its unit in the app's language ("pezzo", "Stück"...)
+  instead of "piece".
+- The theme button's accessibility label is translated.
+- The language badges and document links in the README point to their full
+  address, so switching language works wherever the README is opened.
+
 ## [1.4.6] - 2026-09-14
 
 ### Fixed
