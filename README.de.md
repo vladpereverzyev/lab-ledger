@@ -134,7 +134,7 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 - **Steuern und Kalender**: Pauschal- oder Regelbesteuerung mit einfachen
   Prozentsätzen, dazu wie viele Tage pro Woche und Wochen pro Jahr das Labor
   tatsächlich arbeitet - das macht aus einem Jahresgewinn einen Tagesgewinn.
-- **Einstellungen**: Update-Prüfung an oder aus, die begleitende Excel-Datei,
+- **Einstellungen**: Update-Prüfung an oder aus, die automatische Excel-Kopie,
   der Wiederherstellungscode (nur Administrator), Version, Lizenz und Pfad der
   Datendatei.
 - **Benutzer** und **Verlauf**: Konten und Rechte, und jede Änderung mit ihrem
@@ -151,7 +151,7 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
   Bedienelement hat eine feste Breite.
 - **Passt sich dem Bildschirm an**: auf dem Handy wird jede Tabellenzeile zu
   einer Karte, in der jeder Wert den Namen seiner Spalte trägt.
-- **Ein Dropdown fur jede Auswahl**, statt der Liste, die jedes Betriebssystem
+- **Ein Dropdown für jede Auswahl**, statt der Liste, die jedes Betriebssystem
   anders zeichnet.
 - **Das Eurozeichen steht immer hinter der Zahl**, in jeder Sprache.
 - **Hell als Standard**, dunkel auf einen Klick, pro Rechner gemerkt.
@@ -162,7 +162,7 @@ Lab Ledger braucht zum Arbeiten kein Internet. Die Daten liegen in einer
 JSON-Datei auf deinem Rechner: kein Konto, kein Server, keine Telemetrie, und
 nichts von dem, was du eingibst, wird je irgendwohin gesendet. Eine Kopie
 verlässt den Rechner nur, wenn du es selbst so willst - indem du die
-begleitende Excel-Datei in einen Ordner legst, den deine Cloud synchronisiert;
+automatische Excel-Kopie in einen Ordner legst, den deine Cloud synchronisiert;
 darauf weist die App hin, bevor sie sie schreibt.
 
 Die App geht aus genau einem Grund online: **Updates**. Dann spricht sie mit der
@@ -180,26 +180,36 @@ Kunden oder Patienten. Ohne Verbindung sieht die App schlicht keine neuen
 Versionen; alles andere funktioniert gleich. Details unter
 [GitHub API](#github-api).
 
-## Die begleitende Excel-Datei
+## Die automatische Excel-Kopie
 
-Ein Labor hat längst einen Ordner, der synchronisiert, und jeder drumherum kann
-eine Tabelle öffnen, ohne etwas zu installieren. Also schreibt Lab Ledger eine.
+**Was sie ist.** Eine ganz normale Excel-Datei (.xlsx) mit allen Zahlen des
+Labors, die Lab Ledger bei jedem Start und jedem Beenden der App von selbst neu
+schreibt. Sie bleibt aus, bis du sie unter **Katalog > Einstellungen**
+einschaltest und wählst, wo die Datei liegen soll.
 
-Zeig ihr unter **Katalog > Einstellungen** eine Datei, und die App schreibt sie
-bei jedem Start und jedem Beenden neu. Leg sie in den Ordner, den deine Cloud
-ohnehin synchronisiert, und die Zahlen des Labors reisen mit - teilbar von dir,
-mit wem du willst, ohne dass jemand die App installiert. Lab Ledger lädt
-weiterhin nichts hoch: es schreibt nur eine lokale Datei.
+**Wofür sie da ist.** Um die Zahlen ohne die App zu sehen. Jeder kann die Datei
+öffnen - mit Excel, Google Sheets, LibreOffice oder Numbers, am Rechner oder am
+Handy - ohne etwas zu installieren.
 
-Acht Blätter, jedes für sich lesbar: Arbeiten, das Jahr Monat für Monat,
-Materialien mit den Kosten einer Einheit, Arbeitstypen mit ihren Rezepturen und
-Preisen, Fixkosten, Praxen, Bediener und ein Info-Blatt mit Version und
-Copyright.
+**Über die Cloud teilen.** Speichere die Datei in einem Ordner, den OneDrive,
+Google Drive oder Dropbox ohnehin synchronisiert, und dieser Dienst lädt jede
+neue Fassung von selbst hoch: wer Zugriff auf den Ordner hat - dein
+Steuerberater, ein Partner - findet die Zahlen immer aktuell. Lab Ledger selbst
+lädt nichts hoch; es schreibt nur die Datei auf deinem Rechner, das Hochladen
+übernimmt dein Cloud-Dienst. Weil die Datei alle Daten enthält, fragt die App
+nach, bevor sie sie zum ersten Mal schreibt.
 
-Es ist bewusst eine schlichte Datei: nur Werte, keine Makros, keine
-Pivot-Tabellen, keine Formeln, die nur ein Programm versteht, Spaltenbreiten
-gesetzt. Microsoft Excel, Google Sheets, LibreOffice und Numbers öffnen **und
-bearbeiten** sie gleich. Standardmäßig aus.
+**Sie geht nur in eine Richtung.** Die Datei ist eine Kopie zum Lesen.
+Änderungen darin kommen nicht in Lab Ledger zurück und werden beim nächsten
+Schreiben überschrieben. Um Zeilen aus einer Tabelle in die App zu holen, nimm
+**Excel importieren** - sie werden als neue Arbeiten angelegt.
+
+**Was drin ist.** Acht Blätter: Arbeiten, das Jahr Monat für Monat, Materialien
+mit den Kosten einer Einheit, Arbeitstypen mit Materialien und Preisen,
+Fixkosten, Praxen, Bediener und ein Info-Blatt mit der Version. Nur Werte -
+keine Makros, keine Formeln - und Spaltenbreiten schon gesetzt, damit sie in
+jedem Programm gleich aussieht. Die Spaltenköpfe sind auf Italienisch, wenn die
+App auf Italienisch steht, sonst auf Englisch.
 
 ## Sprachen
 

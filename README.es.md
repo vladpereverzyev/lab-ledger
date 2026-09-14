@@ -135,8 +135,8 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 - **Impuestos y calendario**: régimen de tipo fijo o general con porcentajes
   sencillos, más cuántos días por semana y semanas al año trabaja realmente el
   laboratorio: eso es lo que convierte un beneficio anual en uno diario.
-- **Ajustes**: comprobación de actualizaciones sí o no, el archivo Excel
-  asociado, el código de recuperación (solo administrador), versión, licencia y
+- **Ajustes**: comprobación de actualizaciones sí o no, la copia automática
+  en Excel, el código de recuperación (solo administrador), versión, licencia y
   ruta del archivo de datos.
 - **Usuarios** e **Historial**: cuentas y permisos, y cada cambio con quién lo
   hizo; solo para el administrador.
@@ -150,11 +150,11 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
   puede hacerlo el administrador.
 - **Cinco idiomas**, y al cambiar de idioma la barra no se mueve: cada control
   tiene un ancho fijo.
-- **Se adapta a la pantalla**: en el movil cada fila de la tabla se convierte en
+- **Se adapta a la pantalla**: en el móvil cada fila de la tabla se convierte en
   una tarjeta con cada valor etiquetado por su columna.
 - **Un solo desplegable** para todas las opciones, en lugar de la lista que
   dibuja cada sistema operativo.
-- **El simbolo del euro va siempre detras del numero**, en todos los idiomas.
+- **El símbolo del euro va siempre detrás del número**, en todos los idiomas.
 - **Claro por defecto**, oscuro a un clic, recordado en el ordenador.
 
 ## Sin conexión por diseño
@@ -162,8 +162,8 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 Lab Ledger no necesita internet para funcionar. Los datos viven en un archivo
 JSON de tu ordenador: sin cuenta, sin servidor, sin telemetría, y nada de lo que
 escribes se envía nunca a ninguna parte. La única forma de que una copia salga
-del ordenador la eliges tú: poner el archivo Excel asociado en una carpeta que
-tu nube sincroniza, y la aplicación te avisa antes de escribirlo.
+del ordenador la eliges tú: poner la copia automática en Excel en una carpeta que
+tu nube sincroniza, y la aplicación te avisa antes de escribirla.
 
 La aplicación se conecta por un único motivo: **las actualizaciones**. Entonces
 habla con la API REST pública de GitHub, y solo en estos tres casos:
@@ -179,26 +179,36 @@ clientes o pacientes. Sin conexión, la aplicación simplemente no ve las nuevas
 versiones; todo lo demás funciona igual. Los detalles están en
 [GitHub API](#github-api).
 
-## El archivo Excel asociado
+## La copia automática en Excel
 
-Un laboratorio ya tiene una carpeta que se sincroniza, y cualquiera a su
-alrededor sabe abrir una hoja de cálculo sin instalar nada. Así que Lab Ledger
-la escribe.
+**Qué es.** Un archivo de Excel normal (.xlsx) con todos los números del
+laboratorio, que Lab Ledger reescribe solo cada vez que la aplicación se abre y
+cada vez que se cierra. Está apagada hasta que la activas en
+**Catálogo > Ajustes** y eliges dónde guardar el archivo.
 
-Indícale un archivo en **Catálogo > Ajustes** y la aplicación lo reescribe cada
-vez que se abre y cada vez que se cierra. Ponlo en la carpeta que tu nube ya
-sincroniza y los números del laboratorio viajan con él, compartibles por ti, con
-quien tú quieras, sin que nadie instale la aplicación. Lab Ledger sigue sin
-subir nada: solo escribe un archivo local.
+**Para qué sirve.** Para ver los números sin la aplicación. Cualquiera puede
+abrir el archivo - con Excel, Google Sheets, LibreOffice o Numbers, en el
+ordenador o en el móvil - sin instalar nada.
 
-Ocho hojas legibles por sí solas: trabajos, el año mes a mes, materiales con el
-coste de una unidad, tipos de trabajo con sus recetas y precios, costes fijos,
-clínicas, operadores y una hoja Info con la versión y el copyright.
+**Compartirla a través de la nube.** Guarda el archivo en una carpeta que
+OneDrive, Google Drive o Dropbox ya sincronizan, y ese servicio subirá solo cada
+nueva versión: quien tenga acceso a esa carpeta - tu asesor, un socio - encuentra
+siempre los números al día. Lab Ledger no sube nada: solo escribe el archivo en
+tu ordenador, y la subida la hace tu servicio en la nube. Como el archivo
+contiene todos los datos, la aplicación te pide confirmación antes de empezar a
+escribirlo.
 
-Es un archivo deliberadamente simple: solo valores, sin macros, sin tablas
-dinámicas, sin fórmulas que solo entiende un programa, con los anchos de columna
-puestos. Microsoft Excel, Google Sheets, LibreOffice y Numbers lo abren **y lo
-editan** igual. Desactivado por defecto.
+**Va en un solo sentido.** El archivo es una copia para leer. Los cambios hechos
+en él no vuelven a Lab Ledger y se sobrescriben la próxima vez que la aplicación
+escribe el archivo. Para llevar filas de una hoja de cálculo a la aplicación usa
+**Importar Excel**, que las añade como trabajos nuevos.
+
+**Qué contiene.** Ocho hojas: trabajos, el año mes a mes, materiales con el coste
+de una unidad, tipos de trabajo con materiales y precios, costes fijos,
+clínicas, operadores y una hoja Info con la versión. Solo valores - sin macros,
+sin fórmulas - y anchos de columna ya puestos, para que se lea igual en cualquier
+programa. Los encabezados están en italiano si la aplicación está en italiano, y
+en inglés en los demás casos.
 
 ## Idiomas
 

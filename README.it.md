@@ -141,7 +141,7 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 - **Tasse e calendario**: regime forfettario oppure ordinario con percentuali
   semplici, più quanti giorni a settimana e settimane all'anno lavora davvero il
   laboratorio: è quello che trasforma un utile annuo in un utile giornaliero.
-- **Impostazioni**: controllo aggiornamenti sì o no, il file Excel abbinato, il
+- **Impostazioni**: controllo aggiornamenti sì o no, la copia Excel automatica, il
   codice di recupero (solo amministratore), versione, licenza e percorso del
   file dati.
 - **Utenti** e **Cronologia**: account e permessi, e ogni modifica con chi l'ha
@@ -157,7 +157,7 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 - **Cinque lingue**, e cambiando lingua la barra non si muove: ogni comando ha
   una larghezza fissa.
 - **Si adatta allo schermo su cui sta**: sul telefono ogni riga della tabella
-  diventa una scheda con ogni valore etichettato dalla sua colonna, cosi' una
+  diventa una scheda con ogni valore etichettato dalla sua colonna, così una
   lista da dodici colonne resta leggibile senza pizzicare e trascinare.
 - **Una sola tendina** - ogni scelta apre lo stesso pannello arrotondato, invece
   dell'elenco che ciascun sistema operativo disegna a modo suo.
@@ -170,9 +170,9 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 Lab Ledger non ha bisogno di internet per funzionare. I dati stanno in un file
 JSON sul tuo computer: nessun account, nessun server, nessuna telemetria, e
 niente di quello che scrivi viene mai inviato da qualche parte. L'unico modo in
-cui una copia esce dal computer è una scelta tua: mettere il file Excel abbinato
+cui una copia esce dal computer è una scelta tua: mettere la copia Excel automatica
 in una cartella sincronizzata col cloud, e il programma te lo ricorda prima di
-scriverlo.
+scriverla.
 
 Il programma va online per un solo motivo: **gli aggiornamenti**. In quel caso
 parla con la GitHub REST API pubblica, e solo in questi tre casi:
@@ -188,28 +188,36 @@ pazienti. Senza connessione il programma semplicemente non vede le nuove
 versioni; tutto il resto funziona uguale. I dettagli sono in
 [GitHub API](#github-api).
 
-## Il file Excel abbinato
+## La copia Excel automatica
 
-Un laboratorio ha già una cartella che si sincronizza, e chiunque gli sta
-attorno sa aprire un foglio di calcolo senza installare niente. Quindi Lab
-Ledger lo scrive.
+**Cos'è.** Un normale file Excel (.xlsx) con tutti i numeri del laboratorio, che
+Lab Ledger riscrive da solo ogni volta che il programma si apre e ogni volta che
+si chiude. Resta spenta finché non la attivi in **Catalogo > Impostazioni** e
+scegli dove salvare il file.
 
-Indicagli un file in **Catalogo > Impostazioni** e il programma lo riscrive ogni
-volta che si apre e ogni volta che si chiude. Mettilo nella cartella che il tuo
-cloud già sincronizza e i numeri del laboratorio viaggiano con lui:
-condivisibili da te, con chi vuoi tu, senza che nessuno installi l'app. Lab
-Ledger continua a non caricare niente: scrive solo un file locale, e se vuoi è
-il tuo drive a fare il resto.
+**A cosa serve.** A vedere i numeri senza il programma. Chiunque può aprire il
+file - con Excel, Google Fogli, LibreOffice o Numbers, dal computer o dal
+telefono - senza installare niente.
 
-Otto fogli, leggibili anche da soli: lavori, l'anno mese per mese, materiali col
-costo di un'unità, tipi di lavoro con le loro ricette e i prezzi, costi fissi,
-studi, operatori, e un foglio Info con versione e copyright. Le intestazioni
-sono in italiano se il programma è in italiano, altrimenti in inglese.
+**Condividerla col cloud.** Salva il file in una cartella che OneDrive, Google
+Drive o Dropbox sincronizzano già, e sarà quel servizio a caricare da solo ogni
+nuova versione: chi ha accesso a quella cartella - il commercialista, un socio -
+trova sempre i numeri aggiornati. Lab Ledger non carica niente: scrive solo il
+file sul tuo computer, e il caricamento lo fa il tuo servizio cloud. Siccome il
+file contiene tutti i dati, il programma ti chiede conferma prima di iniziare a
+scriverlo.
 
-È un file volutamente semplice: solo valori, niente macro, niente tabelle pivot,
-nessuna formula che capisce un programma solo, larghezze delle colonne già
-impostate perché non compaia ####. Microsoft Excel, Google Fogli, LibreOffice e
-Numbers lo aprono **e lo modificano** allo stesso modo. Spento di default.
+**Va in una sola direzione.** Il file è una copia da leggere. Le modifiche fatte
+lì dentro non tornano in Lab Ledger e vengono sovrascritte la volta successiva
+che il programma scrive il file. Per portare nel programma delle righe da un
+foglio di calcolo usa **Importa Excel**, che le aggiunge come lavori nuovi.
+
+**Cosa c'è dentro.** Otto fogli: lavori, l'anno mese per mese, materiali col
+costo di un'unità, tipi di lavoro con materiali e prezzi, costi fissi, studi,
+operatori, e un foglio Info con la versione. Solo valori - niente macro, niente
+formule - e larghezze delle colonne già impostate, così si legge uguale in ogni
+programma. Le intestazioni sono in italiano se il programma è in italiano,
+altrimenti in inglese.
 
 ## Lingue
 

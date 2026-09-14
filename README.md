@@ -131,7 +131,7 @@ Catalog - each work type wired to the materials it consumes:
 - **Taxes and calendar** - flat-rate or standard regime with plain percentages,
   plus how many days a week and weeks a year the lab actually works - which is
   what turns a yearly profit into a daily one.
-- **Settings** - update check on or off, the companion Excel file, the recovery
+- **Settings** - update check on or off, the automatic Excel copy, the recovery
   code (administrator only), version, licence and data file path.
 - **Users** and **History** - accounts and permissions, and every change with
   who made it; administrator only.
@@ -158,7 +158,7 @@ Catalog - each work type wired to the materials it consumes:
 Lab Ledger needs no internet connection to work. Your data lives in one JSON
 file on your computer: there is no account, no server, no telemetry, and
 nothing you type is ever sent anywhere. The only way a copy of it leaves the
-machine is one you choose yourself - putting the companion Excel file in a
+machine is one you choose yourself - putting the automatic Excel copy in a
 folder your cloud drive syncs - and the app warns you before it writes one.
 
 The app goes online for one reason only: **updates**. It then talks to the
@@ -176,28 +176,36 @@ clients or patients. Without a connection the app simply does not see new
 versions; everything else works the same. The details are in
 [GitHub API](#github-api).
 
-## The companion Excel file
+## The automatic Excel copy
 
-A lab already has a folder that syncs, and everyone around it can open a
-spreadsheet without installing anything. So Lab Ledger writes one.
+**What it is.** An ordinary Excel file (.xlsx) holding all the lab's numbers,
+which Lab Ledger rewrites by itself every time the app opens and every time it
+closes. It stays off until you switch it on in **Catalog > Settings** and choose
+where the file goes.
 
-Point it at a file in **Catalog > Settings** and the app writes that workbook
-every time it opens and every time it closes. Put it in the folder your cloud
-drive already syncs and the lab's numbers travel with it - shareable by you,
-with whoever you choose, without anybody installing the app. Lab Ledger itself
-still uploads nothing: it only writes a local file, and your drive does the rest
-if you want it to.
+**What it is for.** Seeing the numbers without the app. Anyone can open the file
+- in Excel, Google Sheets, LibreOffice or Numbers, on a computer or a phone -
+without installing anything.
 
-Eight sheets, all readable on their own: works, the year month by month,
-materials with the cost of one unit, work types with their recipes and prices,
-running costs, practices, operators, and an Info sheet with the version and the
-copyright. Headers are in Italian when the app is set to Italian, and in English
-otherwise.
+**Sharing it through the cloud.** Save the file in a folder that OneDrive,
+Google Drive or Dropbox already syncs, and that service uploads every new
+version by itself: whoever you share the folder with - your accountant, a
+partner - always finds the numbers up to date. Lab Ledger uploads nothing
+itself; it only writes the file on your computer, and the upload is done by
+your cloud service. Because the file holds all the data, the app asks you to
+confirm before it starts writing it.
 
-It is deliberately a plain file: values only, no macros, no pivot tables, no
-formulas only one program understands, column widths set so nothing shows as
-####. Microsoft Excel, Google Sheets, LibreOffice and Numbers all open **and
-edit** it the same way. Off by default.
+**It only goes one way.** The file is a copy for reading. Changes made in it are
+not read back into Lab Ledger, and they are overwritten the next time the app
+writes the file. To bring rows from a spreadsheet into the app, use
+**Import Excel**, which adds them as new works.
+
+**What is inside.** Eight sheets: works, the year month by month, materials with
+the cost of one unit, work types with their materials and prices, running costs,
+practices, operators, and an Info sheet with the version. Values only - no
+macros, no formulas - and column widths already set, so it reads the same in
+every program. Headers are in Italian when the app is set to Italian, and in
+English otherwise.
 
 ## Languages
 

@@ -45,7 +45,7 @@ Travaux : chaque travail avec patient, expedition, cout materiau, prix et marge.
 
 ![Vue Travaux](docs/screenshot-works.png)
 
-Le meme ecran en clair, qui est le mode par defaut :
+Le même écran en clair, qui est le mode par défaut :
 
 ![Vue Travaux, clair](docs/screenshot-works-light.png)
 
@@ -138,8 +138,8 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
   simples, plus combien de jours par semaine et de semaines par an le
   laboratoire travaille vraiment : c'est ce qui transforme un bénéfice annuel en
   bénéfice journalier.
-- **Réglages** : recherche de mises à jour activée ou non, le fichier Excel
-  associé, le code de récupération (administrateur seulement), version, licence
+- **Réglages** : recherche de mises à jour activée ou non, la copie Excel
+  automatique, le code de récupération (administrateur seulement), version, licence
   et chemin du fichier de données.
 - **Utilisateurs** et **Historique** : comptes et permissions, et chaque
   modification avec son auteur ; réservés à l'administrateur.
@@ -155,10 +155,10 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
   chaque commande a une largeur fixe.
 - **S'adapte à l'écran** : sur téléphone, chaque ligne du tableau devient une
   carte dont chaque valeur porte le nom de sa colonne.
-- **Une seule liste deroulante** pour tous les choix, au lieu de celle que
-  chaque systeme dessine a sa facon.
+- **Une seule liste déroulante** pour tous les choix, au lieu de celle que
+  chaque système dessine à sa façon.
 - **Le symbole euro suit toujours le nombre**, dans toutes les langues.
-- **Clair par defaut**, sombre en un clic, memorise par ordinateur.
+- **Clair par défaut**, sombre en un clic, mémorisé par ordinateur.
 
 ## Hors ligne par conception
 
@@ -166,7 +166,7 @@ Lab Ledger n'a pas besoin d'internet pour fonctionner. Les données vivent dans 
 fichier JSON sur votre ordinateur : pas de compte, pas de serveur, pas de
 télémétrie, et rien de ce que vous saisissez n'est jamais envoyé nulle part. La
 seule façon dont une copie quitte l'ordinateur, c'est vous qui la choisissez :
-placer le fichier Excel associé dans un dossier synchronisé par votre cloud, et
+placer la copie Excel automatique dans un dossier synchronisé par votre cloud, et
 l'application vous prévient avant de l'écrire.
 
 L'application se connecte pour une seule raison : **les mises à jour**. Elle
@@ -185,27 +185,37 @@ ou patients. Sans connexion, l'application ne voit simplement pas les nouvelles
 versions ; tout le reste fonctionne pareil. Les détails sont dans
 [GitHub API](#github-api).
 
-## Le fichier Excel associé
+## La copie Excel automatique
 
-Un laboratoire a déjà un dossier qui se synchronise, et tout le monde autour
-sait ouvrir un tableur sans rien installer. Alors Lab Ledger l'écrit.
+**Ce que c'est.** Un fichier Excel ordinaire (.xlsx) avec tous les chiffres du
+laboratoire, que Lab Ledger réécrit tout seul à chaque ouverture et à chaque
+fermeture de l'application. Elle reste désactivée tant que vous ne l'activez pas
+dans **Catalogue > Réglages** en choisissant où enregistrer le fichier.
 
-Indiquez-lui un fichier dans **Catalogue > Réglages** et l'application le
-réécrit à chaque ouverture et à chaque fermeture. Placez-le dans le dossier que
-votre cloud synchronise déjà et les chiffres du laboratoire voyagent avec lui,
-partageables par vous, avec qui vous voulez, sans que personne n'installe
-l'application. Lab Ledger ne téléverse toujours rien : il écrit seulement un
-fichier local.
+**À quoi ça sert.** À voir les chiffres sans l'application. N'importe qui peut
+ouvrir le fichier - avec Excel, Google Sheets, LibreOffice ou Numbers, sur un
+ordinateur ou un téléphone - sans rien installer.
 
-Huit feuilles lisibles telles quelles : travaux, l'année mois par mois,
-matériaux avec le coût d'une unité, types de travaux avec leurs recettes et
-leurs prix, charges fixes, cabinets, opérateurs, et une feuille Info avec la
-version et le copyright.
+**La partager par le cloud.** Enregistrez le fichier dans un dossier que
+OneDrive, Google Drive ou Dropbox synchronise déjà, et ce service envoie tout
+seul chaque nouvelle version : ceux qui ont accès au dossier - votre comptable,
+un associé - trouvent toujours les chiffres à jour. Lab Ledger n'envoie rien
+lui-même : il écrit seulement le fichier sur votre ordinateur, et l'envoi est
+fait par votre service cloud. Comme le fichier contient toutes les données,
+l'application vous demande de confirmer avant de commencer à l'écrire.
 
-C'est un fichier volontairement simple : des valeurs, pas de macros, pas de
-tableaux croisés, aucune formule qu'un seul programme comprend, largeurs de
-colonnes réglées. Microsoft Excel, Google Sheets, LibreOffice et Numbers
-l'ouvrent **et le modifient** de la même façon. Désactivé par défaut.
+**Elle ne va que dans un sens.** Le fichier est une copie à lire. Les
+modifications qu'on y fait ne reviennent pas dans Lab Ledger et sont écrasées la
+prochaine fois que l'application écrit le fichier. Pour faire entrer dans
+l'application des lignes d'un tableur, utilisez **Importer Excel**, qui les
+ajoute comme nouveaux travaux.
+
+**Ce qu'il contient.** Huit feuilles : travaux, l'année mois par mois, matériaux
+avec le coût d'une unité, types de travaux avec leurs matériaux et leurs prix,
+charges fixes, cabinets, opérateurs, et une feuille Info avec la version. Des
+valeurs seulement - ni macros, ni formules - et des largeurs de colonnes déjà
+réglées, pour qu'il se lise pareil dans tous les programmes. Les en-têtes sont
+en italien quand l'application est en italien, en anglais sinon.
 
 ## Langues
 

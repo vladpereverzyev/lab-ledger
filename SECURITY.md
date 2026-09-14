@@ -34,8 +34,8 @@ What protects the data itself is who is allowed to use the computer: a separate
 operating-system account per person, full-disk encryption (BitLocker on Windows,
 FileVault on macOS, LUKS on Linux), and the usual physical security. If the
 machine is shared with people who should not see the numbers, or is a laptop that
-can be lost or stolen, turn on disk encryption. A plain backup or the companion
-Excel file is a full copy of the same data, so keep it somewhere with the same
+can be lost or stolen, turn on disk encryption. A plain backup or the automatic Excel
+copy is a full copy of the same data, so keep it somewhere with the same
 care. An **encrypted backup** (AES-256-GCM, with a key derived from a password
 you choose) is the exception: without that password it cannot be opened, and
 without it neither can you.

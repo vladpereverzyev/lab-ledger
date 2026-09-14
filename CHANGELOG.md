@@ -5,7 +5,18 @@ All notable changes to Lab Ledger are documented here. The format is based on
 
 ## [Unreleased]
 
+### Changed
+- The "companion Excel file" is now called the **automatic Excel copy**, and its
+  explanation says plainly what it does: a copy of all the data, rewritten when
+  the app opens and closes, for reading - changes made in the file are not read
+  back and are overwritten. Before, it said Excel could "open and edit" it.
+- Accents and wording fixed across the Italian, Spanish, French and German
+  texts (the German ones also no longer switch between "Sie" and "du").
+- The Excel import error names the Italian "Lavoro" column as well as "Work".
+
 ### Fixed
+- Catalog changes and imports (Excel and backup) are now recorded in History,
+  as the documentation already said they were.
 - A backup that cannot be written - a full disk, a read-only folder - now says
   so, instead of failing without a word.
 - Long messages, such as where an unreadable data file was moved, stay on

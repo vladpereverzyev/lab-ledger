@@ -771,6 +771,13 @@ function save() {
   }, 250);
 }
 
+// Every catalog change goes into the History, as the README promises: who
+// touched prices, materials or operators is exactly what a lab asks later.
+function saveCatalog() {
+  Auth.logAction(state, "act_catalog");
+  save();
+}
+
 function flushSave() {
   if (!saveTimer) return;
   clearTimeout(saveTimer);
@@ -863,23 +870,23 @@ function bindUI() {
   $("#btnNewType").addEventListener("click", () => {
     const name = uniqueName(t("def_newwork"), state.config.works.map((w) => w.name));
     state.config.works.push({ id: uid(), name, listPrice: 0, bom: [] });
-    save(); renderTypes();
+    saveCatalog(); renderTypes();
   });
   $("#btnNewMaterial").addEventListener("click", () => {
     state.config.materials.push({ id: uid(), name: t("def_newmaterial"), packCost: 0, pieces: 1, unit: "piece", note: "" });
-    save(); renderMaterials();
+    saveCatalog(); renderMaterials();
   });
   $("#btnNewOperator").addEventListener("click", () => {
     const v = prompt(t("prompt_newvalue"), uniqueName(t("def_newoperator"), operatorNames()));
     if (v == null || !v.trim()) return;
     if (operatorNames().includes(v.trim())) return toast(t("t_name_taken"));
     state.config.operators.push({ id: uid(), name: v.trim(), works: [] });
-    save(); buildFilters(); renderOperators();
+    saveCatalog(); buildFilters(); renderOperators();
   });
   $("#btnNewCourier").addEventListener("click", () => addChip("couriers", "DHL"));
   $("#btnNewCost").addEventListener("click", () => {
     state.config.overheads.push({ id: uid(), category: "property", name: t("def_newcost"), amount: 0, period: "month" });
-    save(); renderCosts(); renderSummary();
+    saveCatalog(); renderCosts(); renderSummary();
   });
 
   $("#opClose").addEventListener("click", () => {
@@ -893,18 +900,18 @@ function bindUI() {
   $("#bomClose").addEventListener("click", closeBomModal);
   $("#bomModal").addEventListener("click", (e) => { if (e.target.id === "bomModal") closeBomModal(); });
 
-  bindSegmented("#taxRegime", (v) => { state.config.tax.regime = v; save(); renderTaxPanel(); renderSummary(); });
+  bindSegmented("#taxRegime", (v) => { state.config.tax.regime = v; saveCatalog(); renderTaxPanel(); renderSummary(); });
   [["#taxCoefficient", "coefficient"], ["#taxFlatRate", "flatRate"],
    ["#taxIncomeRate", "incomeRate"], ["#taxSocialRate", "socialRate"]].forEach(([sel, key]) => {
     $(sel).addEventListener("change", () => {
       state.config.tax[key] = Number($(sel).value) || 0;
-      save(); renderSummary();
+      saveCatalog(); renderSummary();
     });
   });
   [["#calDays", "daysPerWeek"], ["#calWeeks", "weeksPerYear"], ["#calHours", "hoursPerDay"]].forEach(([sel, key]) => {
     $(sel).addEventListener("change", () => {
       state.config.calendar[key] = Number($(sel).value) || 0;
-      save(); renderCalendarPanel(); renderSummary();
+      saveCatalog(); renderCalendarPanel(); renderSummary();
     });
   });
   $("#setAutoUpdate").addEventListener("change", () => {
@@ -1721,7 +1728,7 @@ function saveClient() {
   if (editClientId) Object.assign(state.config.clients.find((x) => x.id === editClientId), rec);
   else state.config.clients.push(Object.assign({ id: uid() }, rec));
 
-  save();
+  saveCatalog();
   closeClientModal();
   renderClients();
   toast(t("t_clientsaved"));
@@ -1730,7 +1737,7 @@ function saveClient() {
 function deleteClient(id) {
   if (!confirm(t("confirm_delclient"))) return;
   state.config.clients = state.config.clients.filter((x) => x.id !== id);
-  save();
+  saveCatalog();
   renderClients();
 }
 
@@ -1775,17 +1782,17 @@ function renderTypes() {
       w.name = name.value.trim() || old;
       // Keep the works already recorded pointing at this type.
       state.works.forEach((r) => { if (r.work === old) r.work = w.name; });
-      save(); renderTypes(); renderWorks();
+      saveCatalog(); renderTypes(); renderWorks();
     });
     listInput.addEventListener("change", () => {
       w.listPrice = Number(listInput.value) || 0;
-      save(); renderTypes(); renderWorks(); renderSummary();
+      saveCatalog(); renderTypes(); renderWorks(); renderSummary();
     });
     tr.querySelector("button.bom").addEventListener("click", () => openBomModal(w.id));
     tr.querySelector("button.danger").addEventListener("click", () => {
       if (!confirm(t("confirm_delrow"))) return;
       state.config.works = state.config.works.filter((x) => x.id !== w.id);
-      save(); renderTypes(); renderWorks(); renderSummary();
+      saveCatalog(); renderTypes(); renderWorks(); renderSummary();
     });
     body.appendChild(tr);
   });
@@ -1840,13 +1847,13 @@ function renderBom() {
       <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
 
     tr.querySelector("select").addEventListener("change", (ev) => {
-      line.material = ev.target.value; save(); renderBom();
+      line.material = ev.target.value; saveCatalog(); renderBom();
     });
     tr.querySelector("input").addEventListener("change", (ev) => {
-      line.qty = Number(ev.target.value) || 0; save(); renderBom();
+      line.qty = Number(ev.target.value) || 0; saveCatalog(); renderBom();
     });
     tr.querySelector("button").addEventListener("click", () => {
-      w.bom.splice(i, 1); save(); renderBom();
+      w.bom.splice(i, 1); saveCatalog(); renderBom();
     });
     body.appendChild(tr);
   });
@@ -1862,7 +1869,7 @@ function addBomLine() {
   // A work with a hand-typed legacy cost switches to a real recipe here.
   delete w.materialCost;
   w.bom.push({ material: first.id, qty: 1 });
-  save();
+  saveCatalog();
   renderBom();
 }
 
@@ -1884,11 +1891,11 @@ function renderMaterials() {
       <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
 
     const ins = tr.querySelectorAll("input");
-    ins[0].addEventListener("change", () => { m.name = ins[0].value; save(); renderTypes(); });
+    ins[0].addEventListener("change", () => { m.name = ins[0].value; saveCatalog(); renderTypes(); });
     ins[1].addEventListener("change", () => { m.packCost = Number(ins[1].value) || 0; afterMaterialChange(); });
     ins[2].addEventListener("change", () => { m.pieces = Number(ins[2].value) || 0; afterMaterialChange(); });
-    ins[3].addEventListener("change", () => { m.unit = ins[3].value; save(); });
-    ins[4].addEventListener("change", () => { m.note = ins[4].value; save(); });
+    ins[3].addEventListener("change", () => { m.unit = ins[3].value; saveCatalog(); });
+    ins[4].addEventListener("change", () => { m.note = ins[4].value; saveCatalog(); });
     tr.querySelector("button").addEventListener("click", () => {
       if (!confirm(t("confirm_delrow"))) return;
       state.config.materials = state.config.materials.filter((x) => x.id !== m.id);
@@ -1900,7 +1907,7 @@ function renderMaterials() {
 }
 
 function afterMaterialChange() {
-  save();
+  saveCatalog();
   renderMaterials();
   renderTypes();
   renderWorks();
@@ -1929,13 +1936,13 @@ function renderOperators() {
       }
       o.name = name.value.trim() || old;
       state.works.forEach((w) => { if (w.doneBy === old) w.doneBy = o.name; });
-      save(); buildFilters(); renderOperators(); renderWorks(); renderSummary();
+      saveCatalog(); buildFilters(); renderOperators(); renderWorks(); renderSummary();
     });
     tr.querySelector("button.link").addEventListener("click", () => openOpModal(o.id));
     tr.querySelector("button.danger").addEventListener("click", () => {
       if (!confirm(t("confirm_delrow"))) return;
       state.config.operators = state.config.operators.filter((x) => x.id !== o.id);
-      save(); buildFilters(); renderOperators();
+      saveCatalog(); buildFilters(); renderOperators();
     });
     body.appendChild(tr);
   });
@@ -1966,7 +1973,7 @@ function openOpModal(id) {
       const id2 = box.dataset.id;
       if (box.checked) { if (!o.works.includes(id2)) o.works.push(id2); }
       else o.works = o.works.filter((x) => x !== id2);
-      save();
+      saveCatalog();
     });
   });
   $("#opModal").hidden = false;
@@ -1985,12 +1992,12 @@ function renderChips(key, sel) {
       const next = prompt(t("prompt_editvalue"), v);
       if (next != null && next.trim()) {
         state.config[key][i] = next.trim();
-        save(); buildFilters(); renderChips(key, sel);
+        saveCatalog(); buildFilters(); renderChips(key, sel);
       }
     });
     li.querySelector("button").addEventListener("click", () => {
       state.config[key].splice(i, 1);
-      save(); buildFilters(); renderChips(key, sel);
+      saveCatalog(); buildFilters(); renderChips(key, sel);
     });
     ul.appendChild(li);
   });
@@ -2000,7 +2007,7 @@ function addChip(key, def) {
   const v = prompt(t("prompt_newvalue"), def);
   if (v == null || !v.trim()) return;
   state.config[key].push(v.trim());
-  save();
+  saveCatalog();
   buildFilters();
   renderChips(key, "#couriersList");
 }
@@ -2034,7 +2041,7 @@ function renderCosts() {
     const [cat, period] = tr.querySelectorAll("select");
     const [name, amount] = tr.querySelectorAll("input");
     cat.addEventListener("change", () => { o.category = cat.value; afterCostChange(); });
-    name.addEventListener("change", () => { o.name = name.value; save(); });
+    name.addEventListener("change", () => { o.name = name.value; saveCatalog(); });
     amount.addEventListener("change", () => { o.amount = Number(amount.value) || 0; afterCostChange(); });
     period.addEventListener("change", () => { o.period = period.value; afterCostChange(); });
     tr.querySelector("button").addEventListener("click", () => {
@@ -2055,7 +2062,7 @@ function renderCosts() {
 }
 
 function afterCostChange() {
-  save();
+  saveCatalog();
   renderCosts();
   renderSummary();
 }
@@ -2327,6 +2334,7 @@ function applyImported(data) {
   // A backup from before accounts existed has no users at all.
   Auth.ensureUsersShape(state);
   state.schemaVersion = SCHEMA_VERSION;
+  Auth.logAction(state, "act_import", "backup");
   save();
   buildFilters();
   renderAll();
@@ -2486,6 +2494,7 @@ async function importExcel() {
   newOps.forEach((name) => state.config.operators.push({ id: uid(), name, works: [] }));
   recs.forEach((rec) => state.works.push(rec));
 
+  Auth.logAction(state, "act_import", `Excel - ${recs.length}`);
   save();
   buildFilters();
   renderAll();
