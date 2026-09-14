@@ -721,9 +721,9 @@ function renderHistory() {
   const rows = state.history || [];
   $("#historyEmpty").hidden = rows.length !== 0;
   body.innerHTML = rows.slice(0, 400).map((h) =>
-    `<tr><td class="muted">${escapeHtml(h.at.slice(0, 16).replace("T", " "))}</td>` +
-    `<td>${escapeHtml(h.who)}</td>` +
-    `<td>${escapeHtml(t(h.action))}</td>` +
+    `<tr><td class="muted">${escapeHtml(String(h.at || "").slice(0, 16).replace("T", " "))}</td>` +
+    `<td>${escapeHtml(h.who || "-")}</td>` +
+    `<td>${escapeHtml(t(h.action || "-"))}</td>` +
     `<td class="muted">${escapeHtml(h.detail || "")}</td></tr>`).join("");
 }
 
@@ -860,7 +860,8 @@ function bindUI() {
   $("#clientModal").addEventListener("click", (e) => { if (e.target.id === "clientModal") closeClientModal(); });
 
   $("#btnNewType").addEventListener("click", () => {
-    state.config.works.push({ id: uid(), name: t("def_newwork"), listPrice: 0, bom: [] });
+    const name = uniqueName(t("def_newwork"), state.config.works.map((w) => w.name));
+    state.config.works.push({ id: uid(), name, listPrice: 0, bom: [] });
     save(); renderTypes();
   });
   $("#btnNewMaterial").addEventListener("click", () => {
@@ -868,8 +869,9 @@ function bindUI() {
     save(); renderMaterials();
   });
   $("#btnNewOperator").addEventListener("click", () => {
-    const v = prompt(t("prompt_newvalue"), t("def_newoperator"));
+    const v = prompt(t("prompt_newvalue"), uniqueName(t("def_newoperator"), operatorNames()));
     if (v == null || !v.trim()) return;
+    if (operatorNames().includes(v.trim())) return toast(t("t_name_taken"));
     state.config.operators.push({ id: uid(), name: v.trim(), works: [] });
     save(); buildFilters(); renderOperators();
   });
@@ -948,7 +950,7 @@ function setSegValue(sel, v) {
 // ===========================================================================
 function buildFilters() {
   const years = availableYears();
-  const yearOpts = years.map((y) => `<option value="${y}">${y}</option>`).join("");
+  const yearOpts = years.map((y) => `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`).join("");
   const keepY = $("#fYear").value, keepR = $("#rYear").value;
 
   $("#fYear").innerHTML = `<option value="">${t("all_years")}</option>` + yearOpts;
@@ -1063,7 +1065,7 @@ function workRow(w) {
     <td>${escapeHtml(w.client || "")}</td>
     <td class="muted">${escapeHtml(w.patient || "")}</td>
     <td>${escapeHtml(w.work || "")}${w.redo ? ` <span class="badge redo">${t("badge_redo")}</span>` : ""}</td>
-    <td class="num">${w.units ?? ""}</td>
+    <td class="num">${escapeHtml(w.units ?? "")}</td>
     <td>${escapeHtml(w.doneBy || "")}</td>
     <td>${shipCell(w)}</td>
     <td class="num">${money(cost)}</td>
@@ -1116,6 +1118,8 @@ function markSelectedDone() {
   state.works.forEach((w) => {
     if (!selected.has(w.id)) return;
     w.status = "out";
+    // The day it left the bench: arrival to done is the real lead time.
+    w.doneAt = todayISO();
     n++;
   });
   Auth.logAction(state, "act_done", String(n));
@@ -1752,7 +1756,7 @@ function renderTypes() {
       <td><input class="cell-input text" value="${escapeAttr(w.name)}" /></td>
       <td><button class="btn link bom">${bomLabel(w)}</button></td>
       <td class="num">${money(cost)}</td>
-      <td class="num"><input class="cell-input" type="number" step="1" min="0" value="${price}" /></td>
+      <td class="num"><input class="cell-input" type="number" step="1" min="0" value="${escapeAttr(price)}" /></td>
       <td class="num ${margin < 0 ? "neg" : ""}">${money(margin)}</td>
       <td class="num muted">${price ? Math.round(100 * margin / price) + "%" : "-"}</td>
       <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
@@ -1761,6 +1765,12 @@ function renderTypes() {
     const listInput = tr.querySelector('input[type="number"]');
     name.addEventListener("change", () => {
       const old = w.name;
+      // Works point at their type by name, so two types sharing one would
+      // silently pull each other's works together.
+      if (sameNameElsewhere(state.config.works, w, name.value)) {
+        name.value = old;
+        return toast(t("t_name_taken"));
+      }
       w.name = name.value.trim() || old;
       // Keep the works already recorded pointing at this type.
       state.works.forEach((r) => { if (r.work === old) r.work = w.name; });
@@ -1786,7 +1796,7 @@ function bomLabel(w) {
   }
   return w.bom.map((l) => {
     const m = materialById(l.material);
-    return `${l.qty} × ${escapeHtml(m ? m.name : "?")}`;
+    return `${escapeHtml(l.qty)} × ${escapeHtml(m ? m.name : "?")}`;
   }).join(", ");
 }
 
@@ -1823,7 +1833,7 @@ function renderBom() {
       <td><select class="cell-select">${state.config.materials
         .map((x) => `<option value="${escapeAttr(x.id)}"${x.id === line.material ? " selected" : ""}>${escapeHtml(x.name)}</option>`)
         .join("")}</select></td>
-      <td class="num"><input class="cell-input" type="number" min="0" step="0.5" value="${line.qty}" /></td>
+      <td class="num"><input class="cell-input" type="number" min="0" step="0.5" value="${escapeAttr(line.qty)}" /></td>
       <td class="num muted">${money(unit)}</td>
       <td class="num">${money(unit * (Number(line.qty) || 0))}</td>
       <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
@@ -1865,8 +1875,8 @@ function renderMaterials() {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><input class="cell-input text" value="${escapeAttr(m.name)}" /></td>
-      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${m.packCost}" /></td>
-      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${m.pieces}" /></td>
+      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${escapeAttr(m.packCost)}" /></td>
+      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${escapeAttr(m.pieces)}" /></td>
       <td><input class="cell-input text narrow" value="${escapeAttr(m.unit || "")}" /></td>
       <td class="num strong">${money(unitCostOf(m))}</td>
       <td><input class="cell-input text" value="${escapeAttr(m.note || "")}" /></td>
@@ -1912,6 +1922,10 @@ function renderOperators() {
     const name = tr.querySelector("input");
     name.addEventListener("change", () => {
       const old = o.name;
+      if (sameNameElsewhere(state.config.operators, o, name.value)) {
+        name.value = old;
+        return toast(t("t_name_taken"));
+      }
       o.name = name.value.trim() || old;
       state.works.forEach((w) => { if (w.doneBy === old) w.doneBy = o.name; });
       save(); buildFilters(); renderOperators(); renderWorks(); renderSummary();
@@ -2007,7 +2021,7 @@ function renderCosts() {
         .map((c) => `<option value="${c}"${c === o.category ? " selected" : ""}>${escapeHtml(t("cost_" + c))}</option>`)
         .join("")}</select></td>
       <td><input class="cell-input text" value="${escapeAttr(o.name || "")}" /></td>
-      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${o.amount}" /></td>
+      <td class="num"><input class="cell-input" type="number" step="0.01" min="0" value="${escapeAttr(o.amount)}" /></td>
       <td><select class="cell-select narrow">
         <option value="month"${o.period === "month" ? " selected" : ""}>${escapeHtml(t("per_month"))}</option>
         <option value="year"${o.period === "year" ? " selected" : ""}>${escapeHtml(t("per_year"))}</option>
@@ -2479,6 +2493,18 @@ async function importExcel() {
 // ===========================================================================
 // Utilities
 // ===========================================================================
+// "New work type", then "New work type 2", "New work type 3"...
+function uniqueName(base, taken) {
+  let name = base, n = 1;
+  while (taken.includes(name)) name = `${base} ${++n}`;
+  return name;
+}
+
+function sameNameElsewhere(list, self, name) {
+  const n = String(name).trim();
+  return !!n && list.some((x) => x !== self && x.name === n);
+}
+
 function sum(arr, fn) { return arr.reduce((s, x) => s + fn(x), 0); }
 
 function aggregate(arr, keyFn, valueFn) {
@@ -2504,10 +2530,13 @@ function alpha(hex, a) {
 
 function monthOf(iso) { return (!iso || iso.length < 7) ? -1 : Number(iso.slice(5, 7)) - 1; }
 function monthYear(iso) { const m = monthOf(iso); return m < 0 ? "" : `${months()[m]} ${iso.slice(0, 4)}`; }
+// Returns markup-safe text: every caller puts it straight into HTML, and a date
+// can come from a backup file written anywhere.
 function formatDate(iso) {
-  if (!iso || iso.length < 10) return iso || "";
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
+  const s = String(iso || "");
+  if (s.length < 10) return escapeHtml(s);
+  const [y, m, d] = s.split("-");
+  return escapeHtml(`${d}/${m}/${y}`);
 }
 function todayISO() {
   const d = new Date(), p = (n) => String(n).padStart(2, "0");
