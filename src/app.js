@@ -361,7 +361,8 @@ async function loadAppInfo() {
   if (!window.api.appInfo) return;
   appInfo = (await window.api.appInfo()) || appInfo;
   const v = $("#btnUpdate");
-  if (v) v.textContent = "v" + (appInfo.version || "-");
+  // "v1.4.3", but a plain "demo" when the browser demo could not reach GitHub.
+  if (v) v.textContent = /^\d/.test(appInfo.version || "") ? "v" + appInfo.version : (appInfo.version || "-");
   $("#setVersion").textContent = appInfo.version || "-";
   $("#setApiVersion").textContent = appInfo.apiVersion || "-";
   // The licence names itself here and links to the full text, so a lab can read

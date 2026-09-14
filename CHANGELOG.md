@@ -3,6 +3,12 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Fixed
+- The browser demo showed "vdemo" as its version when it could not reach GitHub;
+  it now shows "demo".
+
 ## [1.4.3] - 2026-09-14
 
 ### Changed
