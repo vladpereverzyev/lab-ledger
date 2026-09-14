@@ -14,7 +14,9 @@
 // the administrator - that is the point of storing it this way.
 // ===========================================================================
 
-const PERMISSIONS = ["viewMoney", "editWorks", "delWorks", "editCatalog", "export"];
+// Recording a new job and changing one already recorded are separate: the
+// operator at the bench adds, and only someone trusted rewrites what is there.
+const PERMISSIONS = ["viewMoney", "addWorks", "editWorks", "delWorks", "editCatalog", "export"];
 const PBKDF2_ROUNDS = 150000;
 
 let session = null;     // the user currently signed in
@@ -57,6 +59,11 @@ function ensureUsersShape(state) {
   state.users.business = state.users.business || {};
   state.users.list = state.users.list || [];
   state.history = state.history || [];
+  // Before addWorks existed, editWorks meant "add and edit". An operator who
+  // had it keeps being able to add; nobody loses what they could do.
+  state.users.list.forEach((u) => {
+    if (u.can && u.can.addWorks === undefined) u.can.addWorks = !!u.can.editWorks;
+  });
 }
 
 function hasAdmin(state) {
@@ -79,7 +86,7 @@ async function makeUser(role, fields, password) {
     username: (fields.username || "").trim().toLowerCase(),
     salt,
     hash: await hashPassword(password, salt),
-    can: role === "admin" ? allPermissions() : (fields.can || { editWorks: true }),
+    can: role === "admin" ? allPermissions() : (fields.can || { addWorks: true }),
     createdAt: new Date().toISOString()
   };
 }

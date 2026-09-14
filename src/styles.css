@@ -469,7 +469,7 @@ body.no-export #btnExportEnc { display: none; }
 /* A backup replaces the whole archive, accounts included: restoring one is the
    administrator's call, whatever else an operator may export. */
 body.not-admin #btnImportJson { display: none; }
-body.no-editworks #btnNewWork, body.no-editworks .bulkbar,
+body.no-addworks #btnNewWork, body.no-editworks .bulkbar,
 body.no-editworks #worksTable th.check, body.no-editworks #worksTable td.check { display: none; }
 body.no-editworks #worksBody .btn.icon:not(.danger) { display: none; }
 body.no-delworks #worksBody .btn.icon.danger { display: none; }

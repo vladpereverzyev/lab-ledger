@@ -29,7 +29,7 @@
   // new sample would never reach anyone who had already opened the demo. The
   // version is part of the key: bump it whenever sample-data.js changes, and
   // returning visitors get the new lab instead of the one they saw last time.
-  const SEED_VERSION = 6;
+  const SEED_VERSION = 7;
   const STORAGE_KEY = "labledger-demo-data-v" + SEED_VERSION;
 
   try {

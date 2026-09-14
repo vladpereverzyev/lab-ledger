@@ -259,12 +259,12 @@
       { id: "u1", role: "admin", firstName: "Operator", lastName: "One",
         username: "admin", salt: "demoadmin",
         hash: "6e20bd64876aa1cfc1c2a576cbdf2d83938e442746908242fd53fcf1d131e044",
-        can: { viewMoney: true, editWorks: true, delWorks: true, editCatalog: true, export: true },
+        can: { viewMoney: true, addWorks: true, editWorks: true, delWorks: true, editCatalog: true, export: true },
         createdAt: YEAR + "-01-02T08:00:00.000Z" },
       { id: "u2", role: "operator", firstName: "Operator", lastName: "Two",
         username: "operator", salt: "demooper",
         hash: "cefe2ec2be9c8e51442509d38603347db89c32a2a878bdb50f5f4310b9a5ef64",
-        can: { viewMoney: false, editWorks: true, delWorks: false, editCatalog: false, export: false },
+        can: { viewMoney: false, addWorks: true, editWorks: false, delWorks: false, editCatalog: false, export: false },
         createdAt: YEAR + "-01-03T08:00:00.000Z" }
     ]
   };

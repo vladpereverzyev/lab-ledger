@@ -481,9 +481,9 @@ function bindGate() {
     save();
     openGate();
   }));
-  $("#btnNewUser").addEventListener("click", openUserModal);
-  $("#uCancel").addEventListener("click", () => { $("#userModal").hidden = true; });
-  $("#uSave").addEventListener("click", saveNewUser);
+  $("#btnNewUser").addEventListener("click", () => openUserModal(null));
+  $("#uCancel").addEventListener("click", () => { $("#userModal").hidden = true; editUserId = null; });
+  $("#uSave").addEventListener("click", saveUser);
 }
 
 async function createFirstAdmin() {
@@ -596,6 +596,7 @@ function applyPermissions() {
   const b = document.body;
   showRecoveryInSettings(u);
   b.classList.toggle("no-money", !Auth.can("viewMoney"));
+  b.classList.toggle("no-addworks", !Auth.can("addWorks"));
   b.classList.toggle("no-editworks", !Auth.can("editWorks"));
   b.classList.toggle("no-delworks", !Auth.can("delWorks"));
   b.classList.toggle("no-editcatalog", !Auth.can("editCatalog"));
@@ -634,8 +635,11 @@ function renderUsers() {
       <td class="muted">${escapeHtml(u.username)}</td>
       <td>${escapeHtml(t(u.role === "admin" ? "role_admin" : "role_operator"))}</td>
       <td class="muted">${escapeHtml(perms || "-")}</td>
-      <td class="center">${u.role === "admin" ? "" : '<button class="btn icon danger" title="Delete">&#10005;</button>'}</td>`;
-    const del = tr.querySelector("button");
+      <td class="center nowrap">${u.role === "admin" ? "" :
+        '<button class="btn icon" title="Edit">&#9998;</button>' +
+        '<button class="btn icon danger" title="Delete">&#10005;</button>'}</td>`;
+    const [edit, del] = tr.querySelectorAll("button");
+    if (edit) edit.addEventListener("click", () => openUserModal(u.id));
     if (del) del.addEventListener("click", () => {
       if (!confirm(t("confirm_delrow"))) return;
       state.users.list = state.users.list.filter((x) => x.id !== u.id);
@@ -646,19 +650,36 @@ function renderUsers() {
   });
 }
 
-function openUserModal() {
-  $("#uFirst").value = ""; $("#uLast").value = "";
-  $("#uUser").value = ""; $("#uPass").value = "";
+// One modal for a new operator and for an existing one: what they may do can
+// change over time without deleting the account and making it again.
+let editUserId = null;
+
+function openUserModal(id) {
+  editUserId = typeof id === "string" ? id : null;
+  const u = editUserId ? state.users.list.find((x) => x.id === editUserId) : null;
+  const title = u ? "modal_edituser" : "modal_newuser";
+  $("#uTitle").setAttribute("data-i18n", title);
+  $("#uTitle").textContent = t(title);
+  $("#uFirst").value = u ? u.firstName : ""; $("#uLast").value = u ? u.lastName : "";
+  $("#uUser").value = u ? u.username : ""; $("#uPass").value = "";
+  $("#uPass").placeholder = u ? t("user_pw_keep") : "";
   $("#uError").hidden = true;
+  const can = u ? (u.can || {}) : { addWorks: true };
   $("#uPerms").innerHTML = Auth.PERMISSIONS.map((k) =>
-    `<label class="switch"><input type="checkbox" data-perm="${k}"${k === "editWorks" ? " checked" : ""} />` +
+    `<label class="switch"><input type="checkbox" data-perm="${k}"${can[k] ? " checked" : ""} />` +
     `<span>${escapeHtml(t("perm_" + k.toLowerCase()))}</span></label>`).join("");
   $("#userModal").hidden = false;
   $("#uFirst").focus();
 }
 
-async function saveNewUser() {
+function userError(key) {
+  $("#uError").textContent = t(key);
+  $("#uError").hidden = false;
+}
+
+async function saveUser() {
   $("#uError").hidden = true;
+  const existing = editUserId ? state.users.list.find((x) => x.id === editUserId) : null;
   const f = {
     firstName: $("#uFirst").value.trim(),
     lastName: $("#uLast").value.trim(),
@@ -667,15 +688,25 @@ async function saveNewUser() {
   };
   $("#uPerms").querySelectorAll("input").forEach((b) => { f.can[b.dataset.perm] = b.checked; });
   const pw = $("#uPass").value;
-  if (!f.firstName || !f.username || !pw) { $("#uError").textContent = t("auth_required"); $("#uError").hidden = false; return; }
-  if (pw.length < 6) { $("#uError").textContent = t("auth_pwshort"); $("#uError").hidden = false; return; }
-  if (state.users.list.some((u) => u.username === f.username.toLowerCase())) {
-    $("#uError").textContent = t("auth_taken"); $("#uError").hidden = false; return;
+  // A new account needs a password; an existing one keeps its own when blank.
+  if (!f.firstName || !f.username || (!existing && !pw)) return userError("auth_required");
+  if (pw && pw.length < 6) return userError("auth_pwshort");
+  if (state.users.list.some((u) => u.username === f.username.toLowerCase() && u !== existing)) {
+    return userError("auth_taken");
   }
-  state.users.list.push(await Auth.makeUser("operator", f, pw));
+  if (existing) {
+    existing.firstName = f.firstName;
+    existing.lastName = f.lastName;
+    existing.username = f.username.toLowerCase();
+    existing.can = f.can;
+    if (pw) await Auth.setPassword(existing, pw);
+  } else {
+    state.users.list.push(await Auth.makeUser("operator", f, pw));
+  }
   Auth.logAction(state, "act_user", f.username);
   save();
   $("#userModal").hidden = true;
+  editUserId = null;
   renderUsers();
   toast(t("t_usersaved"));
 }
@@ -1077,7 +1108,7 @@ function clearSelection() {
 // Ticking incoming work as done is the whole point of the two sections: it
 // crosses the bench and lands where the courier is attached.
 function markSelectedDone() {
-  if (!selected.size) return;
+  if (!selected.size || !Auth.can("editWorks")) return;
   let n = 0;
   state.works.forEach((w) => {
     if (!selected.has(w.id)) return;
@@ -1093,7 +1124,7 @@ function markSelectedDone() {
 }
 
 function openShipModal() {
-  if (!selected.size) return;
+  if (!selected.size || !Auth.can("editWorks")) return;
   const works = state.works.filter((w) => selected.has(w.id));
   $("#shipList").innerHTML = works.map((w) =>
     `<div class="shiprow"><span>${formatDate(w.date)}</span>` +
@@ -1153,6 +1184,8 @@ function shipCell(w) {
 // Work modal
 // ---------------------------------------------------------------------------
 function openWorkModal(id) {
+  // The stylesheet hides the buttons; this is the lock behind them.
+  if (!Auth.can(id ? "editWorks" : "addWorks")) return;
   editId = id;
   const w = id ? state.works.find((x) => x.id === id) : null;
   $("#modalTitle").textContent = w ? t("modal_editwork") : t("modal_newwork");
@@ -1212,6 +1245,7 @@ function syncShippingFields() {
 function closeWorkModal() { $("#workModal").hidden = true; editId = null; }
 
 function saveWork() {
+  if (!Auth.can(editId ? "editWorks" : "addWorks")) return;
   const shipped = $("#mShipped").checked;
   const rec = {
     date: $("#mDate").value || todayISO(),
@@ -1252,7 +1286,7 @@ function saveWork() {
 }
 
 function deleteWork(id) {
-  if (!confirm(t("confirm_delwork"))) return;
+  if (!Auth.can("delWorks") || !confirm(t("confirm_delwork"))) return;
   const w = state.works.find((x) => x.id === id);
   Auth.logAction(state, "act_work_del", w ? `${w.client} - ${w.work}` : "");
   // A work carries money and history, so it is not thrown away: it moves to a
