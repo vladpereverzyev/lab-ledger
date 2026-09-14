@@ -3,6 +3,15 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.5] - 2026-09-14
+
+### Changed
+- **One number format in every language:** a dot for thousands and a comma for
+  decimals - 1.234,56 € - in every table, card, total, chart axis and
+  percentage. Before, the separators followed the language, so English, for
+  one, showed 1,234.56 €, and chart axes always used a comma for thousands.
+- A shorter, classic README introduction in every language.
+
 ## [1.4.4] - 2026-09-14
 
 ### Fixed
