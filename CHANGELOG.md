@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.4.2] - 2026-09-14
 
 ### Changed
 - The "companion Excel file" is now called the **automatic Excel copy**, and its
@@ -13,8 +13,15 @@ All notable changes to Lab Ledger are documented here. The format is based on
 - Accents and wording fixed across the Italian, Spanish, French and German
   texts (the German ones also no longer switch between "Sie" and "du").
 - The Excel import error names the Italian "Lavoro" column as well as "Work".
+- The footer, the sign-in screen and the update dialog show only the copyright;
+  the licence stays in **Catalog > Settings**.
+- New README screenshots of the lab setup, Incoming, editing an operator and
+  Settings; the existing ones are retaken from this version.
 
 ### Fixed
+- In Incoming, the totals under the works list sat one column to the right:
+  hiding the shipping column shifted every later cell. The column now closes
+  up in place, in the list and in the totals.
 - Catalog changes and imports (Excel and backup) are now recorded in History,
   as the documentation already said they were.
 - A backup that cannot be written - a full disk, a read-only folder - now says
