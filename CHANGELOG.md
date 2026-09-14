@@ -8,6 +8,12 @@ All notable changes to Lab Ledger are documented here. The format is based on
 ### Fixed
 - The browser demo showed "vdemo" as its version when it could not reach GitHub;
   it now shows "demo".
+- The works count under the list says "1 work", not "1 works", in every language.
+
+### Changed
+- The README has a Roles and permissions section: what the administrator and an
+  operator can do, what each permission opens, typical setups, and a screenshot
+  of what an operator sees.
 
 ## [1.4.3] - 2026-09-14
 

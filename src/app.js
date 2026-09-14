@@ -1077,7 +1077,7 @@ function renderWorks() {
   $("#worksTotals").innerHTML =
     // The shipping column gets its own empty cell, so it can close up in
     // Incoming exactly as it does in the table above.
-    `<tr><td colspan="7"><b>${rows.length}</b> ${escapeHtml(t("foot_works"))}</td><td class="ship-gap"></td>` +
+    `<tr><td colspan="7"><b>${rows.length}</b> ${escapeHtml(t(rows.length === 1 ? "foot_work" : "foot_works"))}</td><td class="ship-gap"></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_matcost"))}"><b>${money(cost)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_listprice"))}"><b>${money(revenue)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_margin"))}">` +
