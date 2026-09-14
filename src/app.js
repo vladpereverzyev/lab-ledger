@@ -50,6 +50,7 @@ function applyI18n() {
   $$("[data-i18n-ph]").forEach((el) => { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
   $$("[data-i18n-title]").forEach((el) => { el.setAttribute("title", t(el.getAttribute("data-i18n-title"))); });
   const lb = $("#btnLang"); if (lb) lb.textContent = currentLang().toUpperCase();
+  const tb = $("#btnTheme"); if (tb) tb.setAttribute("aria-label", t("tip_theme"));
 }
 
 // Every control whose label changes with the language gets a fixed width: the
@@ -861,7 +862,7 @@ function bindUI() {
   $("#btnImportXlsx").addEventListener("click", importExcel);
   $("#btnExportJson").addEventListener("click", async () => {
     if (!canExportMoney()) return;
-    const r = await window.api.exportJson(state);
+    const r = await window.api.exportJson(state, t("dlg_backup"));
     if (r && r.ok) toast(t("t_backupsaved"));
     else if (r && r.error) toast(t("t_error") + r.error);
   });
@@ -894,7 +895,7 @@ function bindUI() {
     saveCatalog(); renderTypes();
   });
   $("#btnNewMaterial").addEventListener("click", () => {
-    state.config.materials.push({ id: uid(), name: t("def_newmaterial"), packCost: 0, pieces: 1, unit: "piece", note: "" });
+    state.config.materials.push({ id: uid(), name: t("def_newmaterial"), packCost: 0, pieces: 1, unit: t("def_unit"), note: "" });
     saveCatalog(); renderMaterials();
   });
   $("#btnNewOperator").addEventListener("click", () => {
@@ -951,7 +952,7 @@ function bindUI() {
     if (!Auth.isAdmin()) return;
     if (!window.api.chooseExcel) return;
     if (!confirm(t("excel_cloud_warn"))) return;
-    const r = await window.api.chooseExcel();
+    const r = await window.api.chooseExcel(t("dlg_excel_copy"));
     if (!r || r.canceled) return;
     state.config.excel.path = r.path;
     state.config.excel.enabled = true;
@@ -2367,7 +2368,7 @@ async function exportEncryptedBackup() {
   } catch (err) {
     return toast(t("t_error") + err.message);
   }
-  const r = await window.api.exportEncrypted(blob);
+  const r = await window.api.exportEncrypted(blob, t("dlg_backup_enc"));
   if (r && r.ok) toast(t("t_backupsaved"));
   else if (r && r.error) toast(t("t_error") + r.error);
 }
@@ -2397,7 +2398,7 @@ function applyImported(data) {
 
 async function importBackup() {
   if (!Auth.isAdmin()) return;
-  const r = await window.api.importText();
+  const r = await window.api.importText(t("dlg_import_backup"));
   if (!r || r.canceled) return;
   if (!r.ok) return toast(t("t_error") + r.error);
 
@@ -2473,7 +2474,7 @@ async function exportExcel() {
     "Per year": round2(costPerYear(o))
   }));
 
-  const r = await window.api.exportXlsx({ works, summary: Object.values(byType), catalog, costs });
+  const r = await window.api.exportXlsx({ works, summary: Object.values(byType), catalog, costs }, t("dlg_export_excel"));
   if (r && r.ok) toast(t("t_excelexported"));
   else if (r && !r.canceled) toast(t("t_error") + r.error);
 }
@@ -2488,7 +2489,7 @@ function bomLabelPlain(w) {
 
 async function importExcel() {
   if (!Auth.can("export") || !Auth.can("addWorks")) return;
-  const r = await window.api.importXlsx();
+  const r = await window.api.importXlsx(t("dlg_import_excel"));
   if (!r || r.canceled) return;
   if (!r.ok) return toast(t("t_error") + r.error);
 

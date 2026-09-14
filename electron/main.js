@@ -239,9 +239,13 @@ ipcMain.handle("recovery:read", async () => {
 // Companion workbook: pick where it lives, or write it now.
 // ---------------------------------------------------------------------------
 
-ipcMain.handle("excel:choose", async () => {
+// Native dialogs are titled in the app's language: the renderer passes the
+// translated title, and an English one stands in if it does not.
+const dialogTitle = (title, fallback) => (typeof title === "string" && title.trim() ? title.slice(0, 200) : fallback);
+
+ipcMain.handle("excel:choose", async (_event, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
-    title: "Where should the Lab Ledger workbook live?",
+    title: dialogTitle(title, "Where should the automatic Excel copy be saved?"),
     defaultPath: path.join(app.getPath("documents"), "Lab Ledger.xlsx"),
     filters: [{ name: "Excel", extensions: ["xlsx"] }]
   });
@@ -446,9 +450,9 @@ ipcMain.handle("update:install", async (_event, file) => {
 // Export / Import JSON
 // ---------------------------------------------------------------------------
 
-ipcMain.handle("json:export", async (_event, data) => {
+ipcMain.handle("json:export", async (_event, data, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
-    title: "Export backup (JSON)",
+    title: dialogTitle(title, "Save backup"),
     defaultPath: `lab-ledger-backup-${today()}.json`,
     filters: [{ name: "JSON", extensions: ["json"] }]
   });
@@ -465,9 +469,9 @@ ipcMain.handle("json:export", async (_event, data) => {
 // An encrypted backup: the renderer does the crypto and hands down the finished
 // text; the main process only writes it to the file the user picks. The live
 // data file is never touched by any of this.
-ipcMain.handle("json:exportEncrypted", async (_event, text) => {
+ipcMain.handle("json:exportEncrypted", async (_event, text, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
-    title: "Export encrypted backup",
+    title: dialogTitle(title, "Save encrypted backup"),
     defaultPath: `lab-ledger-backup-${today()}.llb`,
     filters: [{ name: "Lab Ledger backup", extensions: ["llb"] }]
   });
@@ -482,9 +486,9 @@ ipcMain.handle("json:exportEncrypted", async (_event, text) => {
 
 // Import reads the file as plain text and lets the renderer decide whether it
 // is an encrypted backup (asking for the password) or plain JSON.
-ipcMain.handle("json:importText", async () => {
+ipcMain.handle("json:importText", async (_event, title) => {
   const res = await dialog.showOpenDialog(mainWindow, {
-    title: "Import backup",
+    title: dialogTitle(title, "Import backup"),
     properties: ["openFile"],
     filters: [{ name: "Lab Ledger backup", extensions: ["llb", "json"] }]
   });
@@ -500,9 +504,9 @@ ipcMain.handle("json:importText", async () => {
 // Export Excel (.xlsx)
 // ---------------------------------------------------------------------------
 
-ipcMain.handle("xlsx:export", async (_event, payload) => {
+ipcMain.handle("xlsx:export", async (_event, payload, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
-    title: "Export to Excel",
+    title: dialogTitle(title, "Export to Excel"),
     defaultPath: `lab-ledger-works-${today()}.xlsx`,
     filters: [{ name: "Excel", extensions: ["xlsx"] }]
   });
@@ -530,9 +534,9 @@ ipcMain.handle("xlsx:export", async (_event, payload) => {
 // Column mapping happens in the renderer.
 // ---------------------------------------------------------------------------
 
-ipcMain.handle("xlsx:import", async () => {
+ipcMain.handle("xlsx:import", async (_event, title) => {
   const res = await dialog.showOpenDialog(mainWindow, {
-    title: "Import from Excel",
+    title: dialogTitle(title, "Import from Excel"),
     properties: ["openFile"],
     filters: [{ name: "Excel", extensions: ["xlsx", "xls"] }]
   });
