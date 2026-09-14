@@ -137,6 +137,13 @@ async function shootExtras(win) {
     "state.config.excel = { enabled: true, path: 'C:\\\\Users\\\\Lab\\\\OneDrive\\\\Lab Ledger.xlsx' }; renderCatalog();" +
     "document.querySelector('[data-sec=\"settings\"]').click();");
 
+  // What an operator sees: the sample operator, who records works and sees no
+  // money - no prices, costs or totals, no Summary, no Catalog.
+  await capture(win, "screenshot-operator.png",
+    "Auth.signIn(state.users.list.find(u => u.role !== 'admin')); applyPermissions(); renderAll();" +
+    "document.querySelector('[data-view=\"works\"]').click();" +
+    "document.querySelector('#workSec [data-v=\"out\"]').click();", 900);
+
   // First run: setting the lab up. Nothing is saved during a screenshot run.
   await capture(win, "screenshot-setup.png",
     "Auth.signOut(); state.users.list = [];" +

@@ -103,13 +103,8 @@ Settings - updates, the automatic Excel copy and the recovery code:
 ### Who uses it
 - **First run** asks for the lab's details and creates the administrator. After
   that the app opens on a sign-in screen and nothing is behind it.
-- **Operators** are added by the administrator, who ticks what each one may do
-  and can change it at any time: see prices and profit, add new works, edit the
-  works already recorded, delete them, edit the catalog, export and back up.
-  Someone who works at the bench without seeing the money sees no amount
-  anywhere - no prices, costs, totals, Summary or exports - and someone who
-  cannot edit the catalog never sees the Catalog tab: the clients and work types
-  they need are offered in the work form.
+- **Operators** sign in with their own name and password, and see and do only
+  what the administrator allows - see [Roles and permissions](#roles-and-permissions).
 - **Passwords are never stored** - only PBKDF2-SHA256 over a random per-user
   salt, 150000 rounds. A forgotten password can be reset, never recovered.
 - **A forgotten administrator password is not the end of the archive.** Setting
@@ -175,6 +170,51 @@ Settings - updates, the automatic Excel copy and the recovery code:
 - **The euro sign always follows the number**, in every language; the thousands
   and decimal separators still follow the language.
 - **Light by default**, dark a click away, remembered per computer.
+
+## Roles and permissions
+
+Lab Ledger has two roles.
+
+**Administrator** - the person who set the lab up. Sees and does everything:
+prices and profit, the whole catalog, users and their permissions, History,
+Settings, backups and restores. If the password is lost, the recovery code sets
+a new one.
+
+**Operator** - everyone else. Each operator signs in with their own name and
+password, and the administrator ticks what that person may do, in
+**Catalog > Users**, at any time:
+
+| Permission | What it opens |
+|---|---|
+| **See prices and profit** | Cost, price and margin columns and their totals in Works, the Summary tab, material costs, running costs and taxes |
+| **Add new works** | The **+ New work** button, and Excel import together with Export |
+| **Edit existing works** | Changing a work already recorded, ticking works, **Mark as done** and **Ship together** |
+| **Delete works** | Deleting a work (it is kept in the archive inside the data file) |
+| **Edit the catalog** | The Catalog tab: clients, work types and their materials, materials, operators and couriers |
+| **Export and back up** | Export Excel, Backup and Encrypted backup - only together with See prices and profit, because every export contains prices |
+
+Without **See prices and profit** there is no amount anywhere on screen, and
+without **Edit the catalog** the Catalog tab does not appear at all: the clients
+and work types a job needs are offered in the work form. **Users**, **History**,
+**Settings** and **Import backup** never depend on a tick - they are the
+administrator's.
+
+A new operator starts with **Add new works** only: someone at the bench who
+records their jobs and sees nothing about money.
+
+![What an operator sees: the works, without prices, costs or totals](docs/screenshot-operator.png)
+
+Typical setups:
+
+- **Technician** - Add new works, plus Edit existing works if they also mark
+  jobs done and ship them.
+- **Front desk** - Add new works, Edit existing works and Edit the catalog, to
+  keep clients and couriers up to date, still without seeing the money.
+- **Partner or manager** - every permission; only Users, History, Settings and
+  restoring a backup stay with the administrator.
+
+Permissions are checked by the app itself, not only by hiding buttons. They
+protect the app's screens, not the data file on disk: see [SECURITY.md](SECURITY.md).
 
 ## Offline by design
 

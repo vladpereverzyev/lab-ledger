@@ -108,14 +108,8 @@ Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
 - **Al primo avvio** il programma chiede i dati del laboratorio e crea
   l'amministratore. Da lì in poi si apre su una schermata di accesso, e dietro
   non c'è niente finché non entri.
-- **Gli operatori** li aggiunge l'amministratore, spuntando cosa ciascuno può
-  fare, e può cambiarlo quando vuole: vedere prezzi e utili, aggiungere lavori
-  nuovi, modificare quelli già registrati, eliminarli, modificare il catalogo,
-  esportare e fare backup. Chi lavora al banco senza vedere i soldi non vede
-  nessun importo da nessuna parte - né prezzi, né costi, né totali, né
-  Riepilogo, né esportazioni - e chi non può modificare il catalogo non vede
-  proprio la scheda Catalogo: i clienti e i tipi di lavoro che gli servono li
-  trova nella scheda del lavoro.
+- **Gli operatori** entrano col proprio nome e la propria password, e vedono e
+  fanno solo quello che l'amministratore permette: vedi [Ruoli e permessi](#ruoli-e-permessi).
 - **Le password non vengono mai salvate**: si salva solo PBKDF2-SHA256 su un
   sale casuale per utente, 150000 giri. Una password dimenticata si azzera, non
   si recupera.
@@ -186,6 +180,53 @@ Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
 - **Il simbolo dell'euro sta sempre dopo il numero**, in ogni lingua; i
   separatori delle migliaia e dei decimali continuano a seguire la lingua.
 - **Chiaro di default**, scuro a un clic, ricordato sul computer.
+
+## Ruoli e permessi
+
+Lab Ledger ha due ruoli.
+
+**Amministratore**: chi ha configurato il laboratorio. Vede e fa tutto: prezzi e
+utili, tutto il catalogo, gli utenti e i loro permessi, la Cronologia, le
+Impostazioni, i backup e il ripristino. Se perde la password, il codice di
+recupero ne imposta una nuova.
+
+**Operatore**: tutti gli altri. Ogni operatore entra col proprio nome e la
+propria password, e l'amministratore spunta cosa può fare, in
+**Catalogo > Utenti**, quando vuole:
+
+| Permesso | Cosa sblocca |
+|---|---|
+| **Vedere prezzi e utili** | Le colonne costo, prezzo e margine con i loro totali in Lavori, la scheda Riepilogo, i costi dei materiali, i costi fissi e le tasse |
+| **Aggiungere nuovi lavori** | Il pulsante **+ Nuovo lavoro**, e l'importazione da Excel insieme a Esportare |
+| **Modificare i lavori esistenti** | Cambiare un lavoro già registrato, spuntare i lavori, **Segna come fatto** e **Spedisci insieme** |
+| **Eliminare lavori** | Eliminare un lavoro (resta nell'archivio dentro il file dei dati) |
+| **Modificare il catalogo** | La scheda Catalogo: clienti, tipi di lavoro coi loro materiali, materiali, operatori e corrieri |
+| **Esportare e fare backup** | Esporta Excel, Backup e Backup cifrato - solo insieme a Vedere prezzi e utili, perché ogni esportazione contiene i prezzi |
+
+Senza **Vedere prezzi e utili** sullo schermo non compare nessun importo, e senza
+**Modificare il catalogo** la scheda Catalogo non compare proprio: i clienti e i
+tipi di lavoro che servono si scelgono nella scheda del lavoro. **Utenti**,
+**Cronologia**, **Impostazioni** e **Importa backup** non dipendono da nessuna
+spunta: sono dell'amministratore.
+
+Un operatore nuovo parte solo con **Aggiungere nuovi lavori**: una persona al
+banco che registra i suoi lavori e non vede niente dei soldi.
+
+![Cosa vede un operatore: i lavori, senza prezzi, costi né totali](docs/screenshot-operator.png)
+
+Configurazioni tipiche:
+
+- **Tecnico**: Aggiungere nuovi lavori, più Modificare i lavori esistenti se
+  segna anche i lavori come fatti e li spedisce.
+- **Segreteria**: Aggiungere nuovi lavori, Modificare i lavori esistenti e
+  Modificare il catalogo, per tenere aggiornati clienti e corrieri, sempre
+  senza vedere i soldi.
+- **Socio o responsabile**: tutti i permessi; restano all'amministratore solo
+  Utenti, Cronologia, Impostazioni e il ripristino dei backup.
+
+I permessi li controlla il programma stesso, non solo nascondendo i pulsanti.
+Proteggono le schermate del programma, non il file dei dati sul disco: vedi
+[SECURITY.md](SECURITY.md).
 
 ## Offline per costruzione
 

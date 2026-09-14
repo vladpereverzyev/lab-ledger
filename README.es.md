@@ -105,14 +105,8 @@ Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
 ### Quién lo usa
 - **El primer arranque** pide los datos del laboratorio y crea el administrador.
   A partir de ahí la aplicación abre en una pantalla de acceso.
-- **Los operadores** los añade el administrador, marcando lo que cada uno puede
-  hacer, y puede cambiarlo cuando quiera: ver precios y beneficios, añadir
-  trabajos nuevos, editar los ya registrados, eliminarlos, editar el catálogo,
-  exportar y copiar. Quien trabaja en el banco sin ver el dinero no ve ningún
-  importe en ninguna parte - ni precios, ni costes, ni totales, ni Resumen, ni
-  exportaciones - y quien no puede editar el catálogo no ve la pestaña Catálogo:
-  los clientes y tipos de trabajo que necesita los encuentra en la ficha del
-  trabajo.
+- **Los operadores** entran con su propio nombre y contraseña, y ven y hacen solo
+  lo que el administrador permite: ver [Roles y permisos](#roles-y-permisos).
 - **Las contraseñas nunca se guardan**: solo PBKDF2-SHA256 sobre una sal
   aleatoria por usuario, 150000 vueltas. Una contraseña olvidada se reinicia, no
   se recupera.
@@ -179,6 +173,52 @@ Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
   dibuja cada sistema operativo.
 - **El símbolo del euro va siempre detrás del número**, en todos los idiomas.
 - **Claro por defecto**, oscuro a un clic, recordado en el ordenador.
+
+## Roles y permisos
+
+Lab Ledger tiene dos roles.
+
+**Administrador**: quien configuró el laboratorio. Ve y hace todo: precios y
+beneficios, todo el catálogo, los usuarios y sus permisos, el Historial, los
+Ajustes, las copias y su restauración. Si pierde la contraseña, el código de
+recuperación pone una nueva.
+
+**Operador**: todos los demás. Cada operador entra con su propio nombre y
+contraseña, y el administrador marca lo que puede hacer, en
+**Catálogo > Usuarios**, cuando quiera:
+
+| Permiso | Qué abre |
+|---|---|
+| **Ver precios y beneficios** | Las columnas de coste, precio y margen con sus totales en Trabajos, la pestaña Resumen, los costes de materiales, los costes fijos y los impuestos |
+| **Añadir trabajos nuevos** | El botón **+ Nuevo trabajo**, y la importación desde Excel junto con Exportar |
+| **Editar trabajos existentes** | Cambiar un trabajo ya registrado, marcar trabajos, **Marcar como hecho** y **Enviar juntos** |
+| **Eliminar trabajos** | Eliminar un trabajo (queda en el archivo dentro del fichero de datos) |
+| **Editar el catálogo** | La pestaña Catálogo: clientes, tipos de trabajo con sus materiales, materiales, operadores y transportistas |
+| **Exportar y copiar** | Exportar Excel, Copia y Copia cifrada - solo junto con Ver precios y beneficios, porque toda exportación contiene precios |
+
+Sin **Ver precios y beneficios** no aparece ningún importe en pantalla, y sin
+**Editar el catálogo** la pestaña Catálogo no aparece: los clientes y tipos de
+trabajo que hacen falta se eligen en la ficha del trabajo. **Usuarios**,
+**Historial**, **Ajustes** e **Importar copia** no dependen de ninguna marca:
+son del administrador.
+
+Un operador nuevo empieza solo con **Añadir trabajos nuevos**: alguien en el
+banco que registra sus trabajos y no ve nada del dinero.
+
+![Lo que ve un operador: los trabajos, sin precios, costes ni totales](docs/screenshot-operator.png)
+
+Configuraciones típicas:
+
+- **Técnico**: Añadir trabajos nuevos, más Editar trabajos existentes si también
+  los marca como hechos y los envía.
+- **Recepción**: Añadir trabajos nuevos, Editar trabajos existentes y Editar el
+  catálogo, para mantener al día clientes y transportistas, sin ver el dinero.
+- **Socio o responsable**: todos los permisos; al administrador solo le quedan
+  Usuarios, Historial, Ajustes y la restauración de copias.
+
+Los permisos los comprueba la propia aplicación, no solo ocultando botones.
+Protegen las pantallas de la aplicación, no el archivo de datos en el disco: ver
+[SECURITY.md](SECURITY.md).
 
 ## Sin conexión por diseño
 

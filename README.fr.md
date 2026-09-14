@@ -107,14 +107,8 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
 ### Qui s'en sert
 - **Au premier démarrage**, le programme demande les données du laboratoire et
   crée l'administrateur. Ensuite l'application s'ouvre sur un écran de connexion.
-- **Les opérateurs** sont ajoutés par l'administrateur, qui coche ce que chacun
-  a le droit de faire et peut le changer à tout moment : voir les prix et les
-  bénéfices, ajouter de nouveaux travaux, modifier ceux déjà enregistrés, les
-  supprimer, modifier le catalogue, exporter et sauvegarder. Qui travaille à
-  l'établi sans voir l'argent ne voit aucun montant nulle part - ni prix, ni
-  coûts, ni totaux, ni Résumé, ni exports - et qui ne peut pas modifier le
-  catalogue ne voit pas l'onglet Catalogue : les clients et types de travaux
-  dont il a besoin sont proposés dans la fiche du travail.
+- **Les opérateurs** se connectent avec leur propre nom et mot de passe, et ne
+  voient et ne font que ce que l'administrateur permet : voir [Rôles et permissions](#rôles-et-permissions).
 - **Les mots de passe ne sont jamais enregistrés** : seulement PBKDF2-SHA256 sur
   un sel aléatoire par utilisateur, 150000 tours. Un mot de passe oublié se
   réinitialise, il ne se récupère pas.
@@ -182,6 +176,54 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
   chaque système dessine à sa façon.
 - **Le symbole euro suit toujours le nombre**, dans toutes les langues.
 - **Clair par défaut**, sombre en un clic, mémorisé par ordinateur.
+
+## Rôles et permissions
+
+Lab Ledger a deux rôles.
+
+**Administrateur** : la personne qui a configuré le laboratoire. Voit et fait
+tout : prix et bénéfices, tout le catalogue, les utilisateurs et leurs
+permissions, l'Historique, les Réglages, les sauvegardes et leur restauration.
+Si le mot de passe est perdu, le code de récupération en définit un nouveau.
+
+**Opérateur** : tous les autres. Chaque opérateur se connecte avec son propre
+nom et mot de passe, et l'administrateur coche ce qu'il peut faire, dans
+**Catalogue > Utilisateurs**, à tout moment :
+
+| Permission | Ce qu'elle ouvre |
+|---|---|
+| **Voir prix et bénéfices** | Les colonnes coût, prix et marge et leurs totaux dans Travaux, l'onglet Résumé, les coûts des matériaux, les charges fixes et les impôts |
+| **Ajouter de nouveaux travaux** | Le bouton **+ Nouveau travail**, et l'import Excel avec Exporter |
+| **Modifier les travaux existants** | Changer un travail déjà enregistré, cocher des travaux, **Marquer terminé** et **Expédier ensemble** |
+| **Supprimer des travaux** | Supprimer un travail (il reste dans l'archive du fichier de données) |
+| **Modifier le catalogue** | L'onglet Catalogue : clients, types de travaux et leurs matériaux, matériaux, opérateurs et transporteurs |
+| **Exporter et sauvegarder** | Exporter Excel, Sauvegarde et Sauvegarde chiffrée - seulement avec Voir prix et bénéfices, car tout export contient les prix |
+
+Sans **Voir prix et bénéfices**, aucun montant n'apparaît à l'écran, et sans
+**Modifier le catalogue**, l'onglet Catalogue n'apparaît pas : les clients et
+types de travaux nécessaires se choisissent dans la fiche du travail.
+**Utilisateurs**, **Historique**, **Réglages** et **Importer sauvegarde** ne
+dépendent d'aucune case : ils sont à l'administrateur.
+
+Un nouvel opérateur commence avec **Ajouter de nouveaux travaux** seulement :
+quelqu'un à l'établi qui enregistre ses travaux et ne voit rien de l'argent.
+
+![Ce que voit un opérateur : les travaux, sans prix, coûts ni totaux](docs/screenshot-operator.png)
+
+Configurations typiques :
+
+- **Technicien** : Ajouter de nouveaux travaux, plus Modifier les travaux
+  existants s'il les marque aussi terminés et les expédie.
+- **Accueil** : Ajouter de nouveaux travaux, Modifier les travaux existants et
+  Modifier le catalogue, pour tenir à jour clients et transporteurs, toujours
+  sans voir l'argent.
+- **Associé ou responsable** : toutes les permissions ; seuls Utilisateurs,
+  Historique, Réglages et la restauration des sauvegardes restent à
+  l'administrateur.
+
+Les permissions sont vérifiées par l'application elle-même, pas seulement en
+cachant des boutons. Elles protègent les écrans de l'application, pas le fichier
+de données sur le disque : voir [SECURITY.md](SECURITY.md).
 
 ## Hors ligne par conception
 

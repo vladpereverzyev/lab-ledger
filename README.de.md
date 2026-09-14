@@ -107,13 +107,8 @@ Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
 ### Wer damit arbeitet
 - **Der erste Start** fragt die Daten des Labors ab und legt den Administrator
   an. Danach öffnet die App mit einer Anmeldung.
-- **Bediener** legt der Administrator an und hakt ab, was jeder darf - jederzeit
-  änderbar: Preise und Gewinn sehen, neue Arbeiten anlegen, bereits erfasste
-  ändern, löschen, den Katalog bearbeiten, exportieren und sichern. Wer am Tisch
-  arbeitet, ohne das Geld zu sehen, sieht nirgends einen Betrag - keine Preise,
-  Kosten, Summen, keine Übersicht und keine Exporte - und wer den Katalog nicht
-  bearbeiten darf, sieht den Reiter Katalog gar nicht: Kunden und Arbeitstypen
-  bekommt er im Arbeitsformular angeboten.
+- **Bediener** melden sich mit eigenem Namen und Passwort an und sehen und tun nur,
+  was der Administrator erlaubt - siehe [Rollen und Rechte](#rollen-und-rechte).
 - **Passwörter werden nie gespeichert**: nur PBKDF2-SHA256 über ein zufälliges
   Salt je Benutzer, 150000 Runden. Ein vergessenes Passwort wird zurückgesetzt,
   nicht wiederhergestellt.
@@ -179,6 +174,53 @@ Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
   anders zeichnet.
 - **Das Eurozeichen steht immer hinter der Zahl**, in jeder Sprache.
 - **Hell als Standard**, dunkel auf einen Klick, pro Rechner gemerkt.
+
+## Rollen und Rechte
+
+Lab Ledger kennt zwei Rollen.
+
+**Administrator** - wer das Labor eingerichtet hat. Sieht und darf alles: Preise
+und Gewinn, den ganzen Katalog, die Benutzer und ihre Rechte, den Verlauf, die
+Einstellungen, Backups und das Zurückspielen. Ist das Passwort verloren, setzt
+der Wiederherstellungscode ein neues.
+
+**Bediener** - alle anderen. Jeder Bediener meldet sich mit eigenem Namen und
+Passwort an, und der Administrator hakt unter **Katalog > Benutzer** jederzeit
+ab, was er darf:
+
+| Recht | Was es freigibt |
+|---|---|
+| **Preise und Gewinn sehen** | Die Spalten Kosten, Preis und Marge samt Summen unter Arbeiten, den Reiter Übersicht, Materialkosten, Fixkosten und Steuern |
+| **Neue Arbeiten anlegen** | Den Knopf **+ Neue Arbeit**, und den Excel-Import zusammen mit Exportieren |
+| **Bestehende Arbeiten ändern** | Eine erfasste Arbeit ändern, Arbeiten abhaken, **Als erledigt markieren** und **Zusammen versenden** |
+| **Arbeiten löschen** | Eine Arbeit löschen (sie bleibt im Archiv in der Datendatei) |
+| **Katalog bearbeiten** | Den Reiter Katalog: Kunden, Arbeitstypen mit ihren Materialien, Materialien, Bediener und Versanddienste |
+| **Exportieren und sichern** | Excel exportieren, Backup und Verschlüsseltes Backup - nur zusammen mit Preise und Gewinn sehen, denn jeder Export enthält Preise |
+
+Ohne **Preise und Gewinn sehen** erscheint nirgends ein Betrag, und ohne
+**Katalog bearbeiten** erscheint der Reiter Katalog gar nicht: Kunden und
+Arbeitstypen, die eine Arbeit braucht, werden im Arbeitsformular angeboten.
+**Benutzer**, **Verlauf**, **Einstellungen** und **Backup importieren** hängen
+an keinem Haken - sie gehören dem Administrator.
+
+Ein neuer Bediener beginnt nur mit **Neue Arbeiten anlegen**: jemand am Tisch,
+der seine Arbeiten erfasst und nichts vom Geld sieht.
+
+![Was ein Bediener sieht: die Arbeiten, ohne Preise, Kosten oder Summen](docs/screenshot-operator.png)
+
+Typische Einstellungen:
+
+- **Techniker** - Neue Arbeiten anlegen, dazu Bestehende Arbeiten ändern, wenn
+  er Arbeiten auch als erledigt markiert und versendet.
+- **Empfang** - Neue Arbeiten anlegen, Bestehende Arbeiten ändern und Katalog
+  bearbeiten, um Kunden und Versanddienste aktuell zu halten, weiterhin ohne
+  das Geld zu sehen.
+- **Partner oder Leitung** - alle Rechte; nur Benutzer, Verlauf, Einstellungen
+  und das Zurückspielen von Backups bleiben beim Administrator.
+
+Die Rechte prüft die App selbst, nicht nur durch ausgeblendete Knöpfe. Sie
+schützen die Bildschirme der App, nicht die Datendatei auf der Festplatte: siehe
+[SECURITY.md](SECURITY.md).
 
 ## Offline von Grund auf
 
