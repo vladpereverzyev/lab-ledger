@@ -816,6 +816,11 @@ function bindUI() {
   $("#view-works .table-wrap").addEventListener("scroll", () => {
     $("#totalsWrap").scrollLeft = $("#view-works .table-wrap").scrollLeft;
   });
+  // And they have to be exactly as wide as the rows: when the list is long
+  // enough to scroll, its scrollbar takes width from the table and not from the
+  // totals, and every total would sit a scrollbar's width to the right.
+  new ResizeObserver(syncTotalsWidth).observe($("#worksTable"));
+  window.addEventListener("resize", syncTotalsWidth);
 
   $("#selAll").addEventListener("change", () => {
     if ($("#selAll").checked) visibleIds.forEach((id) => selected.add(id));
@@ -1058,6 +1063,15 @@ function renderWorks() {
     `<td class="num" data-label="${escapeAttr(t("th_listprice"))}"><b>${money(revenue)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_margin"))}">` +
     `<b class="${margin < 0 ? "neg" : "pos"}">${money(margin)}</b></td><td></td></tr>`;
+}
+
+function syncTotalsWidth() {
+  const table = $("#worksTable");
+  const totals = $("#totalsWrap .totals-table");
+  // On a phone both become stacked cards and there are no columns to match; a
+  // hidden tab has no width to copy.
+  if (window.matchMedia("(max-width: 760px)").matches) { totals.style.width = ""; return; }
+  if (table.offsetWidth) totals.style.width = table.offsetWidth + "px";
 }
 
 function workRow(w) {

@@ -342,21 +342,31 @@ table.grid tbody tr.picked { background: var(--chip); }
   display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
   padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-soft);
 }
-.kv b { color: var(--ink); font-variant-numeric: tabular-nums; }
-.kv b.path { font-weight: 400; font-size: 12px; word-break: break-all; text-align: right; }
+/* Every value in a settings row reads the same: one size, one weight, one
+   typeface - a version, a licence, a code or a path alike. */
+.kv b, .kv .path {
+  color: var(--ink); font-size: 13px; font-weight: 500; font-family: inherit;
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+.kv .path { word-break: break-all; }
+.kv > span.path { text-align: left; }
 
 .switch { display: flex; align-items: center; gap: 9px; font-size: 14px; cursor: pointer; }
 .switch input { width: 16px; height: 16px; accent-color: var(--brand); }
 .form-sec .hint { margin-top: 8px; }
 
 /* ---------------- Modal ---------------- */
+/* Every dialog sits on the same frosted veil as the sign-in screen. */
 .modal-backdrop {
-  position: fixed; inset: 0; background: rgba(15, 23, 42, .45);
+  position: fixed; inset: 0; background: var(--veil);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
   display: flex; align-items: center; justify-content: center; z-index: 50; padding: 20px;
 }
 .modal {
-  background: var(--panel); border-radius: 14px; padding: 22px; width: 480px; max-width: 100%;
-  max-height: 92vh; overflow: auto; box-shadow: 0 20px 44px rgba(0, 0, 0, .22);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+  width: 480px; max-width: 100%; max-height: 92vh; overflow: auto;
+  box-shadow: 0 24px 60px rgba(16, 24, 40, .22);
 }
 .modal.wide { width: 620px; }
 .modal h3 { margin: 0 0 16px; }
@@ -438,10 +448,7 @@ table.bom { margin-bottom: 8px; }
 .gate-forgot { text-align: center; margin-top: 14px; }
 .gate-forgot a { color: var(--ink-soft); text-decoration: none; cursor: pointer; }
 .gate-forgot a:hover { color: var(--ink); }
-#setRecovery {
-  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
-  font-size: 12px; user-select: all;
-}
+#setRecovery { letter-spacing: .04em; user-select: all; }
 /* Who is at the bench, always in the same corner. */
 /* Initials, nothing else. Who it is and what they may do belongs in the menu,
    not in the corner of every screen. */
