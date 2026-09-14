@@ -75,7 +75,9 @@
   }
 
   function unavailable() {
-    try { if (typeof window.toast === "function") window.toast(DESKTOP_ONLY); } catch (_) {}
+    // app.js is loaded by the time anyone clicks, so the notice can be translated.
+    const msg = typeof window.t === "function" ? window.t("demo_desktop_only") : DESKTOP_ONLY;
+    try { if (typeof window.toast === "function") window.toast(msg); } catch (_) {}
     return { canceled: true };
   }
 
@@ -141,7 +143,8 @@
     const bar = document.createElement("div");
     bar.className = "demo-bar";
     const info = document.createElement("span");
-    info.innerHTML = '<span class="badge">Live Demo</span>';
+    // data-i18n: the app's own translation pass relabels these with the rest.
+    info.innerHTML = '<span class="badge" data-i18n="demo_live">Live Demo</span>';
     const sp = document.createElement("span");
     sp.className = "sp";
     const dl = document.createElement("a");
@@ -150,9 +153,11 @@
     dl.target = "_blank";
     dl.rel = "noopener";
     dl.textContent = "Download App";
+    dl.setAttribute("data-i18n", "demo_download");
     const reset = document.createElement("button");
     reset.type = "button";
     reset.textContent = "Reset Demo";
+    reset.setAttribute("data-i18n", "demo_reset");
     reset.addEventListener("click", function () {
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
       location.reload();

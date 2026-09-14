@@ -648,8 +648,8 @@ function renderUsers() {
       <td>${escapeHtml(t(u.role === "admin" ? "role_admin" : "role_operator"))}</td>
       <td class="muted">${escapeHtml(perms || "-")}</td>
       <td class="center nowrap">${u.role === "admin" ? "" :
-        '<button class="btn icon" title="Edit">&#9998;</button>' +
-        '<button class="btn icon danger" title="Delete">&#10005;</button>'}</td>`;
+        '<button class="btn icon" title="' + escapeAttr(t("tip_edit")) + '">&#9998;</button>' +
+        '<button class="btn icon danger" title="' + escapeAttr(t("tip_delete")) + '">&#10005;</button>'}</td>`;
     const [edit, del] = tr.querySelectorAll("button");
     if (edit) edit.addEventListener("click", () => openUserModal(u.id));
     if (del) del.addEventListener("click", () => {
@@ -1119,8 +1119,8 @@ function workRow(w) {
     <td class="num">${priceCell}</td>
     <td class="num"><span class="${margin < 0 ? "neg" : ""}">${money(margin)}</span></td>
     <td class="center nowrap">
-      <button class="btn icon" title="Edit">&#9998;</button>
-      <button class="btn icon danger" title="Delete">&#10005;</button>
+      <button class="btn icon" title="${escapeAttr(t("tip_edit"))}">&#9998;</button>
+      <button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button>
     </td>`;
 
   const [edit, del] = tr.querySelectorAll("button");
@@ -1733,8 +1733,8 @@ function renderClients() {
       <td>${escapeHtml(c.address || "")}</td>
       <td class="muted">${escapeHtml(c.note || "")}</td>
       <td class="center nowrap">
-        <button class="btn icon" title="Edit">&#9998;</button>
-        <button class="btn icon danger" title="Delete">&#10005;</button>
+        <button class="btn icon" title="${escapeAttr(t("tip_edit"))}">&#9998;</button>
+        <button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button>
       </td>`;
     const [edit, del] = tr.querySelectorAll("button");
     edit.addEventListener("click", () => openClientModal(c.id));
@@ -1811,7 +1811,7 @@ function renderTypes() {
       <td class="num"><input class="cell-input" type="number" step="1" min="0" value="${escapeAttr(price)}" /></td>
       <td class="num ${margin < 0 ? "neg" : ""}">${money(margin)}</td>
       <td class="num muted">${price ? Math.round(100 * margin / price) + "%" : "-"}</td>
-      <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
+      <td class="center"><button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button></td>`;
 
     const name = tr.querySelector("input.text");
     const listInput = tr.querySelector('input[type="number"]');
@@ -1889,7 +1889,7 @@ function renderBom() {
       <td class="num"><input class="cell-input" type="number" min="0" step="0.5" value="${escapeAttr(line.qty)}" /></td>
       <td class="num muted">${money(unit)}</td>
       <td class="num">${money(unit * (Number(line.qty) || 0))}</td>
-      <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
+      <td class="center"><button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button></td>`;
 
     tr.querySelector("select").addEventListener("change", (ev) => {
       line.material = ev.target.value; saveCatalog(); renderBom();
@@ -1933,7 +1933,7 @@ function renderMaterials() {
       <td><input class="cell-input text narrow" value="${escapeAttr(m.unit || "")}" /></td>
       <td class="num strong">${money(unitCostOf(m))}</td>
       <td><input class="cell-input text" value="${escapeAttr(m.note || "")}" /></td>
-      <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
+      <td class="center"><button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button></td>`;
 
     const ins = tr.querySelectorAll("input");
     ins[0].addEventListener("change", () => { m.name = ins[0].value; saveCatalog(); renderTypes(); });
@@ -1970,7 +1970,7 @@ function renderOperators() {
     tr.innerHTML = `
       <td><input class="cell-input text" value="${escapeAttr(o.name)}" /></td>
       <td><button class="btn link">${opTypesLabel(o)}</button></td>
-      <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
+      <td class="center"><button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button></td>`;
 
     const name = tr.querySelector("input");
     name.addEventListener("change", () => {
@@ -2033,7 +2033,7 @@ function renderChips(key, sel) {
   ul.innerHTML = "";
   (state.config[key] || []).forEach((v, i) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span>${escapeHtml(v)}</span><button title="Remove">&#10005;</button>`;
+    li.innerHTML = `<span>${escapeHtml(v)}</span><button title="${escapeAttr(t("tip_remove"))}">&#10005;</button>`;
     li.querySelector("span").addEventListener("dblclick", () => {
       const next = prompt(t("prompt_editvalue"), v);
       if (next != null && next.trim()) {
@@ -2082,7 +2082,7 @@ function renderCosts() {
       </select></td>
       <td class="num">${money(year)}</td>
       <td class="num muted">${money(year / 12)}</td>
-      <td class="center"><button class="btn icon danger" title="Delete">&#10005;</button></td>`;
+      <td class="center"><button class="btn icon danger" title="${escapeAttr(t("tip_delete"))}">&#10005;</button></td>`;
 
     const [cat, period] = tr.querySelectorAll("select");
     const [name, amount] = tr.querySelectorAll("input");
