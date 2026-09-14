@@ -25,8 +25,8 @@ every number stays on your computer.
 
 ## Why Lab Ledger?
 
-- **Free and offline** - no account, no server, no subscription. It packages
-  into a real desktop app and runs like any normal program.
+- **A real desktop program** - installed like any other, working without an
+  internet connection, with nothing to sign up for.
 - **Private by design** - all data stays on your computer. No patient or client
   data ships in the app; you type your own locally and back it up to files when
   you want.
@@ -70,17 +70,22 @@ Catalog - each work type wired to the materials it consumes:
   material cost and it pulls the margin down exactly that much.
 - **Shipping** - mark a job shipped with its date, courier and tracking number.
   Filter by shipped / still to ship.
+- **Incoming and Outgoing** - work still on the bench waits in Incoming and
+  counts for nothing yet; tick it done and it moves to Outgoing, where it earns
+  and ships.
+- **One parcel, many jobs** - tick several works and ship them together under a
+  single date, courier and tracking number.
+- **Deleting is not destroying** - a deleted work leaves every list and total
+  but is kept in an archive inside the data file, so a backup still has it.
 - Search across client, patient, work, operator, courier and tracking, and
   filter by year, month, operator, shipping and redo.
 
 ### Who uses it
 - **First run** asks for the lab's details and creates the administrator. After
   that the app opens on a sign-in screen and nothing is behind it.
-- **Operators** are added by the administrator, who ticks what each one may do,
-  and can change it later:
-  see prices and profit, add new works, edit existing
-  ones, delete them, edit the catalog,
-  export and back up. An operator who cannot see the money gets no Summary tab,
+- **Operators** are added by the administrator, who ticks what each one may do
+  and can change it at any time: see prices and profit, add new works, edit the
+  works already recorded, delete them, edit the catalog, export and back up. An operator who cannot see the money gets no Summary tab,
   no price and margin columns, no prices in the catalog.
 - **Passwords are never stored** - only PBKDF2-SHA256 over a random per-user
   salt, 150000 rounds. A forgotten password can be reset, never recovered.
@@ -103,7 +108,8 @@ Catalog - each work type wired to the materials it consumes:
   month (area), margin by month (bars, red when a month loses money),
   cumulative profit against the running-cost line, top work types by revenue
   (horizontal bars), revenue share by client (doughnut), works per operator
-  split billable / redo (stacked bars), and where the revenue goes (stacked
+  split billable / redo (stacked bars), the work types each operator makes
+  (stacked bars), and where the revenue goes (stacked
   bar: materials, running costs, taxes, what is left).
 - Profitability cards: running costs, taxes and contributions, net profit, and
   the profit **per working day, per week, per month**, the average per work and
@@ -125,13 +131,17 @@ Catalog - each work type wired to the materials it consumes:
 - **Taxes and calendar** - flat-rate or standard regime with plain percentages,
   plus how many days a week and weeks a year the lab actually works - which is
   what turns a yearly profit into a daily one.
-- **Settings** - update check on or off, version, data file path.
+- **Settings** - update check on or off, the companion Excel file, the recovery
+  code (administrator only), version, licence and data file path.
+- **Users** and **History** - accounts and permissions, and every change with
+  who made it; administrator only.
 
 ### Everywhere
 - **Import / Export** - Excel export of works, per-type summary, catalog and
-  running costs; Excel import of works; full JSON backups you can restore on
-  any computer.
-- **Light and dark mode**, remembered per computer.
+  running costs; Excel import of works, from a sheet of your own or from a file
+  Lab Ledger wrote; full backups, plain or **encrypted with a password**
+  (AES-256-GCM), that restore on any computer. Restoring a backup replaces the
+  accounts too, so only the administrator can do it.
 - **Five languages**, and the toolbar does not move when you switch: every
   control has a fixed width.
 - **Fits the screen it is on** - on a phone every table row becomes a card with
@@ -147,10 +157,12 @@ Catalog - each work type wired to the materials it consumes:
 
 Lab Ledger is not a cloud product with an offline mode. It is offline-first:
 your data lives in one JSON file on your computer; there is no account, no
-server, no telemetry, and nothing you type ever leaves the machine. The only
-network call is an optional update check, described below.
+server, no telemetry, and nothing you type leaves the machine - unless you put
+the companion Excel file in a folder your cloud drive syncs, which the app
+warns you about before it writes one.
 
-There is exactly one exception, and it is opt-out: **the update check**. Once a
+The app itself goes online for one thing only, and it can be switched off:
+**the update check**. Once a
 day, if you leave it switched on, the app asks the public GitHub REST API which
 release is the latest and compares it with the one you are running. That is the
 only moment Lab Ledger uses the internet. It sends no account, no identifiers
@@ -200,8 +212,8 @@ newer version exists.
 | Authentication | none - the public, unauthenticated API |
 | Rate limit | the public 60 requests per hour per IP; the app asks at most once a day |
 | Sent | the request itself and a `User-Agent` of `LabLedger/<version>`. No account, no identifiers, nothing about your works, clients or patients |
-| Received | the latest release tag and its page URL |
-| Then what | the tag is compared with the installed version; if it is newer you get a dialog. Press **Download** and the app fetches the installer for your system straight into your Downloads folder, then offers to run it. Nothing is fetched and nothing is installed unless you press that button |
+| Received | the latest release tag, its page URL and the names of its files |
+| Then what | the tag is compared with the installed version; if it is newer you get a dialog. Press **Download** and the app fetches the installer for your system straight into your Downloads folder, checks it against the SHA-256 sums published with the release - a file that does not match is deleted - and then offers to run it. Nothing is fetched and nothing is installed unless you press that button |
 
 The check can be switched off in **Catalog > Settings**; with it off the app
 makes no network calls at all. The installed version and the GitHub API version
@@ -216,11 +228,17 @@ endorsed by GitHub.
 
 Your data lives in a single local JSON file inside the app's user-data folder -
 the exact path is shown in **Catalog > Settings**. Nothing is uploaded anywhere.
-Use **Backup** to save a copy and **Import backup** to restore it.
+Use **Backup** or **Encrypted backup** to save a copy and **Import backup** to
+restore it.
+
+Every save goes to a temporary file first and then replaces the old one, so a
+crash or a power cut in the middle leaves the previous archive whole. If the
+file ever cannot be read, the app moves it aside untouched - together with its
+recovery code - and tells you where, instead of starting over on top of it.
 
 ## Run from source
 
-Requires [Node.js](https://nodejs.org/) 18+.
+Requires [Node.js](https://nodejs.org/) 22.12 or newer.
 
 ```bash
 npm install
@@ -234,7 +252,7 @@ npm run dist
 ```
 
 Installers are produced in the `release/` folder: NSIS installer and portable
-`.exe` on Windows, `.dmg` and `.zip` on macOS, `AppImage` and `.deb` on Linux.
+`.exe` on Windows, a universal `.dmg` and `.zip` on macOS (Intel and Apple Silicon), `AppImage` and `.deb` on Linux.
 
 Icons are regenerated from `build/icon.svg` with
 [Pillow](https://pillow.readthedocs.io/):
@@ -269,5 +287,5 @@ lab, not free to resell. It is covered by the
   version of it, to third parties for money: as a product, a hosted service,
   bundled with hardware, or built into another product. Write to
   <info@vladpereverzyev.com>.
-- **On 2030-09-11 this version becomes Apache 2.0** automatically. Every
+- **On 2030-09-14 this version becomes Apache 2.0** automatically. Every
   release carries its own change date, four years after it is published.

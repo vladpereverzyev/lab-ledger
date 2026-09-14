@@ -73,6 +73,14 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
   exactement d'autant.
 - **Expédition** : marquez un travail expédié avec sa date, son transporteur et
   son numéro de suivi. Filtrez par expédiés / à expédier.
+- **Entrants et Sortants** : le travail encore sur l'établi attend dans Entrants
+  et ne compte pas encore ; marquez-le terminé et il passe dans Sortants, où il
+  rapporte et s'expédie.
+- **Un colis, plusieurs travaux** : cochez plusieurs travaux et expédiez-les
+  ensemble avec une seule date, un transporteur et un numéro de suivi.
+- **Supprimer n'est pas détruire** : un travail supprimé quitte les listes et
+  les totaux mais reste dans une archive à l'intérieur du fichier de données,
+  donc aussi dans les sauvegardes.
 - Recherchez sur client, patient, travail, opérateur, transporteur et suivi ;
   filtrez par année, mois, opérateur, expédition et reprise.
 
@@ -80,10 +88,11 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
 - **Au premier démarrage**, le programme demande les données du laboratoire et
   crée l'administrateur. Ensuite l'application s'ouvre sur un écran de connexion.
 - **Les opérateurs** sont ajoutés par l'administrateur, qui coche ce que chacun
-  a le droit de faire (et peut le changer ensuite) : voir les prix et les bénéfices, ajouter de nouveaux
-  travaux, modifier les existants, les supprimer, modifier le catalogue, exporter et sauvegarder. Qui ne
-  peut pas voir l'argent n'a ni l'onglet Résumé, ni les colonnes prix et marge,
-  ni les prix du catalogue.
+  a le droit de faire et peut le changer à tout moment : voir les prix et les
+  bénéfices, ajouter de nouveaux travaux, modifier ceux déjà enregistrés, les
+  supprimer, modifier le catalogue, exporter et sauvegarder. Qui ne peut pas
+  voir l'argent n'a ni l'onglet Résumé, ni les colonnes prix et marge, ni les
+  prix du catalogue.
 - **Les mots de passe ne sont jamais enregistrés** : seulement PBKDF2-SHA256 sur
   un sel aléatoire par utilisateur, 150000 tours. Un mot de passe oublié se
   réinitialise, il ne se récupère pas.
@@ -106,7 +115,8 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
   matériaux par mois (aire), marge par mois (barres, rouges quand le mois perd),
   bénéfice cumulé face à la ligne des charges fixes, travaux les plus rentables
   (barres horizontales), part des recettes par client (anneau), travaux par
-  opérateur répartis facturables / reprises (barres empilées) et où vont les
+  opérateur répartis facturables / reprises (barres empilées), les types de
+  travaux de chaque opérateur (barres empilées) et où vont les
   recettes (barre empilée : matériaux, charges fixes, impôts, ce qui reste).
 - Cartes de rentabilité : charges fixes, impôts et cotisations, bénéfice net et
   le bénéfice **par jour travaillé, par semaine, par mois**, la moyenne par
@@ -129,14 +139,19 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
   simples, plus combien de jours par semaine et de semaines par an le
   laboratoire travaille vraiment : c'est ce qui transforme un bénéfice annuel en
   bénéfice journalier.
-- **Réglages** : recherche de mises à jour activée ou non, version, chemin du
-  fichier de données.
+- **Réglages** : recherche de mises à jour activée ou non, le fichier Excel
+  associé, le code de récupération (administrateur seulement), version, licence
+  et chemin du fichier de données.
+- **Utilisateurs** et **Historique** : comptes et permissions, et chaque
+  modification avec son auteur ; réservés à l'administrateur.
 
 ### Partout
 - **Importer / Exporter** : export Excel des travaux, du résumé par type, du
-  catalogue et des charges fixes ; import Excel des travaux ; sauvegardes JSON
-  complètes restaurables sur n'importe quel ordinateur.
-- **Mode clair et sombre**, mémorisé par ordinateur.
+  catalogue et des charges fixes ; import Excel des travaux, depuis votre propre
+  feuille ou un fichier écrit par Lab Ledger ; sauvegardes complètes, en clair
+  ou **chiffrées par mot de passe** (AES-256-GCM), restaurables sur n'importe
+  quel ordinateur. Restaurer une sauvegarde remplace aussi les comptes : seul
+  l'administrateur peut le faire.
 - **Cinq langues**, et changer de langue ne déplace pas la barre d'outils :
   chaque commande a une largeur fixe.
 - **S'adapte à l'écran** : sur téléphone, chaque ligne du tableau devient une
@@ -151,10 +166,12 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
 Lab Ledger n'est pas un produit cloud avec un mode hors ligne. C'est un
 programme hors ligne, point. Les données vivent dans un fichier JSON sur votre
 ordinateur : pas de compte, pas de serveur, pas de télémétrie, et rien de ce que
-vous saisissez ne quitte la machine.
+vous saisissez ne quitte la machine, sauf si vous placez le fichier Excel
+associé dans un dossier synchronisé par votre cloud : l'application vous
+prévient avant de l'écrire.
 
-Il y a une seule exception, et elle se désactive : **la recherche de mises à
-jour**. Une fois par jour, si vous la laissez active, l'application demande à
+L'application ne se connecte que pour une chose, et cela se désactive : **la
+recherche de mises à jour**. Une fois par jour, si vous la laissez active, l'application demande à
 l'API REST publique de GitHub quelle est la dernière version et la compare à la
 vôtre. C'est le seul moment où Lab Ledger utilise internet. Elle n'envoie aucun
 compte, aucun identifiant et rien de vos travaux, clients ou patients ; et elle
@@ -205,8 +222,8 @@ version plus récente existe.
 | Authentification | aucune : l'API publique non authentifiée |
 | Limite d'appels | les 60 par heure et par IP de l'API publique ; l'application demande au plus une fois par jour |
 | Ce qui est envoyé | la requête et un `User-Agent` `LabLedger/<version>`. Pas de compte, pas d'identifiant, rien de vos travaux, clients ou patients |
-| Ce qui est reçu | le tag de la dernière version et l'URL de sa page |
-| Ensuite | le tag est comparé à la version installée ; s'il est plus récent, une fenêtre s'ouvre. Sur **Télécharger**, l'application récupère elle-même l'installateur adapté à votre système dans le dossier Téléchargements et propose de le lancer. Sans ce bouton, elle ne télécharge et n'installe rien |
+| Ce qui est reçu | le tag de la dernière version, l'URL de sa page et les noms de ses fichiers |
+| Ensuite | le tag est comparé à la version installée ; s'il est plus récent, une fenêtre s'ouvre. Sur **Télécharger**, l'application récupère elle-même l'installateur adapté à votre système dans le dossier Téléchargements, le vérifie avec les sommes SHA-256 publiées avec la version (un fichier qui ne correspond pas est supprimé) et propose de le lancer. Sans ce bouton, elle ne télécharge et n'installe rien |
 
 La vérification se désactive dans **Catalogue > Réglages** ; désactivée,
 l'application ne fait aucun appel réseau. On y trouve aussi la version installée
@@ -221,12 +238,18 @@ GitHub.
 
 Vos données vivent dans un unique fichier JSON local, dans le dossier de données
 de l'application - le chemin exact est indiqué dans **Catalogue > Réglages**.
-Rien n'est envoyé nulle part. Utilisez **Sauvegarde** pour en garder une copie et
-**Importer sauvegarde** pour la restaurer.
+Rien n'est envoyé nulle part. Utilisez **Sauvegarde** ou **Sauvegarde chiffrée**
+pour en garder une copie et **Importer sauvegarde** pour la restaurer.
+
+Chaque enregistrement passe d'abord par un fichier temporaire qui remplace
+ensuite l'ancien : un plantage ou une coupure de courant en plein milieu laisse
+l'archive précédente intacte. Si un jour le fichier est illisible, l'application
+le met de côté sans y toucher, avec son code de récupération, et vous dit où,
+au lieu de repartir de zéro par-dessus.
 
 ## Lancer depuis les sources
 
-Nécessite [Node.js](https://nodejs.org/) 18+.
+Nécessite [Node.js](https://nodejs.org/) 22.12 ou plus récent.
 
 ```bash
 npm install
@@ -240,7 +263,7 @@ npm run dist
 ```
 
 Les installeurs sont produits dans le dossier `release/` : installeur NSIS et
-`.exe` portable sous Windows, `.dmg` et `.zip` sous macOS, `AppImage` et `.deb`
+`.exe` portable sous Windows, `.dmg` et `.zip` universels sous macOS (Intel et Apple Silicon), `AppImage` et `.deb`
 sous Linux.
 
 Les icônes se régénèrent depuis `build/icon.svg` avec
@@ -275,5 +298,5 @@ propre laboratoire, pas libre à la revente. La
   version modifiée, à des tiers contre paiement : comme produit, comme service
   hébergé, avec du matériel ou intégré à un autre logiciel. Écrivez à
   <info@vladpereverzyev.com>.
-- **Le 2030-09-11 cette version devient Apache 2.0** automatiquement. Chaque
+- **Le 2030-09-14 cette version devient Apache 2.0** automatiquement. Chaque
   publication porte sa propre date, quatre ans après sa sortie.

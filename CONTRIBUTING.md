@@ -28,7 +28,7 @@ please include your OS, what you did, and what you expected. Screenshots help.
 
 ## Run from source
 
-Requires [Node.js](https://nodejs.org/) 18+.
+Requires [Node.js](https://nodejs.org/) 22.12 or newer.
 
 ```bash
 npm install

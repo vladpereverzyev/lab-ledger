@@ -72,6 +72,14 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
   aparece el coste del material en negativo y el margen baja exactamente eso.
 - **Envío**: marca un trabajo como enviado con fecha, transportista y número de
   seguimiento. Filtra por enviados / por enviar.
+- **Entradas y Salidas**: el trabajo que sigue en el banco espera en Entradas y
+  todavía no cuenta; márcalo terminado y pasa a Salidas, donde genera ingresos y
+  se envía.
+- **Un paquete, muchos trabajos**: marca varios trabajos y envíalos juntos con
+  una sola fecha, transportista y número de seguimiento.
+- **Eliminar no es destruir**: un trabajo eliminado desaparece de listas y
+  totales, pero se guarda en un archivo dentro del fichero de datos, así que
+  también en las copias.
 - Busca por cliente, paciente, trabajo, operador, transportista y seguimiento;
   filtra por año, mes, operador, envío y rehecho.
 
@@ -79,9 +87,9 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 - **El primer arranque** pide los datos del laboratorio y crea el administrador.
   A partir de ahí la aplicación abre en una pantalla de acceso.
 - **Los operadores** los añade el administrador, marcando lo que cada uno puede
-  hacer (y puede cambiarlo después): ver precios y beneficios, añadir trabajos nuevos, editar
-  los existentes, eliminarlos, editar
-  el catálogo, exportar y copiar. Quien no puede ver el dinero no ve la pestaña
+  hacer, y puede cambiarlo cuando quiera: ver precios y beneficios, añadir
+  trabajos nuevos, editar los ya registrados, eliminarlos, editar el catálogo,
+  exportar y copiar. Quien no puede ver el dinero no ve la pestaña
   Resumen, ni las columnas de precio y margen, ni los precios del catálogo.
 - **Las contraseñas nunca se guardan**: solo PBKDF2-SHA256 sobre una sal
   aleatoria por usuario, 150000 vueltas. Una contraseña olvidada se reinicia, no
@@ -105,7 +113,8 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
   (área), margen por mes (barras, rojas cuando el mes pierde), beneficio
   acumulado frente a la línea de costes fijos, trabajos más rentables (barras
   horizontales), cuota de ingresos por cliente (anillo), trabajos por operador
-  divididos en facturables / rehechos (barras apiladas) y a dónde van los
+  divididos en facturables / rehechos (barras apiladas), los tipos de trabajo
+  que hace cada operador (barras apiladas) y a dónde van los
   ingresos (barra apilada: materiales, costes fijos, impuestos, lo que queda).
 - Tarjetas de rentabilidad: costes fijos, impuestos y cotizaciones, beneficio
   neto y el beneficio **por día trabajado, por semana, por mes**, la media por
@@ -127,14 +136,19 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 - **Impuestos y calendario**: régimen de tipo fijo o general con porcentajes
   sencillos, más cuántos días por semana y semanas al año trabaja realmente el
   laboratorio: eso es lo que convierte un beneficio anual en uno diario.
-- **Ajustes**: comprobación de actualizaciones sí o no, versión, ruta del
-  archivo de datos.
+- **Ajustes**: comprobación de actualizaciones sí o no, el archivo Excel
+  asociado, el código de recuperación (solo administrador), versión, licencia y
+  ruta del archivo de datos.
+- **Usuarios** e **Historial**: cuentas y permisos, y cada cambio con quién lo
+  hizo; solo para el administrador.
 
 ### En todas partes
 - **Importar / Exportar**: exportación a Excel de trabajos, resumen por tipo,
-  catálogo y costes fijos; importación de trabajos desde Excel; copias de
-  seguridad JSON completas restaurables en cualquier ordenador.
-- **Modo claro y oscuro**, recordado en el ordenador.
+  catálogo y costes fijos; importación de trabajos desde Excel, de una hoja
+  propia o de un archivo escrito por Lab Ledger; copias completas, en claro o
+  **cifradas con contraseña** (AES-256-GCM), restaurables en cualquier
+  ordenador. Restaurar una copia sustituye también las cuentas, así que solo
+  puede hacerlo el administrador.
 - **Cinco idiomas**, y al cambiar de idioma la barra no se mueve: cada control
   tiene un ancho fijo.
 - **Se adapta a la pantalla**: en el movil cada fila de la tabla se convierte en
@@ -149,10 +163,11 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 Lab Ledger no es un producto en la nube con modo sin conexión. Es un programa
 sin conexión, y punto. Los datos viven en un archivo JSON de tu ordenador: sin
 cuenta, sin servidor, sin telemetría, y nada de lo que escribes sale de la
-máquina.
+máquina, salvo que pongas el archivo Excel asociado en una carpeta que tu nube
+sincroniza: la aplicación te avisa antes de escribirlo.
 
-Hay una única excepción, y se puede apagar: **la comprobación de
-actualizaciones**. Una vez al día, si la dejas activada, la aplicación pregunta
+La aplicación solo se conecta para una cosa, y se puede apagar: **la
+comprobación de actualizaciones**. Una vez al día, si la dejas activada, la aplicación pregunta
 a la API REST pública de GitHub cuál es la última versión y la compara con la
 tuya. Es el único momento en que Lab Ledger usa internet. No envía cuenta, ni
 identificadores, ni nada de tus trabajos, clientes o pacientes; y solo descarga
@@ -200,8 +215,8 @@ existe una versión más reciente.
 | Autenticación | ninguna: la API pública sin autenticar |
 | Límite de peticiones | las 60 por hora e IP de la API pública; la aplicación pregunta como mucho una vez al día |
 | Qué se envía | la petición y un `User-Agent` `LabLedger/<versión>`. Sin cuenta, sin identificadores, nada de tus trabajos, clientes o pacientes |
-| Qué se recibe | la etiqueta de la última versión y la URL de su página |
-| Y después | la etiqueta se compara con la versión instalada; si es más reciente aparece un diálogo. Pulsa **Descargar** y la aplicación baja sola el instalador para tu sistema en la carpeta Descargas y ofrece ejecutarlo. Sin ese botón no descarga ni instala nada |
+| Qué se recibe | la etiqueta de la última versión, la URL de su página y los nombres de sus archivos |
+| Y después | la etiqueta se compara con la versión instalada; si es más reciente aparece un diálogo. Pulsa **Descargar** y la aplicación baja sola el instalador para tu sistema en la carpeta Descargas, lo comprueba con las sumas SHA-256 publicadas con la versión (un archivo que no coincide se borra) y ofrece ejecutarlo. Sin ese botón no descarga ni instala nada |
 
 La comprobación se desactiva en **Catálogo > Ajustes**; desactivada, la
 aplicación no hace ninguna llamada de red. Allí se muestran también la versión
@@ -216,12 +231,18 @@ por GitHub.
 
 Tus datos viven en un único archivo JSON local dentro de la carpeta de datos de
 la aplicación; la ruta exacta se muestra en **Catálogo > Ajustes**. No se sube
-nada a ninguna parte. Usa **Copia** para guardar una copia e **Importar copia**
-para restaurarla.
+nada a ninguna parte. Usa **Copia** o **Copia cifrada** para guardar una copia e
+**Importar copia** para restaurarla.
+
+Cada guardado va primero a un archivo temporal y luego sustituye al anterior,
+así que un fallo o un corte de luz a mitad dejan entero el archivo previo. Si
+algún día el archivo no se puede leer, la aplicación lo aparta intacto, junto
+con su código de recuperación, y te dice dónde, en lugar de empezar de cero
+encima.
 
 ## Ejecutar desde el código
 
-Requiere [Node.js](https://nodejs.org/) 18+.
+Requiere [Node.js](https://nodejs.org/) 22.12 o posterior.
 
 ```bash
 npm install
@@ -235,7 +256,7 @@ npm run dist
 ```
 
 Los instaladores se generan en la carpeta `release/`: instalador NSIS y `.exe`
-portable en Windows, `.dmg` y `.zip` en macOS, `AppImage` y `.deb` en Linux.
+portable en Windows, `.dmg` y `.zip` universales en macOS (Intel y Apple Silicon), `AppImage` y `.deb` en Linux.
 
 Los iconos se regeneran desde `build/icon.svg` con
 [Pillow](https://pillow.readthedocs.io/):
@@ -269,5 +290,5 @@ propio laboratorio, no libre de revender. Rige la
   modificada, a terceros a cambio de dinero: como producto, como servicio
   alojado, junto con hardware o integrado en otro programa. Escribe a
   <info@vladpereverzyev.com>.
-- **El 2030-09-11 esta versión pasa a Apache 2.0** automáticamente. Cada
+- **El 2030-09-14 esta versión pasa a Apache 2.0** automáticamente. Cada
   publicación lleva su propia fecha, cuatro años después de salir.

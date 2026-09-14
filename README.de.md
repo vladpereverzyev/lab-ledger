@@ -72,17 +72,23 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
   Preisspalte die Materialkosten mit Minus, und die Marge sinkt genau darum.
 - **Versand**: markiere eine Arbeit als versendet, mit Datum, Versanddienst und
   Sendungsnummer. Filtere nach versendet / noch zu versenden.
+- **Eingang und Ausgang**: Arbeit, die noch auf dem Tisch liegt, wartet im
+  Eingang und zählt noch nicht; als fertig markiert wandert sie in den Ausgang,
+  wo sie Umsatz bringt und versendet wird.
+- **Ein Paket, viele Arbeiten**: hake mehrere Arbeiten ab und versende sie
+  zusammen mit einem Datum, einem Versanddienst und einer Sendungsnummer.
+- **Löschen ist nicht vernichten**: eine gelöschte Arbeit verschwindet aus
+  Listen und Summen, bleibt aber in einem Archiv in der Datendatei - und damit
+  auch im Backup.
 - Suche über Kunde, Patient, Arbeit, Bediener, Versanddienst und Sendungsnummer;
   filtere nach Jahr, Monat, Bediener, Versand und Nacharbeit.
 
 ### Wer damit arbeitet
 - **Der erste Start** fragt die Daten des Labors ab und legt den Administrator
   an. Danach öffnet die App mit einer Anmeldung.
-- **Bediener** legt der Administrator an und hakt ab, was jeder darf
-  (und kann es später ändern): Preise und
-  Gewinn sehen, neue Arbeiten anlegen,
-  bestehende ändern, löschen, den Katalog bearbeiten,
-  exportieren und sichern. Wer das Geld nicht sehen darf, bekommt weder den
+- **Bediener** legt der Administrator an und hakt ab, was jeder darf - jederzeit
+  änderbar: Preise und Gewinn sehen, neue Arbeiten anlegen, bereits erfasste
+  ändern, löschen, den Katalog bearbeiten, exportieren und sichern. Wer das Geld nicht sehen darf, bekommt weder den
   Reiter Übersicht noch die Spalten Preis und Marge noch die Preise im Katalog.
 - **Passwörter werden nie gespeichert**: nur PBKDF2-SHA256 über ein zufälliges
   Salt je Benutzer, 150000 Runden. Ein vergessenes Passwort wird zurückgesetzt,
@@ -106,7 +112,8 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
   (Fläche), Marge pro Monat (Balken, rot wenn der Monat verliert), kumulierter
   Gewinn gegen die Fixkostenlinie, ertragreichste Arbeiten (waagrechte Balken),
   Umsatzanteil je Kunde (Ring), Arbeiten je Bediener nach abrechenbar /
-  Nacharbeit (gestapelte Balken) und wohin der Umsatz geht (gestapelter Balken:
+  Nacharbeit (gestapelte Balken), die Arbeitstypen je Bediener (gestapelte
+  Balken) und wohin der Umsatz geht (gestapelter Balken:
   Material, Fixkosten, Steuern, was bleibt).
 - Rentabilitätskacheln: Fixkosten, Steuern und Beiträge, Reingewinn und der
   Gewinn **pro Arbeitstag, pro Woche, pro Monat**, der Durchschnitt je Arbeit
@@ -127,13 +134,19 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 - **Steuern und Kalender**: Pauschal- oder Regelbesteuerung mit einfachen
   Prozentsätzen, dazu wie viele Tage pro Woche und Wochen pro Jahr das Labor
   tatsächlich arbeitet - das macht aus einem Jahresgewinn einen Tagesgewinn.
-- **Einstellungen**: Update-Prüfung an oder aus, Version, Pfad der Datendatei.
+- **Einstellungen**: Update-Prüfung an oder aus, die begleitende Excel-Datei,
+  der Wiederherstellungscode (nur Administrator), Version, Lizenz und Pfad der
+  Datendatei.
+- **Benutzer** und **Verlauf**: Konten und Rechte, und jede Änderung mit ihrem
+  Urheber; nur für den Administrator.
 
 ### Überall
 - **Import / Export**: Excel-Export von Arbeiten, Zusammenfassung je Typ,
-  Katalog und Fixkosten; Excel-Import von Arbeiten; vollständige
-  JSON-Backups, die sich auf jedem Rechner zurückspielen lassen.
-- **Heller und dunkler Modus**, pro Rechner gemerkt.
+  Katalog und Fixkosten; Excel-Import von Arbeiten, aus einer eigenen Tabelle
+  oder einer Datei, die Lab Ledger geschrieben hat; vollständige Backups,
+  unverschlüsselt oder **mit Passwort verschlüsselt** (AES-256-GCM), die sich auf
+  jedem Rechner zurückspielen lassen. Ein Backup zurückzuspielen ersetzt auch
+  die Konten, deshalb darf das nur der Administrator.
 - **Fünf Sprachen**, und beim Sprachwechsel verrutscht die Leiste nicht: jedes
   Bedienelement hat eine feste Breite.
 - **Passt sich dem Bildschirm an**: auf dem Handy wird jede Tabellenzeile zu
@@ -148,10 +161,11 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 Lab Ledger ist kein Cloud-Produkt mit Offline-Modus. Es ist ein Offline-Programm,
 fertig. Die Daten liegen in einer JSON-Datei auf deinem Rechner: kein Konto, kein
 Server, keine Telemetrie, und nichts von dem, was du eingibst, verlässt die
-Maschine.
+Maschine - außer du legst die begleitende Excel-Datei in einen Ordner, den deine
+Cloud synchronisiert; darauf weist die App hin, bevor sie sie schreibt.
 
-Es gibt genau eine Ausnahme, und sie lässt sich abschalten: **die
-Update-Prüfung**. Einmal am Tag fragt die App, wenn du sie anlässt, die
+Die App selbst geht nur für eine Sache online, und die lässt sich abschalten:
+**die Update-Prüfung**. Einmal am Tag fragt die App, wenn du sie anlässt, die
 öffentliche GitHub REST API nach der neuesten Version und vergleicht sie mit
 deiner. Das ist der einzige Moment, in dem Lab Ledger das Internet benutzt. Es
 sendet kein Konto, keine Kennungen und nichts über deine Arbeiten, Kunden oder
@@ -202,8 +216,8 @@ dass es eine neuere Version gibt.
 | Authentifizierung | keine - die öffentliche, nicht authentifizierte API |
 | Ratenlimit | die öffentlichen 60 Anfragen pro Stunde und IP; die App fragt höchstens einmal am Tag |
 | Was gesendet wird | die Anfrage selbst und ein `User-Agent` `LabLedger/<Version>`. Kein Konto, keine Kennungen, nichts über deine Arbeiten, Kunden oder Patienten |
-| Was empfangen wird | das Tag der neuesten Version und die URL ihrer Seite |
-| Und dann | das Tag wird mit der installierten Version verglichen; ist es neuer, erscheint ein Dialog. Auf **Herunterladen** holt die App das passende Installationsprogramm selbst in den Ordner Downloads und bietet an, es zu starten. Ohne diesen Klick lädt und installiert sie nichts |
+| Was empfangen wird | das Tag der neuesten Version, die URL ihrer Seite und die Namen ihrer Dateien |
+| Und dann | das Tag wird mit der installierten Version verglichen; ist es neuer, erscheint ein Dialog. Auf **Herunterladen** holt die App das passende Installationsprogramm selbst in den Ordner Downloads, prüft es gegen die mit der Version veröffentlichten SHA-256-Summen (eine Datei, die nicht passt, wird gelöscht) und bietet an, es zu starten. Ohne diesen Klick lädt und installiert sie nichts |
 
 Die Prüfung lässt sich unter **Katalog > Einstellungen** abschalten; abgeschaltet
 macht die App überhaupt keine Netzwerkaufrufe. Dort stehen auch die installierte
@@ -218,12 +232,17 @@ weder gesponsert noch unterstützt.
 
 Deine Daten liegen in einer einzigen lokalen JSON-Datei im Datenordner der App -
 der genaue Pfad steht unter **Katalog > Einstellungen**. Nichts wird irgendwohin
-hochgeladen. Mit **Backup** legst du eine Kopie an, mit **Backup importieren**
-spielst du sie zurück.
+hochgeladen. Mit **Backup** oder **Verschlüsseltes Backup** legst du eine Kopie
+an, mit **Backup importieren** spielst du sie zurück.
+
+Jedes Speichern geht zuerst in eine temporäre Datei, die dann die alte ersetzt:
+ein Absturz oder Stromausfall mittendrin lässt das bisherige Archiv ganz. Ist
+die Datei einmal nicht lesbar, legt die App sie unverändert beiseite - samt
+Wiederherstellungscode - und sagt dir, wo, statt darüber neu anzufangen.
 
 ## Aus dem Quellcode starten
 
-Benötigt [Node.js](https://nodejs.org/) 18+.
+Benötigt [Node.js](https://nodejs.org/) 22.12 oder neuer.
 
 ```bash
 npm install
@@ -237,7 +256,7 @@ npm run dist
 ```
 
 Die Installer landen im Ordner `release/`: NSIS-Installer und portable `.exe`
-unter Windows, `.dmg` und `.zip` unter macOS, `AppImage` und `.deb` unter Linux.
+unter Windows, universelle `.dmg` und `.zip` unter macOS (Intel und Apple Silicon), `AppImage` und `.deb` unter Linux.
 
 Die Icons werden aus `build/icon.svg` mit
 [Pillow](https://pillow.readthedocs.io/) neu erzeugt:
@@ -271,5 +290,5 @@ eigenen Labor, nicht frei zum Weiterverkauf. Es gilt die
   Fassung davon Dritten gegen Geld anbietet: als Produkt, als gehosteten
   Dienst, mit Hardware gebündelt oder in ein anderes Produkt eingebaut.
   Schreiben Sie an <info@vladpereverzyev.com>.
-- **Am 2030-09-11 wird diese Version automatisch Apache 2.0.** Jede
+- **Am 2030-09-14 wird diese Version automatisch Apache 2.0.** Jede
   Veröffentlichung hat ihr eigenes Datum, vier Jahre nach Erscheinen.

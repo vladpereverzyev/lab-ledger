@@ -25,8 +25,8 @@ abbonamento: ogni numero resta sul tuo computer.
 
 ## Perché Lab Ledger?
 
-- **Gratuita e offline**: nessun account, nessun server, nessun abbonamento.
-  Diventa un'applicazione desktop vera e si usa come un programma normale.
+- **Un programma desktop vero**: si installa come gli altri, funziona senza
+  connessione e non c'è niente a cui iscriversi.
 - **Privata per costruzione**: i dati restano sul tuo computer. Nel codice non
   c'è nessun dato di pazienti o clienti: i tuoi li scrivi in locale e li salvi
   su file quando vuoi.
@@ -73,6 +73,14 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
   esattamente di quello.
 - **Spedizione**: segna un lavoro come spedito con data, corriere e numero di
   tracking. Filtra per spediti / da spedire.
+- **In entrata e In uscita**: il lavoro ancora sul banco aspetta In entrata e
+  non conta ancora niente; segnalo come finito e passa In uscita, dove porta
+  ricavo e si spedisce.
+- **Un pacco, tanti lavori**: spunta più lavori e spediscili insieme con una
+  sola data, un corriere e un numero di tracking.
+- **Eliminare non è distruggere**: un lavoro eliminato sparisce da elenchi e
+  totali ma resta in un archivio dentro il file dei dati, quindi anche nei
+  backup.
 - Cerca su cliente, paziente, lavoro, operatore, corriere e tracking; filtra per
   anno, mese, operatore, spedizione e rifacimento.
 
@@ -81,9 +89,9 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
   l'amministratore. Da lì in poi si apre su una schermata di accesso, e dietro
   non c'è niente finché non entri.
 - **Gli operatori** li aggiunge l'amministratore, spuntando cosa ciascuno può
-  fare (e può cambiarlo in seguito): vedere prezzi e utili, aggiungere lavori nuovi,
-  modificare quelli esistenti, eliminarli,
-  modificare il catalogo, esportare e fare backup. Un operatore che non può
+  fare, e può cambiarlo quando vuole: vedere prezzi e utili, aggiungere lavori
+  nuovi, modificare quelli già registrati, eliminarli, modificare il catalogo,
+  esportare e fare backup. Un operatore che non può
   vedere i soldi non vede la scheda Riepilogo, né le colonne prezzo e margine,
   né i prezzi nel catalogo.
 - **Le password non vengono mai salvate**: si salva solo PBKDF2-SHA256 su un
@@ -110,7 +118,8 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
   (area), margine per mese (barre, rosse quando il mese perde), utile cumulato
   contro la linea dei costi fissi, lavori più redditizi (barre orizzontali),
   quota di ricavo per cliente (ciambella), lavori per operatore divisi
-  fatturabili / rifacimenti (barre impilate) e dove finisce il ricavo (barra
+  fatturabili / rifacimenti (barre impilate), i tipi di lavoro che fa ciascun
+  operatore (barre impilate) e dove finisce il ricavo (barra
   impilata: materiali, costi fissi, tasse, quello che resta).
 - Schede di redditività: costi fissi, tasse e contributi, utile netto e l'utile
   **al giorno lavorativo, alla settimana, al mese**, la media per lavoro e il
@@ -132,14 +141,19 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 - **Tasse e calendario**: regime forfettario oppure ordinario con percentuali
   semplici, più quanti giorni a settimana e settimane all'anno lavora davvero il
   laboratorio: è quello che trasforma un utile annuo in un utile giornaliero.
-- **Impostazioni**: controllo aggiornamenti sì o no, versione, percorso del file
-  dati.
+- **Impostazioni**: controllo aggiornamenti sì o no, il file Excel abbinato, il
+  codice di recupero (solo amministratore), versione, licenza e percorso del
+  file dati.
+- **Utenti** e **Cronologia**: account e permessi, e ogni modifica con chi l'ha
+  fatta; solo per l'amministratore.
 
 ### Dappertutto
 - **Importa / Esporta**: esportazione Excel di lavori, riepilogo per tipo,
-  catalogo e costi fissi; importazione Excel dei lavori; backup JSON completi da
-  ripristinare su qualsiasi computer.
-- **Tema chiaro e scuro**, ricordato sul computer.
+  catalogo e costi fissi; importazione Excel dei lavori, da un foglio tuo o da un
+  file scritto da Lab Ledger; backup completi, in chiaro o **cifrati con una
+  password** (AES-256-GCM), da ripristinare su qualsiasi computer. Ripristinare
+  un backup sostituisce anche gli account, quindi può farlo solo
+  l'amministratore.
 - **Cinque lingue**, e cambiando lingua la barra non si muove: ogni comando ha
   una larghezza fissa.
 - **Si adatta allo schermo su cui sta**: sul telefono ogni riga della tabella
@@ -156,9 +170,11 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 Lab Ledger non è un prodotto cloud con una modalità offline. È un programma
 offline, punto. I dati stanno in un file JSON sul tuo computer: nessun account,
 nessun server, nessuna telemetria, e niente di quello che scrivi esce dalla
-macchina.
+macchina, a meno che tu non metta il file Excel abbinato in una cartella
+sincronizzata col cloud: il programma te lo ricorda prima di scriverlo.
 
-C'è un'unica eccezione, e si può spegnere: **il controllo aggiornamenti**. Una
+Il programma va online per una cosa sola, e si può spegnere: **il controllo
+aggiornamenti**. Una
 volta al giorno, se lo lasci attivo, il programma chiede alla GitHub REST API
 pubblica qual è l'ultima release e la confronta con quella che stai usando. È
 l'unico momento in cui Lab Ledger usa internet. Non manda nessun account,
@@ -211,8 +227,8 @@ versione più recente.
 | Autenticazione | nessuna: API pubblica non autenticata |
 | Limite di chiamate | i 60 all'ora per IP dell'API pubblica; l'app chiede al massimo una volta al giorno |
 | Cosa viene inviato | la richiesta e uno `User-Agent` `LabLedger/<versione>`. Nessun account, nessun identificativo, niente dei tuoi lavori, clienti o pazienti |
-| Cosa viene ricevuto | il tag dell'ultima release e l'URL della sua pagina |
-| E poi | il tag viene confrontato con la versione installata; se è più recente compare una finestra. Premi **Scarica** e l'app tira giù da sola l'installer adatto al tuo sistema nella cartella Download, poi ti propone di avviarlo. Senza quel pulsante non scarica e non installa niente |
+| Cosa viene ricevuto | il tag dell'ultima release, l'URL della sua pagina e i nomi dei suoi file |
+| E poi | il tag viene confrontato con la versione installata; se è più recente compare una finestra. Premi **Scarica** e l'app tira giù da sola l'installer adatto al tuo sistema nella cartella Download, lo confronta con le somme SHA-256 pubblicate con la release (un file che non corrisponde viene cancellato) e poi ti propone di avviarlo. Senza quel pulsante non scarica e non installa niente |
 
 Il controllo si disattiva in **Catalogo > Impostazioni**; disattivato, l'app non
 fa nessuna chiamata di rete. Lì sono indicate anche la versione installata e la
@@ -226,12 +242,18 @@ indipendente, non affiliato né sponsorizzato né approvato da GitHub.
 
 I dati stanno in un unico file JSON locale nella cartella dati dell'app: il
 percorso esatto è scritto in **Catalogo > Impostazioni**. Non viene caricato
-niente da nessuna parte. Usa **Backup** per salvarne una copia e **Importa
-backup** per ripristinarla.
+niente da nessuna parte. Usa **Backup** o **Backup cifrato** per salvarne una
+copia e **Importa backup** per ripristinarla.
+
+Ogni salvataggio va prima in un file temporaneo e poi sostituisce il vecchio,
+così un crash o un blackout a metà lasciano intero l'archivio precedente. Se un
+giorno il file non si può leggere, il programma lo sposta da parte intatto,
+insieme al suo codice di recupero, e ti dice dove, invece di ripartire da zero
+sopra di lui.
 
 ## Eseguire dal codice
 
-Serve [Node.js](https://nodejs.org/) 18+.
+Serve [Node.js](https://nodejs.org/) 22.12 o più recente.
 
 ```bash
 npm install
@@ -245,7 +267,7 @@ npm run dist
 ```
 
 Gli installer finiscono nella cartella `release/`: installer NSIS ed eseguibile
-portable su Windows, `.dmg` e `.zip` su macOS, `AppImage` e `.deb` su Linux.
+portable su Windows, `.dmg` e `.zip` universali su macOS (Intel e Apple Silicon), `AppImage` e `.deb` su Linux.
 
 Le icone si rigenerano da `build/icon.svg` con
 [Pillow](https://pillow.readthedocs.io/):
@@ -280,5 +302,5 @@ laboratorio, non libero da rivendere. Vale la
   modificata, a terzi a pagamento: come prodotto, come servizio ospitato,
   abbinato a hardware o integrato in un altro programma. Scrivi a
   <info@vladpereverzyev.com>.
-- **Il 2030-09-11 questa versione diventa Apache 2.0** in automatico. Ogni
+- **Il 2030-09-14 questa versione diventa Apache 2.0** in automatico. Ogni
   release ha la propria data, quattro anni dopo la sua pubblicazione.
