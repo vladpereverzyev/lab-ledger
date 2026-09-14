@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.4.1] - 2026-09-14
 
 ### Fixed
 - Two work types, or two operators, can no longer share a name. Works point at
