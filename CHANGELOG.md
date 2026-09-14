@@ -3,6 +3,30 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.3] - 2026-09-14
+
+### Changed
+- **Someone who only works at the bench sees only the work.** An operator
+  without the permission to see prices and profit now sees no amount anywhere:
+  no prices, costs or margins in the works list and none in its totals, no
+  Summary, no material costs, running costs or taxes, and no export or backup,
+  since every one of them is full of prices. Before, the totals under the works
+  list and the costs in the Catalog were still visible.
+- **The Catalog is for whoever may change it.** An operator without the
+  permission to edit the catalog no longer sees the Catalog tab at all, so
+  clients, materials and work types cannot be opened or changed; what the work
+  form needs is still offered there. Settings are for the administrator only.
+- Every dialog sits on the same frosted background as the sign-in screen, and
+  settings values share one size, weight and typeface.
+- The copyright line on the sign-in screen links to the author, as the footer does.
+- A new README introduction, and screenshots retaken from this version.
+
+### Fixed
+- In Outgoing, the totals sat a scrollbar's width to the right of their
+  columns once the list was long enough to scroll.
+- For an operator who cannot edit works, the hidden tick column cut the dates
+  short and shifted the columns after it.
+
 ## [1.4.2] - 2026-09-14
 
 ### Changed
