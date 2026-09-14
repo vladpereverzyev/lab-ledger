@@ -2,15 +2,15 @@
 
 [![Versión](https://img.shields.io/github/v/release/vladpereverzyev/lab-ledger)](https://github.com/vladpereverzyev/lab-ledger/releases/latest)
 [![Descargas](https://img.shields.io/github/downloads/vladpereverzyev/lab-ledger/total)](https://github.com/vladpereverzyev/lab-ledger/releases)
-[![Licencia](https://img.shields.io/badge/licencia-BUSL--1.1-blue)](LICENSE)
+[![Licencia](https://img.shields.io/badge/licencia-BUSL--1.1-blue)](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE)
 ![Plataforma](https://img.shields.io/badge/plataforma-Windows%20%7C%20macOS%20%7C%20Linux-0078D6)
 [![GitHub REST API](https://img.shields.io/badge/GitHub%20REST%20API-2022--11--28-181717?logo=github&logoColor=white)](#github-api)
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](./README.md)
-[![it](https://img.shields.io/badge/lang-it-green.svg)](./README.it.md)
-[![es](https://img.shields.io/badge/lang-es-yellow.svg)](./README.es.md)
-[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
-[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.md)
+[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.it.md)
+[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.es.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.fr.md)
+[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.de.md)
 
 **Lab Ledger** es una aplicación de escritorio gratuita para laboratorios
 dentales. Sigue cada trabajo desde que llega hasta que se envía, calcula el
@@ -20,7 +20,7 @@ beneficio que queda después de costes fijos e impuestos.
 Funciona en Windows, macOS y Linux, también sin internet, y guarda todos los
 datos en tu ordenador.
 
-[**Descargar**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novedades**](CHANGELOG.md)
+[**Descargar**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novedades**](https://github.com/vladpereverzyev/lab-ledger/blob/main/CHANGELOG.md)
 
 ## ¿Por qué Lab Ledger?
 
@@ -214,7 +214,7 @@ Configuraciones típicas:
 
 Los permisos los comprueba la propia aplicación, no solo ocultando botones.
 Protegen las pantallas de la aplicación, no el archivo de datos en el disco: ver
-[SECURITY.md](SECURITY.md).
+[SECURITY.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/SECURITY.md).
 
 ## Sin conexión por diseño
 
@@ -273,7 +273,7 @@ en inglés en los demás casos.
 
 La interfaz está disponible en **inglés, italiano, español, francés y alemán**:
 se cambia con el botón de idioma de la barra. Añadir un idioma es una
-contribución de solo traducción: ver [CONTRIBUTING.md](CONTRIBUTING.md).
+contribución de solo traducción: ver [CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
 
 ## GitHub API
 
@@ -351,13 +351,13 @@ python build/make-icons.py
 ## Contribuir
 
 Las contribuciones son bienvenidas, sobre todo las traducciones. Ver
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
 
 ## Licencia
 
 Lab Ledger es **source-available**, no código abierto: libre de usar en tu
 propio laboratorio, no libre de revender. Rige la
-[Business Source License 1.1](LICENSE).
+[Business Source License 1.1](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE).
 
 - **Cualquier laboratorio dental o clínica puede usarlo en producción,
   gratis** - en tantos ordenadores y sedes como quiera.

@@ -2,15 +2,15 @@
 
 [![Release](https://img.shields.io/github/v/release/vladpereverzyev/lab-ledger)](https://github.com/vladpereverzyev/lab-ledger/releases/latest)
 [![Download](https://img.shields.io/github/downloads/vladpereverzyev/lab-ledger/total)](https://github.com/vladpereverzyev/lab-ledger/releases)
-[![Licenza](https://img.shields.io/badge/licenza-BUSL--1.1-blue)](LICENSE)
+[![Licenza](https://img.shields.io/badge/licenza-BUSL--1.1-blue)](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE)
 ![Piattaforma](https://img.shields.io/badge/piattaforma-Windows%20%7C%20macOS%20%7C%20Linux-0078D6)
 [![GitHub REST API](https://img.shields.io/badge/GitHub%20REST%20API-2022--11--28-181717?logo=github&logoColor=white)](#github-api)
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](./README.md)
-[![it](https://img.shields.io/badge/lang-it-green.svg)](./README.it.md)
-[![es](https://img.shields.io/badge/lang-es-yellow.svg)](./README.es.md)
-[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
-[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.md)
+[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.it.md)
+[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.es.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.fr.md)
+[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.de.md)
 
 **Lab Ledger** è un'app desktop gratuita per laboratori odontotecnici. Segue ogni
 lavoro dall'arrivo alla spedizione, calcola il costo dei materiali dai prezzi
@@ -19,7 +19,7 @@ reali delle confezioni e mostra l'utile che resta dopo costi fissi e tasse.
 Funziona su Windows, macOS e Linux, anche senza internet, e tiene tutti i dati
 sul tuo computer.
 
-[**Scarica**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novità**](CHANGELOG.md)
+[**Scarica**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novità**](https://github.com/vladpereverzyev/lab-ledger/blob/main/CHANGELOG.md)
 
 ## Perché Lab Ledger?
 
@@ -220,7 +220,7 @@ Configurazioni tipiche:
 
 I permessi li controlla il programma stesso, non solo nascondendo i pulsanti.
 Proteggono le schermate del programma, non il file dei dati sul disco: vedi
-[SECURITY.md](SECURITY.md).
+[SECURITY.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/SECURITY.md).
 
 ## Offline per costruzione
 
@@ -281,7 +281,7 @@ altrimenti in inglese.
 L'interfaccia è disponibile in **inglese, italiano, spagnolo, francese e
 tedesco**: si cambia con il pulsante della lingua nella barra. Aggiungere una
 lingua è un contributo di sola traduzione: vedi
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
 
 ## GitHub API
 
@@ -358,14 +358,14 @@ python build/make-icons.py
 ## Contribuire
 
 I contributi sono benvenuti, soprattutto le traduzioni. Vedi
-[CONTRIBUTING.md](CONTRIBUTING.md). Dove potrebbe andare il programma, scritto
-dal banco e non dal codice: [docs/IDEAS.md](docs/IDEAS.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md). Dove potrebbe andare il programma, scritto
+dal banco e non dal codice: [docs/IDEAS.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/docs/IDEAS.md).
 
 ## Licenza
 
 Lab Ledger è **source-available**, non open source: libero da usare nel tuo
 laboratorio, non libero da rivendere. Vale la
-[Business Source License 1.1](LICENSE).
+[Business Source License 1.1](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE).
 
 - **Qualsiasi laboratorio odontotecnico o studio dentistico può usarlo al
   lavoro, gratis** - su quanti computer e quante sedi vuole.

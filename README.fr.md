@@ -2,15 +2,15 @@
 
 [![Version](https://img.shields.io/github/v/release/vladpereverzyev/lab-ledger)](https://github.com/vladpereverzyev/lab-ledger/releases/latest)
 [![Téléchargements](https://img.shields.io/github/downloads/vladpereverzyev/lab-ledger/total)](https://github.com/vladpereverzyev/lab-ledger/releases)
-[![Licence](https://img.shields.io/badge/licence-BUSL--1.1-blue)](LICENSE)
+[![Licence](https://img.shields.io/badge/licence-BUSL--1.1-blue)](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE)
 ![Plateforme](https://img.shields.io/badge/plateforme-Windows%20%7C%20macOS%20%7C%20Linux-0078D6)
 [![GitHub REST API](https://img.shields.io/badge/GitHub%20REST%20API-2022--11--28-181717?logo=github&logoColor=white)](#github-api)
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](./README.md)
-[![it](https://img.shields.io/badge/lang-it-green.svg)](./README.it.md)
-[![es](https://img.shields.io/badge/lang-es-yellow.svg)](./README.es.md)
-[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
-[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.md)
+[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.it.md)
+[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.es.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.fr.md)
+[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.de.md)
 
 **Lab Ledger** est une application de bureau gratuite pour les laboratoires
 dentaires. Elle suit chaque travail de son arrivée à son expédition, calcule le
@@ -20,7 +20,7 @@ reste après les charges fixes et les impôts.
 Elle fonctionne sous Windows, macOS et Linux, même sans internet, et garde
 toutes les données sur votre ordinateur.
 
-[**Télécharger**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Démo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Nouveautés**](CHANGELOG.md)
+[**Télécharger**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Démo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Nouveautés**](https://github.com/vladpereverzyev/lab-ledger/blob/main/CHANGELOG.md)
 
 ## Pourquoi Lab Ledger ?
 
@@ -218,7 +218,7 @@ Configurations typiques :
 
 Les permissions sont vérifiées par l'application elle-même, pas seulement en
 cachant des boutons. Elles protègent les écrans de l'application, pas le fichier
-de données sur le disque : voir [SECURITY.md](SECURITY.md).
+de données sur le disque : voir [SECURITY.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/SECURITY.md).
 
 ## Hors ligne par conception
 
@@ -282,7 +282,7 @@ en italien quand l'application est en italien, en anglais sinon.
 L'interface est disponible en **anglais, italien, espagnol, français et
 allemand** : basculez avec le bouton de langue de la barre. Ajouter une langue
 est une contribution de traduction uniquement : voir
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
 
 ## GitHub API
 
@@ -361,13 +361,13 @@ python build/make-icons.py
 ## Contribuer
 
 Les contributions sont bienvenues, surtout les traductions. Voir
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
 
 ## Licence
 
 Lab Ledger est **source-available**, pas open source : libre d'usage dans votre
 propre laboratoire, pas libre à la revente. La
-[Business Source License 1.1](LICENSE) s'applique.
+[Business Source License 1.1](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE) s'applique.
 
 - **Tout laboratoire dentaire ou cabinet peut l'utiliser en production,
   gratuitement** - sur autant de postes et de sites qu'il veut.
