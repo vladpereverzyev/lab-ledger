@@ -835,6 +835,7 @@ function bindUI() {
   $("#btnExportJson").addEventListener("click", async () => {
     const r = await window.api.exportJson(state);
     if (r && r.ok) toast(t("t_backupsaved"));
+    else if (r && r.error) toast(t("t_error") + r.error);
   });
   $("#btnExportEnc").addEventListener("click", exportEncryptedBackup);
   $("#btnImportJson").addEventListener("click", importBackup);
@@ -2313,6 +2314,7 @@ async function exportEncryptedBackup() {
   }
   const r = await window.api.exportEncrypted(blob);
   if (r && r.ok) toast(t("t_backupsaved"));
+  else if (r && r.error) toast(t("t_error") + r.error);
 }
 
 function applyImported(data) {
@@ -2630,6 +2632,7 @@ function toast(msg) {
   el.textContent = msg;
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.hidden = true; }, 2600);
+  // Long enough to read: a file path or a warning needs more than "Saved".
+  toastTimer = setTimeout(() => { el.hidden = true; }, Math.max(2600, String(msg).length * 60));
 }
 window.toast = toast;

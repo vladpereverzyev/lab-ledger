@@ -3,6 +3,14 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Fixed
+- A backup that cannot be written - a full disk, a read-only folder - now says
+  so, instead of failing without a word.
+- Long messages, such as where an unreadable data file was moved, stay on
+  screen long enough to be read.
+
 ## [1.4.1] - 2026-09-14
 
 ### Fixed

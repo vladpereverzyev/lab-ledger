@@ -453,8 +453,13 @@ ipcMain.handle("json:export", async (_event, data) => {
     filters: [{ name: "JSON", extensions: ["json"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };
-  fs.writeFileSync(res.filePath, JSON.stringify(data, null, 2), "utf8");
-  return { ok: true, path: res.filePath };
+  // A full disk or a read-only folder has to reach the user, not vanish here.
+  try {
+    fs.writeFileSync(res.filePath, JSON.stringify(data, null, 2), "utf8");
+    return { ok: true, path: res.filePath };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
 });
 
 // An encrypted backup: the renderer does the crypto and hands down the finished
@@ -467,8 +472,12 @@ ipcMain.handle("json:exportEncrypted", async (_event, text) => {
     filters: [{ name: "Lab Ledger backup", extensions: ["llb"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };
-  fs.writeFileSync(res.filePath, text, "utf8");
-  return { ok: true, path: res.filePath };
+  try {
+    fs.writeFileSync(res.filePath, text, "utf8");
+    return { ok: true, path: res.filePath };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
 });
 
 // Import reads the file as plain text and lets the renderer decide whether it
