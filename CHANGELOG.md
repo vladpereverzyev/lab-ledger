@@ -3,12 +3,14 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.4.4] - 2026-09-14
 
 ### Fixed
 - The browser demo showed "vdemo" as its version when it could not reach GitHub;
   it now shows "demo".
 - The works count under the list says "1 work", not "1 works", in every language.
+- The button that writes the Excel copy now agrees with "copy" in Italian and
+  Spanish ("Scrivila adesso", "Escribirla ahora").
 
 ### Changed
 - The README has a Roles and permissions section: what the administrator and an
