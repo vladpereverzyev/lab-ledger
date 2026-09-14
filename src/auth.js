@@ -20,13 +20,14 @@ const PBKDF2_ROUNDS = 150000;
 let session = null;     // the user currently signed in
 
 // --- hashing ---------------------------------------------------------------
-function randomSalt() {
-  const b = new Uint8Array(16);
-  (window.crypto || {}).getRandomValues
-    ? window.crypto.getRandomValues(b)
-    : b.forEach((_, i) => { b[i] = Math.floor(Math.random() * 256); });
-  return Array.from(b).map((x) => x.toString(16).padStart(2, "0")).join("");
+function randomBytes(n) {
+  const b = new Uint8Array(n);
+  if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(b);
+  else b.forEach((_, i) => { b[i] = Math.floor(Math.random() * 256); });
+  return b;
 }
+
+function randomSalt() { return toHex(randomBytes(16)); }
 
 function toHex(buf) {
   return Array.from(new Uint8Array(buf)).map((x) => x.toString(16).padStart(2, "0")).join("");
@@ -98,10 +99,7 @@ async function setPassword(user, password) {
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 function makeRecoveryCode() {
-  const b = new Uint8Array(24);
-  (window.crypto || {}).getRandomValues
-    ? window.crypto.getRandomValues(b)
-    : b.forEach((_, i) => { b[i] = Math.floor(Math.random() * 256); });
+  const b = randomBytes(24);
   // 256 divides by 32, so the modulo does not favour the start of the alphabet.
   const chars = Array.from(b, (x) => CODE_ALPHABET[x % CODE_ALPHABET.length]);
   return [0, 4, 8, 12, 16, 20].map((i) => chars.slice(i, i + 4).join("")).join("-");

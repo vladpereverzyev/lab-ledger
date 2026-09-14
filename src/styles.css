@@ -464,7 +464,11 @@ table.bom { margin-bottom: 8px; }
    in the code. */
 body.not-admin .admin-only { display: none !important; }
 body.no-export #btnImportXlsx, body.no-export #btnExportXlsx,
-body.no-export #btnImportJson, body.no-export #btnExportJson { display: none; }
+body.no-export #btnImportJson, body.no-export #btnExportJson,
+body.no-export #btnExportEnc { display: none; }
+/* A backup replaces the whole archive, accounts included: restoring one is the
+   administrator's call, whatever else an operator may export. */
+body.not-admin #btnImportJson { display: none; }
 body.no-editworks #btnNewWork, body.no-editworks .bulkbar,
 body.no-editworks #worksTable th.check, body.no-editworks #worksTable td.check { display: none; }
 body.no-editworks #worksBody .btn.icon:not(.danger) { display: none; }

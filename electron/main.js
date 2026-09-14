@@ -63,9 +63,12 @@ function createWindow() {
 
   // Links always open in the real browser, never inside the app window.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url);
+    if (/^https:\/\//.test(url)) shell.openExternal(url);
     return { action: "deny" };
   });
+  // Nor does the window ever leave the app: a file dropped on it would
+  // otherwise replace the whole interface with a view of that file.
+  mainWindow.webContents.on("will-navigate", (e) => e.preventDefault());
 
   // Smoke test: forward the renderer console and quit automatically.
   if (process.env.SMOKE_TEST) {
@@ -90,7 +93,9 @@ app.whenReady().then(() => {
   });
 });
 
-app.on("before-quit", () => { syncExcel("close"); });
+// will-quit, not before-quit: the window flushes its last pending save while it
+// closes, and before-quit fires before that - the workbook would miss it.
+app.on("will-quit", () => { syncExcel("close"); });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
@@ -115,24 +120,40 @@ ipcMain.handle("app:openExternal", async (_event, url) => {
 // ---------------------------------------------------------------------------
 
 ipcMain.handle("data:load", async () => {
+  if (!fs.existsSync(DATA_FILE)) return null;
   try {
-    if (!fs.existsSync(DATA_FILE)) return null;
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
   } catch (err) {
-    return { __error: "Could not read data: " + err.message };
+    // The app starts over on an empty archive, and its first save would write
+    // over this file. So the unreadable one is moved aside first, where it can
+    // still be repaired by hand.
+    // If it cannot even be moved, there is no movedTo and the renderer refuses
+    // to save at all.
+    const aside = DATA_FILE.replace(/\.json$/, `.unreadable-${Date.now()}.json`);
+    try { fs.renameSync(DATA_FILE, aside); }
+    catch (_) { return { __error: err.message }; }
+    return { __error: err.message, movedTo: aside };
   }
 });
 
-ipcMain.handle("data:save", async (_event, data) => {
+// Written to a temporary file and renamed over the real one, so a crash or a
+// power cut halfway through leaves the previous archive, never half of one.
+function writeData(data) {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+    const tmp = DATA_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tmp, DATA_FILE);
     return { ok: true, path: DATA_FILE };
   } catch (err) {
     return { ok: false, error: err.message };
   }
-});
+}
 
-ipcMain.handle("data:path", async () => DATA_FILE);
+ipcMain.handle("data:save", async (_event, data) => writeData(data));
+
+// The last save of a closing window: synchronous, because the page is gone as
+// soon as its unload handler returns.
+ipcMain.on("data:saveSync", (event, data) => { event.returnValue = writeData(data); });
 
 // ---------------------------------------------------------------------------
 // The recovery code, kept in clear next to the data file.
@@ -214,10 +235,6 @@ ipcMain.handle("excel:choose", async () => {
 
 ipcMain.handle("excel:sync", async () => syncExcel("manual"));
 
-ipcMain.handle("excel:reveal", async (_event, file) => {
-  if (file && fs.existsSync(file)) shell.showItemInFolder(file);
-});
-
 // ---------------------------------------------------------------------------
 // Update check - GitHub REST API
 //   GET /repos/{owner}/{repo}/releases/latest
@@ -227,30 +244,35 @@ ipcMain.handle("excel:reveal", async (_event, file) => {
 // left the check switched on.
 // ---------------------------------------------------------------------------
 
-function getJson(url) {
+const USER_AGENT = () => `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`;
+
+// A small GET that resolves to the body as text, or rejects on a non-2xx
+// status, a network error or eight seconds of silence.
+function getText(url, headers) {
   return new Promise((resolve, reject) => {
     const request = net.request({ method: "GET", url });
-    request.setHeader("Accept", "application/vnd.github+json");
-    request.setHeader("X-GitHub-Api-Version", GITHUB_API_VERSION);
-    request.setHeader("User-Agent", `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`);
-
+    request.setHeader("User-Agent", USER_AGENT());
+    Object.entries(headers || {}).forEach(([k, v]) => request.setHeader(k, v));
     const timer = setTimeout(() => { request.abort(); reject(new Error("timeout")); }, 8000);
-
     request.on("response", (response) => {
       let body = "";
       response.on("data", (chunk) => { body += chunk; });
       response.on("end", () => {
         clearTimeout(timer);
-        if (response.statusCode < 200 || response.statusCode >= 300) {
-          return reject(new Error("HTTP " + response.statusCode));
-        }
-        try { resolve(JSON.parse(body)); }
-        catch (err) { reject(err); }
+        if (response.statusCode < 200 || response.statusCode >= 300) return reject(new Error("HTTP " + response.statusCode));
+        resolve(body);
       });
     });
     request.on("error", (err) => { clearTimeout(timer); reject(err); });
     request.end();
   });
+}
+
+async function getJson(url) {
+  return JSON.parse(await getText(url, {
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": GITHUB_API_VERSION
+  }));
 }
 
 // Compares "1.2.10" with "1.2.9" the way a human would.
@@ -298,26 +320,6 @@ ipcMain.handle("update:check", async () => {
   }
 });
 
-// Fetch a small text file (the checksums list) from the same release.
-function getText(url) {
-  return new Promise((resolve, reject) => {
-    const request = net.request({ method: "GET", url });
-    request.setHeader("User-Agent", `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`);
-    const timer = setTimeout(() => { request.abort(); reject(new Error("timeout")); }, 8000);
-    request.on("response", (response) => {
-      let body = "";
-      response.on("data", (chunk) => { body += chunk; });
-      response.on("end", () => {
-        clearTimeout(timer);
-        if (response.statusCode < 200 || response.statusCode >= 300) return reject(new Error("HTTP " + response.statusCode));
-        resolve(body);
-      });
-    });
-    request.on("error", (err) => { clearTimeout(timer); reject(err); });
-    request.end();
-  });
-}
-
 // The SHA256SUMS file for this platform lives beside the asset in the release.
 function sumsUrlFor(assetUrl) {
   const os = process.platform === "win32" ? "Windows" : process.platform === "darwin" ? "macOS" : "Linux";
@@ -332,7 +334,13 @@ async function verifyDownload(filePath, assetName, assetUrl) {
   let text;
   try { text = await getText(sumsUrlFor(assetUrl)); }
   catch (_) { return { verified: false }; }
-  const line = text.split(/\r?\n/).map((l) => l.trim()).find((l) => l.endsWith(assetName));
+  // "<sum>  <name>": the name must match whole, or "Lab Ledger 1.3.exe" would
+  // also find the line of "Lab Ledger Setup 1.3.exe". And GitHub turns the
+  // spaces of an uploaded file name into dots, so the sums file (written
+  // before upload) and the asset spell the same file differently.
+  const norm = (s) => s.trim().replace(/^\*/, "").replace(/\s+/g, ".");
+  const line = text.split(/\r?\n/).map((l) => l.trim())
+    .find((l) => l && norm(l.replace(/^\S+\s+/, "")) === norm(assetName));
   if (!line) return { verified: false };
   const expected = line.split(/\s+/)[0].toLowerCase();
   const actual = crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
@@ -352,7 +360,13 @@ ipcMain.handle("update:download", async (_event, asset) => {
 
   return new Promise((resolve) => {
     const request = net.request({ method: "GET", url: asset.url });
-    request.setHeader("User-Agent", `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`);
+    request.setHeader("User-Agent", USER_AGENT());
+
+    // A download that breaks halfway leaves no half installer in Downloads.
+    const fail = (err) => {
+      try { fs.unlinkSync(target); } catch (_) {}
+      resolve({ ok: false, error: err.message });
+    };
 
     request.on("response", (response) => {
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -382,14 +396,13 @@ ipcMain.handle("update:download", async (_event, asset) => {
           const v = await verifyDownload(target, path.basename(asset.name || ""), asset.url);
           resolve({ ok: true, path: target, verified: !!v.verified });
         } catch (err) {
-          try { fs.unlinkSync(target); } catch (_) {}
-          resolve({ ok: false, error: err.message });
+          fail(err);
         }
       });
-      file.on("error", (err) => resolve({ ok: false, error: err.message }));
+      file.on("error", fail);
       response.on("error", (err) => {
         file.destroy();
-        resolve({ ok: false, error: err.message });
+        fail(err);
       });
     });
     request.on("error", (err) => resolve({ ok: false, error: err.message }));
@@ -426,20 +439,6 @@ ipcMain.handle("json:export", async (_event, data) => {
   if (res.canceled || !res.filePath) return { canceled: true };
   fs.writeFileSync(res.filePath, JSON.stringify(data, null, 2), "utf8");
   return { ok: true, path: res.filePath };
-});
-
-ipcMain.handle("json:import", async () => {
-  const res = await dialog.showOpenDialog(mainWindow, {
-    title: "Import backup (JSON)",
-    properties: ["openFile"],
-    filters: [{ name: "JSON", extensions: ["json"] }]
-  });
-  if (res.canceled || res.filePaths.length === 0) return { canceled: true };
-  try {
-    return { ok: true, data: JSON.parse(fs.readFileSync(res.filePaths[0], "utf8")) };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
 });
 
 // An encrypted backup: the renderer does the crypto and hands down the finished

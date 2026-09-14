@@ -143,6 +143,9 @@ window.addEventListener("DOMContentLoaded", init);
 // this app will not save over it: it would drop what it does not understand.
 const SCHEMA_VERSION = 1;
 let schemaAhead = false;
+// The data file could not be read and could not be moved aside either: saving
+// now would write an empty archive over it.
+let loadStuck = false;
 
 async function init() {
   applyTheme(currentTheme());
@@ -150,9 +153,12 @@ async function init() {
   const saved = await window.api.loadData();
   state = (saved && !saved.__error && saved.config) ? saved : { works: [], config: clone(window.DEFAULT_CONFIG) };
   schemaAhead = Number((saved && saved.schemaVersion) || 0) > SCHEMA_VERSION;
+  loadStuck = !!(saved && saved.__error && !saved.movedTo);
   ensureConfigShape();
   Auth.ensureUsersShape(state);
   if (!schemaAhead) state.schemaVersion = SCHEMA_VERSION;
+  // A save still waiting on its timer when the window closes would be lost.
+  window.addEventListener("beforeunload", flushSave);
 
   bindUI();
   bindGate();
@@ -164,6 +170,9 @@ async function init() {
   loadAppInfo();
   openGate();
   if (schemaAhead) setTimeout(() => toast(t("t_schema_ahead")), 400);
+  if (saved && saved.__error) {
+    setTimeout(() => toast(saved.movedTo ? t("t_load_moved") + saved.movedTo : t("t_load_stuck")), 400);
+  }
 }
 
 // Fills in anything an older data file (or the browser demo) does not carry,
@@ -709,15 +718,30 @@ function cycleTheme() {
 // Persistence
 // ===========================================================================
 let saveTimer = null;
+
+// Never write over a file a newer version of the app saved - it would drop the
+// fields this version does not know about - nor over one that could not be read.
+function saveRefused() {
+  if (schemaAhead) { toast(t("t_schema_ahead")); return true; }
+  if (loadStuck) { toast(t("t_load_stuck")); return true; }
+  return false;
+}
+
 function save() {
-  // Never write over a file a newer version of the app saved: it would drop the
-  // fields this version does not know about.
-  if (schemaAhead) { toast(t("t_schema_ahead")); return; }
+  if (saveRefused()) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
+    saveTimer = null;
     const res = await window.api.saveData(state);
     if (res && !res.ok) toast(t("t_saveerror") + res.error);
   }, 250);
+}
+
+function flushSave() {
+  if (!saveTimer) return;
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  if (window.api.saveDataSync) window.api.saveDataSync(state);
 }
 
 // ===========================================================================
@@ -768,6 +792,7 @@ function bindUI() {
   $("#mCancel").addEventListener("click", closeWorkModal);
   $("#mSave").addEventListener("click", saveWork);
   $("#workModal").addEventListener("click", (e) => { if (e.target.id === "workModal") closeWorkModal(); });
+  $("#mWork").addEventListener("change", () => { refreshWhoSelect($("#mWho").value); refreshDropdowns(); });
   $("#mRedo").addEventListener("change", syncRedoHint);
   $("#mShipped").addEventListener("change", syncShippingFields);
 
@@ -1132,16 +1157,15 @@ function openWorkModal(id) {
   const w = id ? state.works.find((x) => x.id === id) : null;
   $("#modalTitle").textContent = w ? t("modal_editwork") : t("modal_newwork");
 
-  $("#mWork").innerHTML = state.config.works.map((x) => `<option>${escapeHtml(x.name)}</option>`).join("");
-  $("#mWho").innerHTML = operatorsFor($("#mWork").value).map((o) => `<option>${escapeHtml(o)}</option>`).join("");
+  const workName = w ? (w.work || "") : ((state.config.works[0] && state.config.works[0].name) || "");
+  fillSelect("#mWork", state.config.works.map((x) => x.name), workName);
+  refreshWhoSelect(w ? (w.doneBy || "") : null);
   $("#courierList").innerHTML = state.config.couriers.map((c) => `<option value="${escapeAttr(c)}"></option>`).join("");
 
   $("#mDate").value = w ? w.date : todayISO();
   refreshClientSelect(w ? (w.client || "") : "");
   $("#mPatient").value = w ? (w.patient || "") : "";
-  $("#mWork").value = w ? w.work : (state.config.works[0] && state.config.works[0].name) || "";
   $("#mUnits").value = w ? w.units : 1;
-  $("#mWho").value = w ? w.doneBy : (operatorsFor($("#mWork").value)[0] || "");
 
   $("#mRedo").checked = !!(w && w.redo);
   syncRedoHint();
@@ -1156,6 +1180,23 @@ function openWorkModal(id) {
   refreshDropdowns();
   $("#workModal").hidden = false;
   $("#mPatient").focus();
+}
+
+// A select can only hold a value it has an option for. A work whose type or
+// operator has since been deleted keeps that value as an extra option, or
+// saving it for a changed note would silently blank the field.
+function fillSelect(sel, values, current) {
+  const list = values.slice();
+  if (!list.includes(current)) list.unshift(current);
+  $(sel).innerHTML = list.map((v) => `<option>${escapeHtml(v)}</option>`).join("");
+  $(sel).value = current;
+}
+
+// Operators set up for the chosen work type come first. `keep` is the value to
+// hold on to; null picks the first operator able to make the work.
+function refreshWhoSelect(keep) {
+  const names = operatorsFor($("#mWork").value);
+  fillSelect("#mWho", names, keep === null ? (names[0] || "") : keep);
 }
 
 // The hint explains why a redo is worth minus the material; it only needs to be
@@ -1531,7 +1572,7 @@ function drawCharts(rows, e) {
     })
   });
 
-  // 7. Where the revenue goes - one stacked bar read left to right.
+  // 8. Where the revenue goes - one stacked bar read left to right.
   const parts = [
     [t("pl_materials"), e.materials, SERIES.cost],
     [t("pl_overheads"), e.overheads, SERIES.neutral],
@@ -1998,11 +2039,8 @@ function materialById(id) { return state.config.materials.find((m) => m.id === i
 function unitCostOf(m) { return m && Number(m.pieces) ? (Number(m.packCost) || 0) / Number(m.pieces) : 0; }
 
 function bomCost(bom, materials) {
-  return (bom || []).reduce((s, l) => {
-    const m = materials.find((x) => x.id === l.material);
-    const unit = m && Number(m.pieces) ? (Number(m.packCost) || 0) / Number(m.pieces) : 0;
-    return s + unit * (Number(l.qty) || 0);
-  }, 0);
+  return (bom || []).reduce((s, l) =>
+    s + unitCostOf(materials.find((x) => x.id === l.material)) * (Number(l.qty) || 0), 0);
 }
 
 // Material cost of one unit of a work type. A type with a recipe follows its
@@ -2080,7 +2118,9 @@ function economics(rows) {
 // the state has to be on disk before we ask for it.
 async function writeWorkbookNow() {
   if (!window.api.syncExcel) return;
-  if (!state.config.excel.path) return;
+  if (!state.config.excel.path || saveRefused()) return;
+  clearTimeout(saveTimer);
+  saveTimer = null;
   await window.api.saveData(state);
   const r = await window.api.syncExcel();
   if (r && r.ok) toast(t("t_excel_saved"));
@@ -2226,12 +2266,24 @@ async function exportEncryptedBackup() {
 
 function applyImported(data) {
   if (!data || !data.config) return toast(t("t_invalidbackup"));
+  // Same rule as the data file: a backup from a newer app would lose what this
+  // one does not understand the moment it is saved.
+  if (Number(data.schemaVersion || 0) > SCHEMA_VERSION) return toast(t("t_schema_ahead"));
   state = data;
   ensureConfigShape();
+  // A backup from before accounts existed has no users at all.
+  Auth.ensureUsersShape(state);
+  state.schemaVersion = SCHEMA_VERSION;
   save();
   buildFilters();
   renderAll();
   toast(t("t_backupimported"));
+  // The backup brings its own accounts. Whoever is signed in carries on only if
+  // they are one of them; otherwise it is back to the sign-in screen.
+  const me = Auth.currentUser();
+  const again = me && state.users.list.find((u) => u.id === me.id);
+  if (again) { Auth.signIn(again); applyPermissions(); }
+  else if (me) { Auth.signOut(); openGate(); }
 }
 
 async function importBackup() {

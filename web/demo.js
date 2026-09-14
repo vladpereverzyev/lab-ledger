@@ -98,9 +98,8 @@
   window.api = {
     loadData: async () => load(),
     saveData: async (data) => persist(data),
-    dataPath: async () => "localStorage (browser demo)",
+    saveDataSync: (data) => persist(data),
     exportJson: async () => unavailable(),
-    importJson: async () => unavailable(),
     exportEncrypted: async () => unavailable(),
     importText: async () => unavailable(),
     exportXlsx: async () => unavailable(),

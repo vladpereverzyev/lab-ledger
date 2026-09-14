@@ -3,6 +3,34 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Fixed
+- A change made less than a quarter of a second before closing the window is
+  no longer lost, and the companion workbook written on quit includes it.
+- The data file is saved to a temporary file and renamed into place, so a crash
+  or power cut during a save leaves the previous archive intact.
+- A data file that cannot be read is moved aside, untouched, instead of being
+  overwritten by the empty archive the app starts with.
+- Editing a work whose work type or operator has since been deleted no longer
+  blanks those fields on save.
+- Changing the work type in the work form refreshes the operators able to make it.
+- Importing a backup from before accounts existed no longer breaks the screen,
+  and a backup written by a newer version is refused rather than trimmed.
+- Update downloads are now actually checked against the published SHA-256 sums:
+  GitHub renames uploaded files (spaces become dots), so the names never matched
+  and every download was reported as unverified. A download that fails halfway
+  no longer leaves a partial installer in Downloads.
+
+### Security
+- Updated the spreadsheet library (SheetJS) to 0.20.3, which fixes a prototype
+  pollution and a denial-of-service issue when reading an untrusted Excel file.
+- The encrypted backup is hidden from operators without the export permission,
+  and restoring a backup - which replaces the accounts too - is for the
+  administrator only.
+- The app window can no longer be navigated away from the app, for example by
+  dropping a file on it, and only https links are opened in the browser.
+
 ## [1.3.4] - 2026-09-11
 
 ### Added
