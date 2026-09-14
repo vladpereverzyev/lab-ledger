@@ -15,10 +15,6 @@
 **A free, offline desktop app for dental labs** - record what leaves the bench,
 and find out what is actually left at the end of the year.
 
-<p align="center">
-  <img src="src/assets/icon-256.png" alt="Lab Ledger" width="160" height="160">
-</p>
-
 ### [**Try the live demo**](https://vladpereverzyev.github.io/lab-ledger/)
 
 Sample data, nothing to install - everything stays in your browser. Prefer the
