@@ -17,8 +17,9 @@ Nothing else in the app needs to change, and it turns Incoming from a list into
 a plan for the day.
 
 Next to it: how long a type of work actually takes, measured rather than
-guessed. The app already knows when a job arrived and when it was marked done;
-the average of that per work type is the honest lead time to quote a practice.
+guessed. The app knows when a job arrived and now also records the day it is
+marked done (`doneAt`); the average of the two per work type is the honest
+lead time to quote a practice.
 
 ## 2. What a job really costs, including the hour
 

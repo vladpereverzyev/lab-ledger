@@ -199,7 +199,7 @@ il tuo drive a fare il resto.
 Otto fogli, leggibili anche da soli: lavori, l'anno mese per mese, materiali col
 costo di un'unità, tipi di lavoro con le loro ricette e i prezzi, costi fissi,
 studi, operatori, e un foglio Info con versione e copyright. Le intestazioni
-seguono la lingua impostata nel programma.
+sono in italiano se il programma è in italiano, altrimenti in inglese.
 
 È un file volutamente semplice: solo valori, niente macro, niente tabelle pivot,
 nessuna formula che capisce un programma solo, larghezze delle colonne già

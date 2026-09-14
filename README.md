@@ -185,7 +185,8 @@ if you want it to.
 Eight sheets, all readable on their own: works, the year month by month,
 materials with the cost of one unit, work types with their recipes and prices,
 running costs, practices, operators, and an Info sheet with the version and the
-copyright. Headers follow the language the app is set to.
+copyright. Headers are in Italian when the app is set to Italian, and in English
+otherwise.
 
 It is deliberately a plain file: values only, no macros, no pivot tables, no
 formulas only one program understands, column widths set so nothing shows as

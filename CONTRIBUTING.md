@@ -33,7 +33,8 @@ Requires [Node.js](https://nodejs.org/) 22.12 or newer.
 ```bash
 npm install
 npm start          # run the app
-npm run dist       # build the Windows installer (output in release/)
+npm test           # run the tests
+npm run dist       # build the installers for the system you are on (output in release/)
 ```
 
 The whole app is plain HTML/CSS/JS in `src/` plus a thin Electron shell in

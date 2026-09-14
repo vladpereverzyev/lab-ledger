@@ -3,6 +3,21 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Fixed
+- Two work types, or two operators, can no longer share a name. Works point at
+  them by name, so renaming one onto another silently moved its works; that is
+  now refused, and new ones are numbered ("New work type 2").
+- Dates, units, quantities and prices from a restored backup are escaped before
+  they are shown, so a tampered backup cannot put markup into the page.
+- A malformed History entry in a restored backup no longer stops the Catalog
+  from drawing.
+
+### Added
+- Marking incoming work as done records the day (`doneAt`), the first step
+  towards measured lead times.
+
 ## [1.4.0] - 2026-09-14
 
 ### Added
