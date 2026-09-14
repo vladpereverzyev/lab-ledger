@@ -18,16 +18,15 @@ Registra cada trabajo cuando entra y cuando sale. Lab Ledger calcula lo que ha
 costado en materiales, suma alquiler, personal e impuestos, y te dice el
 beneficio por año, por mes y por día laborable.
 
-Gratis para Windows, macOS y Linux. Sin cuenta, sin conexión, sin suscripción:
-cada número se queda en tu ordenador.
+Gratis para Windows, macOS y Linux. Sin cuenta, sin suscripción y sin necesidad
+de internet para usarla: cada número se queda en tu ordenador.
 
 **[Descarga la app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Pruébala en el navegador](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## ¿Por qué Lab Ledger?
 
-- **Gratuita y sin conexión**: sin cuenta, sin servidor, sin suscripción. Se
-  empaqueta como una aplicación de escritorio real y se usa como un programa
-  normal.
+- **Un programa de escritorio de verdad**: se instala como cualquier otro,
+  funciona sin conexión y no hay nada en lo que registrarse.
 - **Privada por diseño**: los datos se quedan en tu ordenador. En el código no
   hay ningún dato de pacientes ni de clientes: los tuyos los escribes en local y
   los guardas en archivos cuando quieras.
@@ -160,19 +159,25 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 
 ## Sin conexión por diseño
 
-Lab Ledger no es un producto en la nube con modo sin conexión. Es un programa
-sin conexión, y punto. Los datos viven en un archivo JSON de tu ordenador: sin
-cuenta, sin servidor, sin telemetría, y nada de lo que escribes sale de la
-máquina, salvo que pongas el archivo Excel asociado en una carpeta que tu nube
-sincroniza: la aplicación te avisa antes de escribirlo.
+Lab Ledger no necesita internet para funcionar. Los datos viven en un archivo
+JSON de tu ordenador: sin cuenta, sin servidor, sin telemetría, y nada de lo que
+escribes se envía nunca a ninguna parte. La única forma de que una copia salga
+del ordenador la eliges tú: poner el archivo Excel asociado en una carpeta que
+tu nube sincroniza, y la aplicación te avisa antes de escribirlo.
 
-La aplicación solo se conecta para una cosa, y se puede apagar: **la
-comprobación de actualizaciones**. Una vez al día, si la dejas activada, la aplicación pregunta
-a la API REST pública de GitHub cuál es la última versión y la compara con la
-tuya. Es el único momento en que Lab Ledger usa internet. No envía cuenta, ni
-identificadores, ni nada de tus trabajos, clientes o pacientes; y solo descarga
-un instalador cuando lo pides con el botón. Apágala en **Catálogo > Ajustes** y la aplicación
-no hace ninguna llamada de red. Ver [GitHub API](#github-api).
+La aplicación se conecta por un único motivo: **las actualizaciones**. Entonces
+habla con la API REST pública de GitHub, y solo en estos tres casos:
+
+- **la comprobación automática**: como mucho una vez al día, al arrancar, si
+  está activada. Lo está por defecto; se apaga en **Catálogo > Ajustes**;
+- **la comprobación a mano**: cuando pulsas el número de versión en la esquina
+  inferior derecha de la ventana;
+- **la descarga**: cuando pulsas **Descargar** en el diálogo de actualización.
+
+Ninguno de los tres envía cuenta, identificadores ni nada de tus trabajos,
+clientes o pacientes. Sin conexión, la aplicación simplemente no ve las nuevas
+versiones; todo lo demás funciona igual. Los detalles están en
+[GitHub API](#github-api).
 
 ## El archivo Excel asociado
 
@@ -218,10 +223,11 @@ existe una versión más reciente.
 | Qué se recibe | la etiqueta de la última versión, la URL de su página y los nombres de sus archivos |
 | Y después | la etiqueta se compara con la versión instalada; si es más reciente aparece un diálogo. Pulsa **Descargar** y la aplicación baja sola el instalador para tu sistema en la carpeta Descargas, lo comprueba con las sumas SHA-256 publicadas con la versión (un archivo que no coincide se borra) y ofrece ejecutarlo. Sin ese botón no descarga ni instala nada |
 
-La comprobación se desactiva en **Catálogo > Ajustes**; desactivada, la
-aplicación no hace ninguna llamada de red. Allí se muestran también la versión
-instalada y la versión de la API de GitHub en uso; la versión está además en la
-barra superior: púlsala para comprobar actualizaciones a mano.
+La comprobación automática se desactiva en **Catálogo > Ajustes**. Desactivada,
+la aplicación solo se conecta cuando pulsas el número de versión en la esquina
+inferior derecha de la ventana para comprobar a mano, o cuando pulsas
+**Descargar**. En Ajustes se muestran también la versión instalada y la versión
+de la API de GitHub en uso.
 
 GitHub y el logotipo de GitHub son marcas de GitHub, Inc. Lab Ledger es un
 proyecto independiente, no afiliado, patrocinado ni respaldado

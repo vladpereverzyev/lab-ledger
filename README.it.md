@@ -18,8 +18,8 @@ Registra ogni lavoro quando entra e quando esce. Lab Ledger calcola quanto è
 costato di materiali, aggiunge affitto, personale e tasse, e ti dice l'utile
 all'anno, al mese e per giorno lavorativo.
 
-Gratis per Windows, macOS e Linux. Nessun account, nessuna connessione, nessun
-abbonamento: ogni numero resta sul tuo computer.
+Gratis per Windows, macOS e Linux. Nessun account, nessun abbonamento, e per
+usarlo non serve internet: ogni numero resta sul tuo computer.
 
 **[Scarica l'app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Provala nel browser](https://vladpereverzyev.github.io/lab-ledger/)**
 
@@ -167,20 +167,25 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 
 ## Offline per costruzione
 
-Lab Ledger non è un prodotto cloud con una modalità offline. È un programma
-offline, punto. I dati stanno in un file JSON sul tuo computer: nessun account,
-nessun server, nessuna telemetria, e niente di quello che scrivi esce dalla
-macchina, a meno che tu non metta il file Excel abbinato in una cartella
-sincronizzata col cloud: il programma te lo ricorda prima di scriverlo.
+Lab Ledger non ha bisogno di internet per funzionare. I dati stanno in un file
+JSON sul tuo computer: nessun account, nessun server, nessuna telemetria, e
+niente di quello che scrivi viene mai inviato da qualche parte. L'unico modo in
+cui una copia esce dal computer è una scelta tua: mettere il file Excel abbinato
+in una cartella sincronizzata col cloud, e il programma te lo ricorda prima di
+scriverlo.
 
-Il programma va online per una cosa sola, e si può spegnere: **il controllo
-aggiornamenti**. Una
-volta al giorno, se lo lasci attivo, il programma chiede alla GitHub REST API
-pubblica qual è l'ultima release e la confronta con quella che stai usando. È
-l'unico momento in cui Lab Ledger usa internet. Non manda nessun account,
-nessun identificativo e niente dei tuoi lavori, clienti o pazienti; e scarica
-un installer solo quando sei tu a chiederglielo col pulsante. Spegnilo in **Catalogo > Impostazioni** e il
-programma non fa nessuna chiamata di rete. I dettagli sono in
+Il programma va online per un solo motivo: **gli aggiornamenti**. In quel caso
+parla con la GitHub REST API pubblica, e solo in questi tre casi:
+
+- **il controllo automatico**: al massimo una volta al giorno, all'avvio, se il
+  controllo è attivo. Di default lo è; lo spegni in **Catalogo > Impostazioni**;
+- **il controllo a mano**: quando clicchi il numero di versione in basso a destra
+  nella finestra;
+- **il download**: quando premi **Scarica** nella finestra degli aggiornamenti.
+
+Nessuno dei tre invia account, identificativi o dati dei tuoi lavori, clienti o
+pazienti. Senza connessione il programma semplicemente non vede le nuove
+versioni; tutto il resto funziona uguale. I dettagli sono in
 [GitHub API](#github-api).
 
 ## Il file Excel abbinato
@@ -230,10 +235,11 @@ versione più recente.
 | Cosa viene ricevuto | il tag dell'ultima release, l'URL della sua pagina e i nomi dei suoi file |
 | E poi | il tag viene confrontato con la versione installata; se è più recente compare una finestra. Premi **Scarica** e l'app tira giù da sola l'installer adatto al tuo sistema nella cartella Download, lo confronta con le somme SHA-256 pubblicate con la release (un file che non corrisponde viene cancellato) e poi ti propone di avviarlo. Senza quel pulsante non scarica e non installa niente |
 
-Il controllo si disattiva in **Catalogo > Impostazioni**; disattivato, l'app non
-fa nessuna chiamata di rete. Lì sono indicate anche la versione installata e la
-versione della GitHub API usata; la versione è pure nella barra in alto: cliccala
-per controllare gli aggiornamenti a mano.
+Il controllo automatico si disattiva in **Catalogo > Impostazioni**.
+Disattivato, l'app va online solo quando clicchi il numero di versione in basso a
+destra nella finestra per controllare a mano, o quando premi **Scarica**. Nelle
+Impostazioni sono indicate anche la versione installata e la versione della
+GitHub API usata.
 
 GitHub e il logo GitHub sono marchi di GitHub, Inc. Lab Ledger è un progetto
 indipendente, non affiliato né sponsorizzato né approvato da GitHub.

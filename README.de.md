@@ -18,15 +18,15 @@ Erfasse jede Arbeit, wenn sie kommt und wenn sie geht. Lab Ledger rechnet aus,
 was sie an Material gekostet hat, zieht Miete, Personal und Steuern ab und
 zeigt dir den Gewinn pro Jahr, pro Monat und pro Arbeitstag.
 
-Kostenlos für Windows, macOS und Linux. Kein Konto, kein Internet, kein Abo:
-jede Zahl bleibt auf deinem Computer.
+Kostenlos für Windows, macOS und Linux. Kein Konto, kein Abo, und zum Arbeiten
+braucht es kein Internet: jede Zahl bleibt auf deinem Computer.
 
 **[App herunterladen](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Im Browser ausprobieren](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Warum Lab Ledger?
 
-- **Kostenlos und offline**: kein Konto, kein Server, kein Abo. Sie wird zu
-  einer echten Desktop-Anwendung und läuft wie jedes normale Programm.
+- **Ein echtes Desktop-Programm**: wird installiert wie jedes andere, läuft
+  ohne Internetverbindung, und man muss sich nirgends anmelden.
 - **Privat by design**: alle Daten bleiben auf deinem Rechner. Im Code stecken
   keine Patienten- oder Kundendaten - deine tippst du lokal ein und sicherst sie
   in Dateien, wann du willst.
@@ -158,21 +158,27 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 
 ## Offline von Grund auf
 
-Lab Ledger ist kein Cloud-Produkt mit Offline-Modus. Es ist ein Offline-Programm,
-fertig. Die Daten liegen in einer JSON-Datei auf deinem Rechner: kein Konto, kein
-Server, keine Telemetrie, und nichts von dem, was du eingibst, verlässt die
-Maschine - außer du legst die begleitende Excel-Datei in einen Ordner, den deine
-Cloud synchronisiert; darauf weist die App hin, bevor sie sie schreibt.
+Lab Ledger braucht zum Arbeiten kein Internet. Die Daten liegen in einer
+JSON-Datei auf deinem Rechner: kein Konto, kein Server, keine Telemetrie, und
+nichts von dem, was du eingibst, wird je irgendwohin gesendet. Eine Kopie
+verlässt den Rechner nur, wenn du es selbst so willst - indem du die
+begleitende Excel-Datei in einen Ordner legst, den deine Cloud synchronisiert;
+darauf weist die App hin, bevor sie sie schreibt.
 
-Die App selbst geht nur für eine Sache online, und die lässt sich abschalten:
-**die Update-Prüfung**. Einmal am Tag fragt die App, wenn du sie anlässt, die
-öffentliche GitHub REST API nach der neuesten Version und vergleicht sie mit
-deiner. Das ist der einzige Moment, in dem Lab Ledger das Internet benutzt. Es
-sendet kein Konto, keine Kennungen und nichts über deine Arbeiten, Kunden oder
-Patienten; und ein Installationsprogramm lädt es nur, wenn du auf den
-entsprechenden Knopf drückst. Schalte sie unter
-**Katalog > Einstellungen** ab, und die App macht überhaupt keinen
-Netzwerkaufruf. Siehe [GitHub API](#github-api).
+Die App geht aus genau einem Grund online: **Updates**. Dann spricht sie mit der
+öffentlichen GitHub REST API, und nur in diesen drei Fällen:
+
+- **die automatische Prüfung**: höchstens einmal am Tag beim Start, wenn sie
+  eingeschaltet ist. Standardmäßig ist sie das; abschalten unter
+  **Katalog > Einstellungen**;
+- **die Prüfung von Hand**: wenn du unten rechts im Fenster auf die
+  Versionsnummer klickst;
+- **der Download**: wenn du im Update-Dialog auf **Herunterladen** drückst.
+
+Keiner der drei sendet ein Konto, Kennungen oder etwas über deine Arbeiten,
+Kunden oder Patienten. Ohne Verbindung sieht die App schlicht keine neuen
+Versionen; alles andere funktioniert gleich. Details unter
+[GitHub API](#github-api).
 
 ## Die begleitende Excel-Datei
 
@@ -219,10 +225,11 @@ dass es eine neuere Version gibt.
 | Was empfangen wird | das Tag der neuesten Version, die URL ihrer Seite und die Namen ihrer Dateien |
 | Und dann | das Tag wird mit der installierten Version verglichen; ist es neuer, erscheint ein Dialog. Auf **Herunterladen** holt die App das passende Installationsprogramm selbst in den Ordner Downloads, prüft es gegen die mit der Version veröffentlichten SHA-256-Summen (eine Datei, die nicht passt, wird gelöscht) und bietet an, es zu starten. Ohne diesen Klick lädt und installiert sie nichts |
 
-Die Prüfung lässt sich unter **Katalog > Einstellungen** abschalten; abgeschaltet
-macht die App überhaupt keine Netzwerkaufrufe. Dort stehen auch die installierte
-Version und die verwendete GitHub-API-Version; die Version steht außerdem in der
-oberen Leiste - anklicken, um von Hand nach Updates zu suchen.
+Die automatische Prüfung lässt sich unter **Katalog > Einstellungen**
+abschalten. Dann geht die App nur noch online, wenn du unten rechts im Fenster
+auf die Versionsnummer klickst, um von Hand zu prüfen, oder auf
+**Herunterladen** drückst. In den Einstellungen stehen auch die installierte
+Version und die verwendete GitHub-API-Version.
 
 GitHub und das GitHub-Logo sind Marken von GitHub, Inc. Lab Ledger ist ein
 unabhängiges Projekt und steht in keiner Verbindung zu GitHub, wird

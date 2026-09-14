@@ -3,14 +3,15 @@
 Lab Ledger is an offline desktop app. It has no account and no server: your data
 stays in a local file on your computer and is never uploaded.
 
-It makes exactly one network call, and only if you leave it enabled: a read-only
-request to the public GitHub REST API to learn the latest published release, at
-most once a day. It sends nothing but the request and a `User-Agent`, and it
-never downloads or installs anything on its own. When you do press Download,
-the installer is checked against the SHA-256 sums published with the release
-and deleted if it does not match. Switch it off in
-**Catalog > Settings** and the app makes no network calls at all. The details
-are in the README, section "GitHub API".
+It needs no internet connection. It goes online only for updates, through
+read-only requests to the public GitHub REST API: the automatic check (at most
+once a day at startup, on by default, switch it off in **Catalog > Settings**),
+a check by hand when you click the version number, and a download when you press
+**Download** - a downloaded installer is checked against the SHA-256 sums
+published with the release and deleted if it does not match. None of these
+sends anything but the request and a `User-Agent`, and nothing is ever
+downloaded or installed on its own. The details are in the README, section
+"GitHub API".
 
 The attack surface is therefore small, but we take any security issue seriously.
 

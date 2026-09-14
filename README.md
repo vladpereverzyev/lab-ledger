@@ -18,8 +18,8 @@ Record each job as it comes in and goes out. Lab Ledger works out what it cost
 in materials, adds rent, staff and taxes, and tells you the profit per year,
 per month and per working day.
 
-Free for Windows, macOS and Linux. No account, no internet, no subscription:
-every number stays on your computer.
+Free for Windows, macOS and Linux. No account, no subscription, and no internet
+needed to use it: every number stays on your computer.
 
 **[Download the app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Try it in your browser](https://vladpereverzyev.github.io/lab-ledger/)**
 
@@ -155,20 +155,26 @@ Catalog - each work type wired to the materials it consumes:
 
 ## Offline by design
 
-Lab Ledger is not a cloud product with an offline mode. It is offline-first:
-your data lives in one JSON file on your computer; there is no account, no
-server, no telemetry, and nothing you type leaves the machine - unless you put
-the companion Excel file in a folder your cloud drive syncs, which the app
-warns you about before it writes one.
+Lab Ledger needs no internet connection to work. Your data lives in one JSON
+file on your computer: there is no account, no server, no telemetry, and
+nothing you type is ever sent anywhere. The only way a copy of it leaves the
+machine is one you choose yourself - putting the companion Excel file in a
+folder your cloud drive syncs - and the app warns you before it writes one.
 
-The app itself goes online for one thing only, and it can be switched off:
-**the update check**. Once a
-day, if you leave it switched on, the app asks the public GitHub REST API which
-release is the latest and compares it with the one you are running. That is the
-only moment Lab Ledger uses the internet. It sends no account, no identifiers
-and nothing about your works, clients or patients; and it downloads an
-installer only when you press the button that asks for one. Switch it off in **Catalog > Settings** and the
-app makes no network call at all. The details are in [GitHub API](#github-api).
+The app goes online for one reason only: **updates**. It then talks to the
+public GitHub REST API, and only in these three cases:
+
+- **the automatic check** - at most once a day, when the app starts, if the
+  check is switched on. It is on by default; switch it off in
+  **Catalog > Settings**;
+- **a check by hand** - when you click the version number in the bottom-right
+  corner of the window;
+- **a download** - when you press **Download** in the update dialog.
+
+None of them sends an account, an identifier or anything about your works,
+clients or patients. Without a connection the app simply does not see new
+versions; everything else works the same. The details are in
+[GitHub API](#github-api).
 
 ## The companion Excel file
 
@@ -216,10 +222,10 @@ newer version exists.
 | Received | the latest release tag, its page URL and the names of its files |
 | Then what | the tag is compared with the installed version; if it is newer you get a dialog. Press **Download** and the app fetches the installer for your system straight into your Downloads folder, checks it against the SHA-256 sums published with the release - a file that does not match is deleted - and then offers to run it. Nothing is fetched and nothing is installed unless you press that button |
 
-The check can be switched off in **Catalog > Settings**; with it off the app
-makes no network calls at all. The installed version and the GitHub API version
-in use are both shown there, and the version also sits in the toolbar - click it
-to check for updates by hand.
+The automatic check can be switched off in **Catalog > Settings**. With it off,
+the app only goes online when you click the version number in the bottom-right
+corner of the window to check by hand, or press **Download**. The installed
+version and the GitHub API version in use are both shown in Settings.
 
 GitHub and the GitHub logo are trademarks of GitHub, Inc. Lab Ledger is an
 independent project and is not affiliated with, sponsored by or
