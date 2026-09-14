@@ -41,6 +41,10 @@ usarlo non serve internet: ogni numero resta sul tuo computer.
 
 ## Schermate
 
+Primo avvio: i dati del laboratorio e l'account dell'amministratore, e nient'altro da configurare.
+
+![Configurazione del laboratorio](docs/screenshot-setup.png)
+
 Lavori: ogni lavoro con paziente, spedizione, costo materiale, prezzo e margine.
 
 ![Vista Lavori](docs/screenshot-works.png)
@@ -61,6 +65,18 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
 ![Vista Catalogo](docs/screenshot-catalog.png)
 
 ![Vista Catalogo, chiaro](docs/screenshot-catalog-light.png)
+
+In entrata: il lavoro ancora sul banco, che non conta niente finché non è segnato come fatto.
+
+![Lavori in entrata](docs/screenshot-incoming.png)
+
+Utenti: cosa può fare ogni operatore, modificabile quando vuoi.
+
+![Modifica di un operatore](docs/screenshot-users.png)
+
+Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
+
+![Impostazioni](docs/screenshot-settings.png)
 
 ## Funzioni
 

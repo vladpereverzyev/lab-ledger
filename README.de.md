@@ -41,6 +41,10 @@ braucht es kein Internet: jede Zahl bleibt auf deinem Computer.
 
 ## Screenshots
 
+Erster Start: die Daten des Labors und das Administratorkonto, sonst gibt es nichts einzurichten.
+
+![Labor einrichten](docs/screenshot-setup.png)
+
 Arbeiten: jede Arbeit mit Patient, Versand, Materialkosten, Preis und Marge.
 
 ![Ansicht Arbeiten](docs/screenshot-works.png)
@@ -60,6 +64,18 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 ![Ansicht Katalog](docs/screenshot-catalog.png)
 
 ![Ansicht Katalog, hell](docs/screenshot-catalog-light.png)
+
+Eingang: Arbeit, die noch auf dem Tisch liegt und erst zählt, wenn sie als fertig markiert ist.
+
+![Arbeiten im Eingang](docs/screenshot-incoming.png)
+
+Benutzer: was jeder Bediener darf, jederzeit änderbar.
+
+![Bediener bearbeiten](docs/screenshot-users.png)
+
+Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
+
+![Einstellungen](docs/screenshot-settings.png)
 
 ## Funktionen
 

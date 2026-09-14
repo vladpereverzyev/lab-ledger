@@ -41,6 +41,10 @@ internet pour s'en servir : chaque chiffre reste sur votre ordinateur.
 
 ## Captures
 
+Premier démarrage : les coordonnées du laboratoire et le compte administrateur, rien d'autre à configurer.
+
+![Configuration du laboratoire](docs/screenshot-setup.png)
+
 Travaux : chaque travail avec patient, expedition, cout materiau, prix et marge.
 
 ![Vue Travaux](docs/screenshot-works.png)
@@ -60,6 +64,18 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
 ![Vue Catalogue](docs/screenshot-catalog.png)
 
 ![Vue Catalogue, clair](docs/screenshot-catalog-light.png)
+
+Entrants : le travail encore sur l'établi, qui ne compte pas tant qu'il n'est pas marqué terminé.
+
+![Travaux entrants](docs/screenshot-incoming.png)
+
+Utilisateurs : ce que chaque opérateur a le droit de faire, modifiable à tout moment.
+
+![Modifier un opérateur](docs/screenshot-users.png)
+
+Réglages : mises à jour, copie Excel automatique et code de récupération.
+
+![Réglages](docs/screenshot-settings.png)
 
 ## Fonctionnalités
 

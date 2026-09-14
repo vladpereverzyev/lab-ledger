@@ -41,6 +41,10 @@ de internet para usarla: cada número se queda en tu ordenador.
 
 ## Capturas
 
+Primer arranque: los datos del laboratorio y la cuenta del administrador, y nada más que configurar.
+
+![Configuración del laboratorio](docs/screenshot-setup.png)
+
 Trabajos: cada trabajo con paciente, envio, coste de material, precio y margen.
 
 ![Vista Trabajos](docs/screenshot-works.png)
@@ -60,6 +64,18 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 ![Vista Catalogo](docs/screenshot-catalog.png)
 
 ![Vista Catalogo, claro](docs/screenshot-catalog-light.png)
+
+Entradas: el trabajo que sigue en el banco, que no cuenta hasta que se marca como hecho.
+
+![Trabajos en entrada](docs/screenshot-incoming.png)
+
+Usuarios: lo que puede hacer cada operador, modificable cuando quieras.
+
+![Editar un operador](docs/screenshot-users.png)
+
+Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
+
+![Ajustes](docs/screenshot-settings.png)
 
 ## Funciones
 

@@ -24,6 +24,7 @@ ipcMain.handle("app:info", async () => ({
 // No network during a screenshot run.
 ipcMain.handle("update:check", async () => ({ ok: false, error: "offline" }));
 ipcMain.handle("app:openExternal", async () => {});
+ipcMain.handle("recovery:read", async () => ({ ok: false }));
 
 const outDir = path.join(__dirname, "..", "docs");
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -99,6 +100,51 @@ async function shootTheme(win, theme) {
     fs.writeFileSync(path.join(outDir, file), img.toPNG());
   }
   win.setContentSize(WIDTH, HEIGHT);
+
+  // The screens around the numbers, in the theme the app opens with.
+  if (theme === "light") await shootExtras(win);
+}
+
+async function capture(win, file, js, settle) {
+  await win.webContents.executeJavaScript(js);
+  await wait(settle || 700);
+  await win.webContents.executeJavaScript(
+    "new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(1))))");
+  await wait(250);
+  const img = await win.webContents.capturePage();
+  fs.writeFileSync(path.join(outDir, file), img.toPNG());
+}
+
+async function shootExtras(win) {
+  // Incoming: the work still on the bench.
+  await capture(win, "screenshot-incoming.png",
+    "document.querySelector('[data-view=\"works\"]').click();" +
+    "document.querySelector('#workSec [data-v=\"in\"]').click();");
+
+  // Users: the operator's permissions, open for editing.
+  await capture(win, "screenshot-users.png",
+    "document.querySelector('#workSec [data-v=\"out\"]').click();" +
+    "document.querySelector('[data-view=\"catalog\"]').click();" +
+    "document.querySelector('[data-sec=\"users\"]').click();" +
+    "openUserModal(state.users.list.find(u => u.role !== 'admin').id);");
+
+  // Settings: updates, the automatic Excel copy, the recovery code.
+  await capture(win, "screenshot-settings.png",
+    "document.querySelector('#userModal').hidden = true;" +
+    "document.querySelector('[data-sec=\"settings\"]').click();" +
+    "document.querySelector('#setRecovery').textContent = 'K7QM-3VXA-P9TD-W2HN-8RCF-YE4B';" +
+    "document.querySelector('#kvRecovery').hidden = false;" +
+    "state.config.excel = { enabled: true, path: 'C:\\\\Users\\\\Lab\\\\OneDrive\\\\Lab Ledger.xlsx' }; renderCatalog();" +
+    "document.querySelector('[data-sec=\"settings\"]').click();");
+
+  // First run: setting the lab up. Nothing is saved during a screenshot run.
+  await capture(win, "screenshot-setup.png",
+    "Auth.signOut(); state.users.list = [];" +
+    "document.querySelector('[data-view=\"works\"]').click(); openGate();" +
+    "const b = " + JSON.stringify(SAMPLE.users.business) + ";" +
+    "gBiz.value = b.name; gVat.value = b.vat; gPhone.value = b.phone; gAddr.value = b.address; gEmail.value = b.email;" +
+    "gFirst.value = 'Operator'; gLast.value = 'One'; gUser.value = 'admin'; gPass.value = 'password'; gPass2.value = 'password';" +
+    "document.activeElement && document.activeElement.blur();", 900);
 }
 
 app.whenReady().then(shoot).catch((e) => { console.error(e); app.exit(1); });

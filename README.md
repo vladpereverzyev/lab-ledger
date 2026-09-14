@@ -39,6 +39,10 @@ needed to use it: every number stays on your computer.
 
 ## Screenshots
 
+First run - the lab's details and the administrator account, and nothing else to set up:
+
+![Setting up the lab](docs/screenshot-setup.png)
+
 Works - every job with patient, shipping, material cost, price and margin:
 
 ![Works view](docs/screenshot-works.png)
@@ -59,6 +63,18 @@ Catalog - each work type wired to the materials it consumes:
 ![Catalog view](docs/screenshot-catalog.png)
 
 ![Catalog view, light](docs/screenshot-catalog-light.png)
+
+Incoming - work still on the bench, which counts for nothing until it is marked done:
+
+![Incoming works](docs/screenshot-incoming.png)
+
+Users - what each operator may do, changeable at any time:
+
+![Editing an operator](docs/screenshot-users.png)
+
+Settings - updates, the automatic Excel copy and the recovery code:
+
+![Settings](docs/screenshot-settings.png)
 
 ## Features
 
