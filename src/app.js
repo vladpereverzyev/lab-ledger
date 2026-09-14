@@ -387,12 +387,13 @@ function openExternal(url) {
 function renderCopyright() {
   const year = new Date().getFullYear();
   const span = year > 2026 ? `2026-${year}` : "2026";
-  const name = '<a href="#" id="authorLink">Vladyslav Pereverzyev</a>';
+  const name = '<a href="#" class="author-link">Vladyslav Pereverzyev</a>';
   const line = `Copyright © ${span} ${name}`;
-  $("#copyright").innerHTML = line;
-  $("#copyrightModal").innerHTML = line;
+  // The same line, with the same link, wherever the notice appears: the
+  // footer, the update dialog and the sign-in screen.
+  ["#copyright", "#copyrightModal", "#gateFoot"].forEach((sel) => { $(sel).innerHTML = line; });
 
-  $$("#authorLink, #copyrightModal a").forEach((a) => {
+  $$(".author-link").forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
       openExternal(AUTHOR_URL);
@@ -433,7 +434,6 @@ function openGate() {
   $("#gateReset").hidden = true;
   $(".gate-card").classList.toggle("setup", first);
   $("#gateBiz").textContent = state.users.business.name || "";
-  $("#gateFoot").textContent = $("#copyright").textContent;
   $("#gate").hidden = false;
   setTimeout(() => { (first ? $("#gBiz") : $("#lUser")).focus(); }, 50);
 }
@@ -617,10 +617,18 @@ function applyPermissions() {
     // visible in what the app does or does not let you touch.
     $("#userMenuHead").textContent = name;
   }
-  // An operator who cannot see the money has no use for the summary tab.
+  // An operator who cannot see the money has no use for the summary tab, and
+  // one who cannot change the catalog has no reason to open it.
   const tab = $('[data-view="summary"]');
   tab.hidden = !Auth.can("viewMoney");
-  if (tab.hidden && tab.classList.contains("active")) $('[data-view="works"]').click();
+  const cat = $('[data-view="catalog"]');
+  if ((tab.hidden && tab.classList.contains("active")) ||
+      (!Auth.can("editCatalog") && cat.classList.contains("active"))) {
+    $('[data-view="works"]').click();
+  }
+  // A catalog section that is not for this user must not stay open either.
+  const pill = $(".pill.active");
+  if (pill && getComputedStyle(pill).display === "none") $('[data-sec="clients"]').click();
 }
 
 // ---------------------------------------------------------------- users ----
@@ -773,7 +781,11 @@ function save() {
 
 // Every catalog change goes into the History, as the README promises: who
 // touched prices, materials or operators is exactly what a lab asks later.
+// Every export carries prices and costs, so exporting also takes seeing money.
+function canExportMoney() { return Auth.can("export") && Auth.can("viewMoney"); }
+
 function saveCatalog() {
+  if (!Auth.can("editCatalog")) return;
   Auth.logAction(state, "act_catalog");
   save();
 }
@@ -792,6 +804,8 @@ function bindUI() {
   $("#tabs").addEventListener("click", (e) => {
     const b = e.target.closest(".tab");
     if (!b) return;
+    if (b.dataset.view === "summary" && !Auth.can("viewMoney")) return;
+    if (b.dataset.view === "catalog" && !Auth.can("editCatalog")) return;
     $$(".tab").forEach((x) => x.classList.remove("active"));
     $$(".view").forEach((v) => v.classList.remove("active"));
     b.classList.add("active");
@@ -845,6 +859,7 @@ function bindUI() {
   $("#btnExportXlsx").addEventListener("click", exportExcel);
   $("#btnImportXlsx").addEventListener("click", importExcel);
   $("#btnExportJson").addEventListener("click", async () => {
+    if (!canExportMoney()) return;
     const r = await window.api.exportJson(state);
     if (r && r.ok) toast(t("t_backupsaved"));
     else if (r && r.error) toast(t("t_error") + r.error);
@@ -920,16 +935,19 @@ function bindUI() {
     });
   });
   $("#setAutoUpdate").addEventListener("change", () => {
+    if (!Auth.isAdmin()) return;
     state.config.autoUpdateCheck = $("#setAutoUpdate").checked;
     save();
   });
   $("#setExcelOn").addEventListener("change", () => {
+    if (!Auth.isAdmin()) return;
     const on = $("#setExcelOn").checked;
     if (on && !confirm(t("excel_cloud_warn"))) { $("#setExcelOn").checked = false; return; }
     state.config.excel.enabled = on;
     save();
   });
   $("#btnExcelChoose").addEventListener("click", async () => {
+    if (!Auth.isAdmin()) return;
     if (!window.api.chooseExcel) return;
     if (!confirm(t("excel_cloud_warn"))) return;
     const r = await window.api.chooseExcel();
@@ -1063,6 +1081,9 @@ function renderWorks() {
     `<td class="num" data-label="${escapeAttr(t("th_listprice"))}"><b>${money(revenue)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_margin"))}">` +
     `<b class="${margin < 0 ? "neg" : "pos"}">${money(margin)}</b></td><td></td></tr>`;
+  // Now, not on the next resize: switching section can add or remove the
+  // list's scrollbar.
+  syncTotalsWidth();
 }
 
 function syncTotalsWidth() {
@@ -1719,6 +1740,7 @@ function renderClients() {
 }
 
 function openClientModal(id) {
+  if (!Auth.can("editCatalog")) return;
   editClientId = id;
   const c = id ? state.config.clients.find((x) => x.id === id) : null;
   $("#clientModalTitle").textContent = c ? t("modal_editclient") : t("modal_newclient");
@@ -1735,6 +1757,7 @@ function openClientModal(id) {
 function closeClientModal() { $("#clientModal").hidden = true; editClientId = null; }
 
 function saveClient() {
+  if (!Auth.can("editCatalog")) return;
   const rec = {
     name: $("#cName").value.trim(), vat: $("#cVat").value.trim(),
     email: $("#cEmail").value.trim(), phone: $("#cPhone").value.trim(),
@@ -1752,7 +1775,7 @@ function saveClient() {
 }
 
 function deleteClient(id) {
-  if (!confirm(t("confirm_delclient"))) return;
+  if (!Auth.can("editCatalog") || !confirm(t("confirm_delclient"))) return;
   state.config.clients = state.config.clients.filter((x) => x.id !== id);
   saveCatalog();
   renderClients();
@@ -1829,6 +1852,7 @@ function bomLabel(w) {
 // Bill of materials modal
 // ---------------------------------------------------------------------------
 function openBomModal(typeId) {
+  if (!Auth.can("editCatalog")) return;
   bomTypeId = typeId;
   const w = state.config.works.find((x) => x.id === typeId);
   $("#bomTitle").textContent = t("bom_title") + " " + w.name;
@@ -1978,6 +2002,7 @@ function opTypesLabel(o) {
 let opEditId = null;
 
 function openOpModal(id) {
+  if (!Auth.can("editCatalog")) return;
   opEditId = id;
   const o = state.config.operators.find((x) => x.id === id);
   $("#opTitle").textContent = t("modal_optitle") + " " + o.name;
@@ -2193,6 +2218,7 @@ function economics(rows) {
 // The workbook is written by the Electron side, which reads the data file, so
 // the state has to be on disk before we ask for it.
 async function writeWorkbookNow() {
+  if (!Auth.isAdmin()) return;
   if (!window.api.syncExcel) return;
   if (!state.config.excel.path || saveRefused()) return;
   clearTimeout(saveTimer);
@@ -2328,6 +2354,7 @@ function askPassword(opts) {
 }
 
 async function exportEncryptedBackup() {
+  if (!canExportMoney()) return;
   const pw = await askPassword({ confirm: true, hint: "enc_export_hint" });
   if (!pw) return;
   let blob;
@@ -2365,6 +2392,7 @@ function applyImported(data) {
 }
 
 async function importBackup() {
+  if (!Auth.isAdmin()) return;
   const r = await window.api.importText();
   if (!r || r.canceled) return;
   if (!r.ok) return toast(t("t_error") + r.error);
@@ -2392,6 +2420,7 @@ async function importBackup() {
 }
 
 async function exportExcel() {
+  if (!canExportMoney()) return;
   const works = state.works.slice()
     .sort((a, b) => (a.date || "").localeCompare(b.date || ""))
     .map((w) => ({
@@ -2454,6 +2483,7 @@ function bomLabelPlain(w) {
 }
 
 async function importExcel() {
+  if (!Auth.can("export") || !Auth.can("addWorks")) return;
   const r = await window.api.importXlsx();
   if (!r || r.canceled) return;
   if (!r.ok) return toast(t("t_error") + r.error);

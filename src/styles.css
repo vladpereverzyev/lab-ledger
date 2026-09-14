@@ -141,8 +141,8 @@ main { flex: 1; overflow: auto; padding: 18px; display: flex; flex-direction: co
   padding: 7px 16px; border-top: 1px solid var(--line); background: var(--panel);
   color: var(--ink-soft); font-size: 11px; letter-spacing: .2px;
 }
-.appfoot a { color: inherit; text-decoration: none; cursor: pointer; }
-.appfoot a:hover, .hint a:hover { color: var(--ink); }
+.appfoot a, .gate-foot a { color: inherit; text-decoration: none; cursor: pointer; }
+.appfoot a:hover, .gate-foot a:hover, .hint a:hover { color: var(--ink); }
 .hint a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 /* The author's name and the licence are the same line the footer carries, so
    they read the same way here: no rule under them, the colour does the work. */
@@ -484,22 +484,53 @@ body.no-export #btnExportEnc { display: none; }
 /* A backup replaces the whole archive, accounts included: restoring one is the
    administrator's call, whatever else an operator may export. */
 body.not-admin #btnImportJson { display: none; }
-body.no-addworks #btnNewWork, body.no-addworks #btnImportXlsx, body.no-editworks .bulkbar,
-body.no-editworks #worksTable th.check, body.no-editworks #worksTable td.check { display: none; }
+body.no-addworks #btnNewWork, body.no-addworks #btnImportXlsx, body.no-editworks .bulkbar { display: none; }
+/* No ticking without editing: the tick column closes up in place, like every
+   other column a role does not get. */
+body.no-editworks #worksTable col:nth-child(1), body.no-editworks .totals-table col:nth-child(1) { width: 0 !important; }
+body.no-editworks #worksTable th.check, body.no-editworks #worksTable td.check,
+body.no-editworks.no-delworks #worksTable th:last-child,
+body.no-editworks.no-delworks #worksTable td:last-child {
+  padding: 0; border-left: 0; border-right: 0; overflow: hidden; visibility: hidden;
+}
+/* Nothing to edit and nothing to delete: no Actions column either. */
+body.no-editworks.no-delworks #worksTable col:last-child,
+body.no-editworks.no-delworks .totals-table col:last-child { width: 0 !important; }
 body.no-editworks #worksBody .btn.icon:not(.danger) { display: none; }
 body.no-delworks #worksBody .btn.icon.danger { display: none; }
-body.no-money #worksTable th:nth-child(9), body.no-money #worksTable td:nth-child(9),
-body.no-money #worksTable th:nth-child(10), body.no-money #worksTable td:nth-child(10),
-body.no-money #worksTable th:nth-child(11), body.no-money #worksTable td:nth-child(11),
-body.no-money .totals { display: none; }
-body.no-money #typesTable th:nth-child(3), body.no-money #typesTable td:nth-child(3),
-body.no-money #typesTable th:nth-child(4), body.no-money #typesTable td:nth-child(4),
-body.no-money #typesTable th:nth-child(5), body.no-money #typesTable td:nth-child(5),
-body.no-money #typesTable th:nth-child(6), body.no-money #typesTable td:nth-child(6) { display: none; }
-body.no-editcatalog #view-catalog .btn.small,
-body.no-editcatalog #view-catalog .btn.icon.danger { display: none; }
-body.no-editcatalog #view-catalog .cell-input,
-body.no-editcatalog #view-catalog .cell-select { pointer-events: none; background: var(--bg); }
+/* Someone who works at the bench and is not meant to see the money sees none
+   of it, anywhere: no price, cost, margin or total in the works list, no
+   Summary, no material costs, running costs or taxes, and no export - every
+   export is full of prices.
+   Money columns close up in place (zero width, cells kept), the same way the
+   shipping column does in Incoming, so nothing slides under the wrong header. */
+body.no-money #worksTable col:nth-child(n+9):nth-child(-n+11),
+body.no-money .totals-table col:nth-child(n+9):nth-child(-n+11),
+body.no-money #typesTable col:nth-child(n+3):nth-child(-n+6),
+body.no-money #materialsTable col:nth-child(2),
+body.no-money #materialsTable col:nth-child(5),
+body.no-money table.bom col:nth-child(n+3):nth-child(-n+4) { width: 0 !important; }
+body.no-money #worksTable th:nth-child(n+9):nth-child(-n+11),
+body.no-money #worksTable td:nth-child(n+9):nth-child(-n+11),
+body.no-money #worksTotals td.num,
+body.no-money #typesTable th:nth-child(n+3):nth-child(-n+6),
+body.no-money #typesTable td:nth-child(n+3):nth-child(-n+6),
+body.no-money #materialsTable th:nth-child(2), body.no-money #materialsTable td:nth-child(2),
+body.no-money #materialsTable th:nth-child(5), body.no-money #materialsTable td:nth-child(5),
+body.no-money table.bom th:nth-child(n+3):nth-child(-n+4),
+body.no-money table.bom td:nth-child(n+3):nth-child(-n+4) {
+  padding: 0; border-left: 0; border-right: 0; overflow: hidden; visibility: hidden;
+}
+body.no-money .bom-foot .lbl, body.no-money #bomTotal,
+body.no-money [data-sec="costs"], body.no-money [data-sec="tax"],
+body.no-money #btnExportXlsx, body.no-money #btnExportJson,
+body.no-money #btnExportEnc { display: none !important; }
+
+/* The catalog is for whoever is allowed to change it. Everyone else never
+   opens it: the clients, work types and operators they need are offered in
+   the work form. Settings belong to the administrator. */
+body.no-editcatalog [data-view="catalog"] { display: none !important; }
+body.not-admin [data-sec="settings"] { display: none !important; }
 
 /* ---------------- Toast ---------------- */
 .toast {
@@ -574,6 +605,14 @@ body.no-editcatalog #view-catalog .cell-select { pointer-events: none; backgroun
   table.grid td.check::before { content: none; }
   table.grid .cell-input, table.grid .cell-select { width: auto !important; min-width: 0; flex: 1 1 auto; max-width: 60%; }
   #worksTable.hide-ship td:nth-child(8), .totals-table td.ship-gap { display: none; }
+  /* As cards, a hidden value is a row that is not there at all. */
+  body.no-money #worksTable td:nth-child(n+9):nth-child(-n+11),
+  body.no-editworks #worksTable td.check,
+  body.no-editworks.no-delworks #worksTable td:last-child,
+  body.no-money #worksTotals td.num,
+  body.no-money #typesTable td:nth-child(n+3):nth-child(-n+6),
+  body.no-money #materialsTable td:nth-child(2), body.no-money #materialsTable td:nth-child(5),
+  body.no-money table.bom td:nth-child(n+3):nth-child(-n+4) { display: none; }
 
   #view-works.active { display: block; }
   #view-works .table-wrap { max-height: none; border: none; background: none; box-shadow: none; }
