@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Only the app's own files run here; the one outside address is the
+         public GitHub API the browser demo asks for the latest release. -->
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'" />
     <title>Lab Ledger</title>
     <link rel="icon" href="assets/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
@@ -455,7 +459,7 @@
             <p class="hint top" data-i18n="user_perms_hint"></p>
             <div class="table-wrap flat">
               <table class="grid compact fixed" id="usersTable">
-                <colgroup><col style="width:24%" /><col style="width:18%" /><col style="width:16%" /><col style="width:36%" /><col style="width:6%" /></colgroup>
+                <colgroup><col style="width:22%" /><col style="width:16%" /><col style="width:14%" /><col style="width:38%" /><col style="width:10%" /></colgroup>
                 <thead>
                   <tr>
                     <th data-i18n="th_name">Name</th>
@@ -679,7 +683,7 @@
     <!-- ======================= New operator ======================= -->
     <div class="modal-backdrop" id="userModal" hidden>
       <div class="modal">
-        <h3 data-i18n="modal_newuser">New operator</h3>
+        <h3 id="uTitle" data-i18n="modal_newuser">New operator</h3>
         <div class="form">
           <label><span data-i18n="auth_firstname">First name</span><input type="text" id="uFirst" /></label>
           <label><span data-i18n="auth_lastname">Last name</span><input type="text" id="uLast" /></label>

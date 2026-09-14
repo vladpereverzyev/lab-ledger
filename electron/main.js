@@ -54,7 +54,9 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      // The preload only needs the electron module, so the renderer can run
+      // in the sandbox like any web page.
+      sandbox: true
     }
   });
 
@@ -72,8 +74,8 @@ function createWindow() {
 
   // Smoke test: forward the renderer console and quit automatically.
   if (process.env.SMOKE_TEST) {
-    mainWindow.webContents.on("console-message", (_e, level, message) => {
-      console.log(`[renderer:${level}] ${message}`);
+    mainWindow.webContents.on("console-message", (e) => {
+      console.log(`[renderer:${e.level}] ${e.message}`);
     });
     mainWindow.webContents.on("render-process-gone", (_e, d) =>
       console.log("[render-process-gone]", JSON.stringify(d)));

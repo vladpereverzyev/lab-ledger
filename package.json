@@ -17,8 +17,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "electron": "34.0.0",
-    "electron-builder": "25.1.8"
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3"
   },
   "build": {
     "appId": "com.labledger.app",
@@ -56,7 +56,10 @@
       "shortcutName": "Lab Ledger"
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        { "target": "dmg", "arch": ["universal"] },
+        { "target": "zip", "arch": ["universal"] }
+      ],
       "icon": "build/icon.png",
       "category": "public.app-category.productivity"
     },
@@ -68,6 +71,6 @@
     }
   },
   "allowScripts": {
-    "electron@34.0.0": true
+    "electron@44.3.0": true
   }
 }

@@ -14,7 +14,8 @@ ipcMain.handle("data:load", async () => ({
   users: SAMPLE.users, history: SAMPLE.history
 }));
 ipcMain.handle("data:save", async () => ({ ok: true }));
-ipcMain.handle("data:path", async () => "Demo - all data stays on your computer");
+// A reload flushes any pending save synchronously; without a reply it would hang.
+ipcMain.on("data:saveSync", (e) => { e.returnValue = { ok: true }; });
 ipcMain.handle("app:info", async () => ({
   version: require("../package.json").version,
   apiVersion: "2022-11-28",
