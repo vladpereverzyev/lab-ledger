@@ -12,16 +12,21 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Lab Ledger montre à un laboratoire dentaire ce qu'il gagne vraiment.**
+**L'application de bureau pour les laboratoires dentaires qui veulent savoir ce que rapporte vraiment chaque travail.**
 
-Enregistrez chaque travail à l'entrée et à la sortie. Lab Ledger calcule ce
-qu'il a coûté en matériaux, ajoute le loyer, le personnel et les impôts, et
-vous donne le bénéfice par an, par mois et par jour ouvré.
+Enregistrez chaque travail du jour où il arrive au jour où il part. Lab Ledger
+lui donne son prix d'après votre tarif, calcule son coût d'après les matériaux
+qu'il utilise vraiment et ajoute loyer, personnel et impôts : vous savez à tout
+moment ce qui reste, cette année, ce mois-ci, aujourd'hui.
 
-Gratuit pour Windows, macOS et Linux. Sans compte, sans abonnement, et sans
-internet pour s'en servir : chaque chiffre reste sur votre ordinateur.
+Votre équipe travaille dans la même application, chacun avec son compte : les
+techniciens enregistrent leurs travaux, et seules les personnes que vous
+choisissez voient l'argent.
 
-**[Télécharger l'application](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[L'essayer dans le navigateur](https://vladpereverzyev.github.io/lab-ledger/)**
+Gratuit pour Windows, macOS et Linux · fonctionne sans internet · vos données
+restent sur votre ordinateur.
+
+**[Télécharger l'application](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Essayer la démo](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Pourquoi Lab Ledger ?
 
@@ -105,9 +110,11 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
 - **Les opérateurs** sont ajoutés par l'administrateur, qui coche ce que chacun
   a le droit de faire et peut le changer à tout moment : voir les prix et les
   bénéfices, ajouter de nouveaux travaux, modifier ceux déjà enregistrés, les
-  supprimer, modifier le catalogue, exporter et sauvegarder. Qui ne peut pas
-  voir l'argent n'a ni l'onglet Résumé, ni les colonnes prix et marge, ni les
-  prix du catalogue.
+  supprimer, modifier le catalogue, exporter et sauvegarder. Qui travaille à
+  l'établi sans voir l'argent ne voit aucun montant nulle part - ni prix, ni
+  coûts, ni totaux, ni Résumé, ni exports - et qui ne peut pas modifier le
+  catalogue ne voit pas l'onglet Catalogue : les clients et types de travaux
+  dont il a besoin sont proposés dans la fiche du travail.
 - **Les mots de passe ne sont jamais enregistrés** : seulement PBKDF2-SHA256 sur
   un sel aléatoire par utilisateur, 150000 tours. Un mot de passe oublié se
   réinitialise, il ne se récupère pas.
@@ -155,8 +162,8 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
   laboratoire travaille vraiment : c'est ce qui transforme un bénéfice annuel en
   bénéfice journalier.
 - **Réglages** : recherche de mises à jour activée ou non, la copie Excel
-  automatique, le code de récupération (administrateur seulement), version, licence
-  et chemin du fichier de données.
+  automatique, le code de récupération, version, licence
+  et chemin du fichier de données ; réservés à l'administrateur.
 - **Utilisateurs** et **Historique** : comptes et permissions, et chaque
   modification avec son auteur ; réservés à l'administrateur.
 

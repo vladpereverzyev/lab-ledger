@@ -12,16 +12,20 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Lab Ledger mostra a un laboratorio odontotecnico quanto guadagna davvero.**
+**L'app desktop per i laboratori odontotecnici che vogliono sapere quanto rende davvero ogni lavoro.**
 
-Registra ogni lavoro quando entra e quando esce. Lab Ledger calcola quanto è
-costato di materiali, aggiunge affitto, personale e tasse, e ti dice l'utile
-all'anno, al mese e per giorno lavorativo.
+Registra ogni lavoro dal giorno in cui arriva al giorno in cui parte. Lab Ledger
+lo valorizza col tuo listino, ne calcola il costo dai materiali che usa davvero
+e ci aggiunge affitto, personale e tasse: così sai in ogni momento quanto resta,
+quest'anno, questo mese, oggi.
 
-Gratis per Windows, macOS e Linux. Nessun account, nessun abbonamento, e per
-usarlo non serve internet: ogni numero resta sul tuo computer.
+Il tuo team lavora nella stessa app, ognuno col suo account: i tecnici
+registrano i lavori, e i soldi li vede solo chi scegli tu.
 
-**[Scarica l'app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Provala nel browser](https://vladpereverzyev.github.io/lab-ledger/)**
+Gratis per Windows, macOS e Linux · funziona senza internet · i dati restano sul
+tuo computer.
+
+**[Scarica l'app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Prova la demo](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Perché Lab Ledger?
 
@@ -107,9 +111,11 @@ Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
 - **Gli operatori** li aggiunge l'amministratore, spuntando cosa ciascuno può
   fare, e può cambiarlo quando vuole: vedere prezzi e utili, aggiungere lavori
   nuovi, modificare quelli già registrati, eliminarli, modificare il catalogo,
-  esportare e fare backup. Un operatore che non può
-  vedere i soldi non vede la scheda Riepilogo, né le colonne prezzo e margine,
-  né i prezzi nel catalogo.
+  esportare e fare backup. Chi lavora al banco senza vedere i soldi non vede
+  nessun importo da nessuna parte - né prezzi, né costi, né totali, né
+  Riepilogo, né esportazioni - e chi non può modificare il catalogo non vede
+  proprio la scheda Catalogo: i clienti e i tipi di lavoro che gli servono li
+  trova nella scheda del lavoro.
 - **Le password non vengono mai salvate**: si salva solo PBKDF2-SHA256 su un
   sale casuale per utente, 150000 giri. Una password dimenticata si azzera, non
   si recupera.
@@ -158,8 +164,8 @@ Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
   semplici, più quanti giorni a settimana e settimane all'anno lavora davvero il
   laboratorio: è quello che trasforma un utile annuo in un utile giornaliero.
 - **Impostazioni**: controllo aggiornamenti sì o no, la copia Excel automatica, il
-  codice di recupero (solo amministratore), versione, licenza e percorso del
-  file dati.
+  codice di recupero, versione, licenza e percorso del
+  file dati; solo per l'amministratore.
 - **Utenti** e **Cronologia**: account e permessi, e ogni modifica con chi l'ha
   fatta; solo per l'amministratore.
 

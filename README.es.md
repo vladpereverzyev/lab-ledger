@@ -12,16 +12,20 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Lab Ledger muestra a un laboratorio dental lo que gana de verdad.**
+**La app de escritorio para laboratorios dentales que quieren saber cuánto deja de verdad cada trabajo.**
 
-Registra cada trabajo cuando entra y cuando sale. Lab Ledger calcula lo que ha
-costado en materiales, suma alquiler, personal e impuestos, y te dice el
-beneficio por año, por mes y por día laborable.
+Registra cada trabajo desde el día en que llega hasta el día en que sale. Lab
+Ledger le pone precio con tu tarifa, calcula su coste con los materiales que usa
+de verdad y suma alquiler, personal e impuestos: así sabes en todo momento lo
+que queda, este año, este mes, hoy.
 
-Gratis para Windows, macOS y Linux. Sin cuenta, sin suscripción y sin necesidad
-de internet para usarla: cada número se queda en tu ordenador.
+Tu equipo trabaja en la misma app, cada uno con su cuenta: los técnicos
+registran sus trabajos y el dinero solo lo ve quien tú elijas.
 
-**[Descarga la app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Pruébala en el navegador](https://vladpereverzyev.github.io/lab-ledger/)**
+Gratis para Windows, macOS y Linux · funciona sin internet · tus datos se quedan
+en tu ordenador.
+
+**[Descarga la app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Prueba la demo](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## ¿Por qué Lab Ledger?
 
@@ -104,8 +108,11 @@ Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
 - **Los operadores** los añade el administrador, marcando lo que cada uno puede
   hacer, y puede cambiarlo cuando quiera: ver precios y beneficios, añadir
   trabajos nuevos, editar los ya registrados, eliminarlos, editar el catálogo,
-  exportar y copiar. Quien no puede ver el dinero no ve la pestaña
-  Resumen, ni las columnas de precio y margen, ni los precios del catálogo.
+  exportar y copiar. Quien trabaja en el banco sin ver el dinero no ve ningún
+  importe en ninguna parte - ni precios, ni costes, ni totales, ni Resumen, ni
+  exportaciones - y quien no puede editar el catálogo no ve la pestaña Catálogo:
+  los clientes y tipos de trabajo que necesita los encuentra en la ficha del
+  trabajo.
 - **Las contraseñas nunca se guardan**: solo PBKDF2-SHA256 sobre una sal
   aleatoria por usuario, 150000 vueltas. Una contraseña olvidada se reinicia, no
   se recupera.
@@ -152,8 +159,8 @@ Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
   sencillos, más cuántos días por semana y semanas al año trabaja realmente el
   laboratorio: eso es lo que convierte un beneficio anual en uno diario.
 - **Ajustes**: comprobación de actualizaciones sí o no, la copia automática
-  en Excel, el código de recuperación (solo administrador), versión, licencia y
-  ruta del archivo de datos.
+  en Excel, el código de recuperación, versión, licencia y
+  ruta del archivo de datos; solo para el administrador.
 - **Usuarios** e **Historial**: cuentas y permisos, y cada cambio con quién lo
   hizo; solo para el administrador.
 

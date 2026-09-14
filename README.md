@@ -12,16 +12,20 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Lab Ledger shows a dental lab what it really earns.**
+**The desktop app for dental labs that want to know what every job really earns.**
 
-Record each job as it comes in and goes out. Lab Ledger works out what it cost
-in materials, adds rent, staff and taxes, and tells you the profit per year,
-per month and per working day.
+Log each case from the day it arrives to the day it ships. Lab Ledger prices it
+from your list, costs it from the materials it actually uses, and puts rent,
+staff and taxes on top - so at any moment you know what is left: this year,
+this month, today.
 
-Free for Windows, macOS and Linux. No account, no subscription, and no internet
-needed to use it: every number stays on your computer.
+Your team works in the same app with its own accounts: technicians record their
+jobs, and only the people you choose see the money.
 
-**[Download the app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Try it in your browser](https://vladpereverzyev.github.io/lab-ledger/)**
+Free for Windows, macOS and Linux · works without internet · your data stays on
+your computer.
+
+**[Download the app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Try the live demo](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Why Lab Ledger?
 
@@ -101,8 +105,11 @@ Settings - updates, the automatic Excel copy and the recovery code:
   that the app opens on a sign-in screen and nothing is behind it.
 - **Operators** are added by the administrator, who ticks what each one may do
   and can change it at any time: see prices and profit, add new works, edit the
-  works already recorded, delete them, edit the catalog, export and back up. An operator who cannot see the money gets no Summary tab,
-  no price and margin columns, no prices in the catalog.
+  works already recorded, delete them, edit the catalog, export and back up.
+  Someone who works at the bench without seeing the money sees no amount
+  anywhere - no prices, costs, totals, Summary or exports - and someone who
+  cannot edit the catalog never sees the Catalog tab: the clients and work types
+  they need are offered in the work form.
 - **Passwords are never stored** - only PBKDF2-SHA256 over a random per-user
   salt, 150000 rounds. A forgotten password can be reset, never recovered.
 - **A forgotten administrator password is not the end of the archive.** Setting
@@ -148,7 +155,7 @@ Settings - updates, the automatic Excel copy and the recovery code:
   plus how many days a week and weeks a year the lab actually works - which is
   what turns a yearly profit into a daily one.
 - **Settings** - update check on or off, the automatic Excel copy, the recovery
-  code (administrator only), version, licence and data file path.
+  code, version, licence and data file path; administrator only.
 - **Users** and **History** - accounts and permissions, and every change with
   who made it; administrator only.
 

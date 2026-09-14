@@ -12,16 +12,21 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Lab Ledger zeigt einem Dentallabor, was es wirklich verdient.**
+**Die Desktop-App für Dentallabore, die wissen wollen, was jede Arbeit wirklich einbringt.**
 
-Erfasse jede Arbeit, wenn sie kommt und wenn sie geht. Lab Ledger rechnet aus,
-was sie an Material gekostet hat, zieht Miete, Personal und Steuern ab und
-zeigt dir den Gewinn pro Jahr, pro Monat und pro Arbeitstag.
+Erfasse jede Arbeit vom Tag, an dem sie ankommt, bis zum Tag, an dem sie
+rausgeht. Lab Ledger bepreist sie nach deiner Preisliste, berechnet ihre Kosten
+aus den Materialien, die sie wirklich verbraucht, und rechnet Miete, Personal
+und Steuern dazu - so weißt du jederzeit, was übrig bleibt: dieses Jahr, diesen
+Monat, heute.
 
-Kostenlos für Windows, macOS und Linux. Kein Konto, kein Abo, und zum Arbeiten
-braucht es kein Internet: jede Zahl bleibt auf deinem Computer.
+Dein Team arbeitet in derselben App, jeder mit eigenem Konto: die Techniker
+erfassen ihre Arbeiten, und das Geld sieht nur, wen du auswählst.
 
-**[App herunterladen](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Im Browser ausprobieren](https://vladpereverzyev.github.io/lab-ledger/)**
+Kostenlos für Windows, macOS und Linux · funktioniert ohne Internet · deine
+Daten bleiben auf deinem Computer.
+
+**[App herunterladen](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Demo ausprobieren](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Warum Lab Ledger?
 
@@ -104,8 +109,11 @@ Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
   an. Danach öffnet die App mit einer Anmeldung.
 - **Bediener** legt der Administrator an und hakt ab, was jeder darf - jederzeit
   änderbar: Preise und Gewinn sehen, neue Arbeiten anlegen, bereits erfasste
-  ändern, löschen, den Katalog bearbeiten, exportieren und sichern. Wer das Geld nicht sehen darf, bekommt weder den
-  Reiter Übersicht noch die Spalten Preis und Marge noch die Preise im Katalog.
+  ändern, löschen, den Katalog bearbeiten, exportieren und sichern. Wer am Tisch
+  arbeitet, ohne das Geld zu sehen, sieht nirgends einen Betrag - keine Preise,
+  Kosten, Summen, keine Übersicht und keine Exporte - und wer den Katalog nicht
+  bearbeiten darf, sieht den Reiter Katalog gar nicht: Kunden und Arbeitstypen
+  bekommt er im Arbeitsformular angeboten.
 - **Passwörter werden nie gespeichert**: nur PBKDF2-SHA256 über ein zufälliges
   Salt je Benutzer, 150000 Runden. Ein vergessenes Passwort wird zurückgesetzt,
   nicht wiederhergestellt.
@@ -151,8 +159,8 @@ Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
   Prozentsätzen, dazu wie viele Tage pro Woche und Wochen pro Jahr das Labor
   tatsächlich arbeitet - das macht aus einem Jahresgewinn einen Tagesgewinn.
 - **Einstellungen**: Update-Prüfung an oder aus, die automatische Excel-Kopie,
-  der Wiederherstellungscode (nur Administrator), Version, Lizenz und Pfad der
-  Datendatei.
+  der Wiederherstellungscode, Version, Lizenz und Pfad der
+  Datendatei; nur für den Administrator.
 - **Benutzer** und **Verlauf**: Konten und Rechte, und jede Änderung mit ihrem
   Urheber; nur für den Administrator.
 
