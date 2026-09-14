@@ -1077,7 +1077,7 @@ function renderWorks() {
   $("#worksTotals").innerHTML =
     // The shipping column gets its own empty cell, so it can close up in
     // Incoming exactly as it does in the table above.
-    `<tr><td colspan="7"><b>${rows.length}</b> ${escapeHtml(t(rows.length === 1 ? "foot_work" : "foot_works"))}</td><td class="ship-gap"></td>` +
+    `<tr><td colspan="7"><b>${number(rows.length)}</b> ${escapeHtml(t(rows.length === 1 ? "foot_work" : "foot_works"))}</td><td class="ship-gap"></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_matcost"))}"><b>${money(cost)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_listprice"))}"><b>${money(revenue)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_margin"))}">` +
@@ -1371,12 +1371,12 @@ function renderSummary() {
   const e = economics(rows);
 
   $("#statCards").innerHTML = [
-    card(t("card_works"), rows.length),
-    card(t("card_units"), sum(rows, (w) => Number(w.units) || 0)),
+    card(t("card_works"), number(rows.length)),
+    card(t("card_units"), number(sum(rows, (w) => Number(w.units) || 0))),
     card(t("card_revenue"), money(e.revenue), "accent"),
     card(t("card_matcost"), money(e.materials)),
     card(t("card_grossmargin"), money(e.gross), e.gross < 0 ? "neg" : "pos"),
-    card(t("card_redos"), rows.filter((w) => w.redo).length,
+    card(t("card_redos"), number(rows.filter((w) => w.redo).length),
       "", money(-e.redoCost) + " " + t("card_redocost").toLowerCase())
   ].join("");
 
@@ -1384,7 +1384,7 @@ function renderSummary() {
     card(t("card_overheads"), money(e.overheads)),
     card(t("card_taxes"), money(e.taxes.total)),
     card(t("card_net"), money(e.net), e.net < 0 ? "neg" : "pos"),
-    card(t("card_perday"), money(e.perDay), e.perDay < 0 ? "neg" : "pos", e.workDays + " " + t("cal_workdays").toLowerCase()),
+    card(t("card_perday"), money(e.perDay), e.perDay < 0 ? "neg" : "pos", number(e.workDays) + " " + t("cal_workdays").toLowerCase()),
     card(t("card_perweek"), money(e.perWeek), e.perWeek < 0 ? "neg" : "pos"),
     card(t("card_permonth"), money(e.perMonth), e.perMonth < 0 ? "neg" : "pos"),
     card(t("card_avgwork"), money(e.perWork)),
@@ -1405,7 +1405,7 @@ function card(k, v, cls, sub) {
 
 function renderPL(e) {
   const d = e.workDays || 1;
-  const pct = (n) => (e.revenue ? (100 * n / e.revenue).toFixed(1) + "%" : "-");
+  const pct = (n) => (e.revenue ? number(100 * n / e.revenue, 1) + "%" : "-");
   const line = (label, v, cls) =>
     `<tr class="${cls || ""}"><td>${label}</td>` +
     `<td class="num">${money(v)}</td>` +
@@ -1486,6 +1486,9 @@ function baseOptions(extra) {
 }
 
 function draw(id, config) {
+  // Chart.js writes its own numbers (counts on an axis): same dot for thousands
+  // and comma for decimals as everywhere else in the app.
+  Chart.defaults.locale = "it-IT";
   const el = document.getElementById(id);
   if (!el) return;
   if (charts[id]) charts[id].destroy();
@@ -2131,7 +2134,7 @@ function renderCalendarPanel() {
   $("#calDays").value = c.daysPerWeek;
   $("#calWeeks").value = c.weeksPerYear;
   $("#calHours").value = c.hoursPerDay;
-  $("#calTotal").textContent = workingDays();
+  $("#calTotal").textContent = number(workingDays());
 }
 
 // ===========================================================================
@@ -2618,24 +2621,29 @@ function normalizeDate(v, fallback) {
   return def;
 }
 
-// The separators follow the language - 1.234,56 in Italian, 1,234.56 in English
-// - but the euro sign always goes after the number, because a column of money
-// that puts it in front in one language and behind in another is a column you
-// have to read twice.
-function money(n) {
-  const v = Math.round((Number(n) + Number.EPSILON) * 100) / 100;
-  return new Intl.NumberFormat(currentLang(), {
-    minimumFractionDigits: 2, maximumFractionDigits: 2
-  }).format(v || 0) + " €";
+// One way of writing numbers in every language: a dot for thousands, a comma
+// for decimals, the euro sign after - 1.234,56 €. A column of money that changed
+// its separators with the language would be a column you have to read twice.
+function number(n, decimals) {
+  const v = Number(n) || 0;
+  const fixed = Math.abs(v).toFixed(decimals || 0);
+  const [int, dec] = fixed.split(".");
+  // No "-0,00": a value that rounds to zero is zero.
+  const sign = v < 0 && Number(fixed) !== 0 ? "-" : "";
+  return sign + int.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (dec ? "," + dec : "");
 }
 
-// Axis labels: euros, but short enough to breathe (1.2k, 340).
+function money(n) {
+  return number(Math.round((Number(n) + Number.EPSILON) * 100) / 100, 2) + " €";
+}
+
+// Axis labels: euros, but short enough to breathe (1,2k, 340).
 function shortMoney(v) {
   const n = Number(v) || 0;
   const abs = Math.abs(n);
-  if (abs >= 1000000) return (n / 1000000).toFixed(1) + "M €";
-  if (abs >= 1000) return (n / 1000).toFixed(abs >= 10000 ? 0 : 1) + "k €";
-  return Math.round(n) + " €";
+  if (abs >= 1000000) return number(n / 1000000, 1) + "M €";
+  if (abs >= 1000) return number(n / 1000, abs >= 10000 ? 0 : 1) + "k €";
+  return number(n) + " €";
 }
 
 function round2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
