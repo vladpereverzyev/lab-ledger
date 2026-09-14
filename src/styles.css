@@ -235,7 +235,15 @@ table.grid tbody tr.picked { background: var(--chip); }
 .shiprow span { overflow: hidden; text-overflow: ellipsis; }
 
 /* Incoming work has no courier: the shipping column steps aside. */
-#worksTable.hide-ship th:nth-child(8), #worksTable.hide-ship td:nth-child(8) { display: none; }
+/* The cells stay in place, empty and zero wide: a cell taken out with
+   display:none would slide every later cell one column to the left, away from
+   its header and from the totals underneath. !important because the column
+   widths sit in style attributes on the <col>s. */
+#worksTable.hide-ship col:nth-child(8), .totals-table.hide-ship col:nth-child(8) { width: 0 !important; }
+#worksTable.hide-ship th:nth-child(8), #worksTable.hide-ship td:nth-child(8),
+.totals-table.hide-ship td.ship-gap {
+  padding: 0; border-left: 0; border-right: 0; overflow: hidden; visibility: hidden;
+}
 
 .checklist { max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
 .checklist .switch { padding: 4px 0; font-size: 13px; }
@@ -558,7 +566,7 @@ body.no-editcatalog #view-catalog .cell-select { pointer-events: none; backgroun
   table.grid td.check { justify-content: flex-start; }
   table.grid td.check::before { content: none; }
   table.grid .cell-input, table.grid .cell-select { width: auto !important; min-width: 0; flex: 1 1 auto; max-width: 60%; }
-  #worksTable.hide-ship td:nth-child(8) { display: none; }
+  #worksTable.hide-ship td:nth-child(8), .totals-table td.ship-gap { display: none; }
 
   #view-works.active { display: block; }
   #view-works .table-wrap { max-height: none; border: none; background: none; box-shadow: none; }

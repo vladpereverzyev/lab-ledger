@@ -388,7 +388,7 @@ function renderCopyright() {
   const year = new Date().getFullYear();
   const span = year > 2026 ? `2026-${year}` : "2026";
   const name = '<a href="#" id="authorLink">Vladyslav Pereverzyev</a>';
-  const line = `Copyright © ${span} ${name} · ${LICENSE_NAME}`;
+  const line = `Copyright © ${span} ${name}`;
   $("#copyright").innerHTML = line;
   $("#copyrightModal").innerHTML = line;
 
@@ -1006,6 +1006,7 @@ function renderWorks() {
   // Incoming work has not been shipped and has no courier, so the column and
   // its filter would be dead weight.
   $("#worksTable").classList.toggle("hide-ship", incoming);
+  $("#totalsWrap .totals-table").classList.toggle("hide-ship", incoming);
   $("#fShip").hidden = incoming;
   $("#inHint").hidden = !incoming;
   $("#worksEmpty").setAttribute("data-i18n", incoming ? "in_empty" : "works_empty");
@@ -1050,7 +1051,9 @@ function renderWorks() {
   const revenue = sum(rows, rowRevenue);
   const margin = revenue - cost;
   $("#worksTotals").innerHTML =
-    `<tr><td colspan="8"><b>${rows.length}</b> ${escapeHtml(t("foot_works"))}</td>` +
+    // The shipping column gets its own empty cell, so it can close up in
+    // Incoming exactly as it does in the table above.
+    `<tr><td colspan="7"><b>${rows.length}</b> ${escapeHtml(t("foot_works"))}</td><td class="ship-gap"></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_matcost"))}"><b>${money(cost)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_listprice"))}"><b>${money(revenue)}</b></td>` +
     `<td class="num" data-label="${escapeAttr(t("th_margin"))}">` +
