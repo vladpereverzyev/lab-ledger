@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.4.0] - 2026-09-14
 
 ### Added
 - **macOS on Intel.** The Mac download is now a universal build that runs
@@ -29,6 +29,13 @@ All notable changes to Lab Ledger are documented here. The format is based on
 - Editing a work whose work type or operator has since been deleted no longer
   blanks those fields on save.
 - Changing the work type in the work form refreshes the operators able to make it.
+- Importing from Excel reads "No", "0" or "false" in the Redo and Shipped
+  columns as no; before, anything written there counted as yes, and a redo
+  earns nothing. The companion workbook the app writes - including its Italian
+  headers - can now be imported back, incoming work included.
+- When an unreadable data file is moved aside, its recovery code file is moved
+  with it instead of being replaced by the code of the new archive.
+- Importing from Excel needs the permission to add works.
 - Importing a backup from before accounts existed no longer breaks the screen,
   and a backup written by a newer version is refused rather than trimmed.
 - Update downloads are now actually checked against the published SHA-256 sums:
