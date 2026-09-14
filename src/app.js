@@ -515,6 +515,9 @@ async function createFirstAdmin() {
 // and puts it on screen once. The panel is the last thing between setting the
 // lab up and using it, so it is read rather than clicked past.
 async function issueRecovery() {
+  // With saving refused, the code's hash would never reach the data file, and
+  // the clear copy would replace the one that belongs to the archive on disk.
+  if (schemaAhead || loadStuck) return closeGate();
   const code = Auth.makeRecoveryCode();
   state.users.recovery = await Auth.makeRecovery(code);
   save();
@@ -2414,10 +2417,13 @@ async function importExcel() {
   if (!r || r.canceled) return;
   if (!r.ok) return toast(t("t_error") + r.error);
 
+  if (!Auth.can("addWorks")) return;
+  // The first sheet with a "work" column wins, wherever its header row is: the
+  // app's own export has it on row 1, the companion workbook below its title.
   let rows = null;
   for (const name of Object.keys(r.sheets)) {
-    const sheet = r.sheets[name];
-    if (sheet.length && sheet.some((row) => hasKey(row, ["work"]))) { rows = sheet; break; }
+    rows = rowsUnderHeader(r.sheets[name]);
+    if (rows) break;
   }
   if (!rows) return toast(t("t_nosheet"));
 
@@ -2442,12 +2448,13 @@ async function importExcel() {
       work,
       units: Math.max(0, Math.min(100000, Math.round(Number(pick(row, ["units"])) || 1))),
       doneBy: cap(pick(row, ["done by", "operator"]), 200),
-      redo: !!String(pick(row, ["redo"]) || "").trim(),
+      redo: isYes(pick(row, ["redo"])),
+      status: /^(in|incoming|in entrata)$/i.test(String(pick(row, ["status"])).trim()) ? "in" : "out",
       courier: cap(pick(row, ["courier"]), 120),
       tracking: cap(pick(row, ["tracking", "tracking number"]), 120),
       note: cap(pick(row, ["note", "notes"]), 2000)
     };
-    rec.shipped = !!(String(pick(row, ["shipped"]) || "").trim() || shipDate);
+    rec.shipped = isYes(pick(row, ["shipped"])) || !!shipDate;
     rec.shipDate = rec.shipped ? (shipDate || rec.date) : "";
     if (rec.work && !haveWork.has(rec.work)) { haveWork.add(rec.work); newWorks.push(rec.work); }
     if (rec.doneBy && !haveOp.has(rec.doneBy)) { haveOp.add(rec.doneBy); newOps.push(rec.doneBy); }
@@ -2547,15 +2554,40 @@ function round2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
 function clone(o) { return JSON.parse(JSON.stringify(o)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 
+// Column headers as the Italian companion workbook writes them, mapped to the
+// English names the importer looks for. The other languages write English.
+const IMPORT_HEADERS = {
+  data: "date", stato: "status", cliente: "client", paziente: "patient", lavoro: "work",
+  "unita'": "units", "eseguito da": "done by", rifacimento: "redo", spedito: "shipped",
+  "data spedizione": "ship date", corriere: "courier"
+};
+
+// Sheet rows as arrays -> objects keyed by the header row, which is the first
+// of the top rows to have a "work" column. Null when there is none.
+function rowsUnderHeader(sheet) {
+  const norm = (v) => {
+    const k = String(v).toLowerCase().trim();
+    return IMPORT_HEADERS[k] || k;
+  };
+  const at = (sheet || []).slice(0, 10).findIndex((row) => row.map(norm).includes("work"));
+  if (at < 0) return null;
+  const heads = sheet[at].map(norm);
+  return sheet.slice(at + 1).map((row) => {
+    const o = {};
+    heads.forEach((h, i) => { if (h && o[h] === undefined) o[h] = row[i] === undefined ? "" : row[i]; });
+    return o;
+  });
+}
+
 function pick(row, keys) {
-  const lower = {};
-  Object.keys(row).forEach((k) => { lower[k.toLowerCase().trim()] = row[k]; });
-  for (const k of keys) if (lower[k] !== undefined && lower[k] !== "") return lower[k];
+  for (const k of keys) if (row[k] !== undefined && row[k] !== "") return row[k];
   return "";
 }
-function hasKey(row, keys) {
-  const set = Object.keys(row).map((k) => k.toLowerCase().trim());
-  return keys.some((k) => set.includes(k));
+
+// A spreadsheet says yes in many ways, and "No" or 0 in a column is not one.
+function isYes(v) {
+  if (v === true) return true;
+  return /^(y|yes|si|sì|sí|s|oui|ja|true|x|1)$/i.test(String(v == null ? "" : v).trim());
 }
 
 function escapeHtml(s) {

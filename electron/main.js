@@ -131,9 +131,15 @@ ipcMain.handle("data:load", async () => {
     // still be repaired by hand.
     // If it cannot even be moved, there is no movedTo and the renderer refuses
     // to save at all.
-    const aside = DATA_FILE.replace(/\.json$/, `.unreadable-${Date.now()}.json`);
+    const stamp = Date.now();
+    const aside = DATA_FILE.replace(/\.json$/, `.unreadable-${stamp}.json`);
     try { fs.renameSync(DATA_FILE, aside); }
     catch (_) { return { __error: err.message }; }
+    // Its recovery code goes with it: setting up the fresh archive writes a new
+    // one, and the old file would be no use repaired without its own code.
+    unhide(RECOVERY_FILE);
+    try { if (fs.existsSync(RECOVERY_FILE)) fs.renameSync(RECOVERY_FILE, RECOVERY_FILE.replace(/\.txt$/, `.unreadable-${stamp}.txt`)); }
+    catch (_) {}
     return { __error: err.message, movedTo: aside };
   }
 });
@@ -142,9 +148,17 @@ ipcMain.handle("data:load", async () => {
 // power cut halfway through leaves the previous archive, never half of one.
 function writeData(data) {
   try {
+    const text = JSON.stringify(data, null, 2);
     const tmp = DATA_FILE + ".tmp";
-    fs.writeFileSync(tmp, JSON.stringify(data, null, 2), "utf8");
-    fs.renameSync(tmp, DATA_FILE);
+    fs.writeFileSync(tmp, text, "utf8");
+    try {
+      fs.renameSync(tmp, DATA_FILE);
+    } catch (_) {
+      // A backup tool or an antivirus holding the file open can refuse the
+      // rename on Windows. Writing in place is less safe, but it saves.
+      fs.writeFileSync(DATA_FILE, text, "utf8");
+      try { fs.unlinkSync(tmp); } catch (_) {}
+    }
     return { ok: true, path: DATA_FILE };
   } catch (err) {
     return { ok: false, error: err.message };
@@ -517,8 +531,10 @@ ipcMain.handle("xlsx:import", async () => {
   try {
     const wb = XLSX.readFile(res.filePaths[0]);
     const out = {};
+    // Rows as plain arrays: the header is not always the first row (the
+    // companion workbook puts a title and a note above it).
     wb.SheetNames.forEach((name) => {
-      out[name] = XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: "" });
+      out[name] = XLSX.utils.sheet_to_json(wb.Sheets[name], { header: 1, defval: "" });
     });
     return { ok: true, sheets: out };
   } catch (err) {
