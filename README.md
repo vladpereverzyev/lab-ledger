@@ -12,20 +12,14 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**The desktop app for dental labs that want to know what every job really earns.**
+**Lab Ledger** is a free desktop app for dental laboratories. It tracks every job
+from arrival to shipping, calculates material costs from real pack prices, and
+shows the profit that is left after running costs and taxes.
 
-Log each case from the day it arrives to the day it ships. Lab Ledger prices it
-from your list, costs it from the materials it actually uses, and puts rent,
-staff and taxes on top - so at any moment you know what is left: this year,
-this month, today.
+It runs on Windows, macOS and Linux, works offline, and keeps all data on your
+computer.
 
-Your team works in the same app with its own accounts: technicians record their
-jobs, and only the people you choose see the money.
-
-Free for Windows, macOS and Linux · works without internet · your data stays on
-your computer.
-
-**[Download the app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Try the live demo](https://vladpereverzyev.github.io/lab-ledger/)**
+[**Download**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Live demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Changelog**](CHANGELOG.md)
 
 ## Why Lab Ledger?
 
@@ -167,8 +161,8 @@ Settings - updates, the automatic Excel copy and the recovery code:
   without pinching and scrolling sideways.
 - **One dropdown everywhere** - every choice in the app opens the same rounded
   panel, instead of whatever list each operating system draws.
-- **The euro sign always follows the number**, in every language; the thousands
-  and decimal separators still follow the language.
+- **One number format in every language** - 1.234,56 €: a dot for thousands, a
+  comma for decimals, the euro sign after.
 - **Light by default**, dark a click away, remembered per computer.
 
 ## Roles and permissions

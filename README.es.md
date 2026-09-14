@@ -12,20 +12,15 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**La app de escritorio para laboratorios dentales que quieren saber cuánto deja de verdad cada trabajo.**
+**Lab Ledger** es una aplicación de escritorio gratuita para laboratorios
+dentales. Sigue cada trabajo desde que llega hasta que se envía, calcula el
+coste de los materiales con los precios reales de los paquetes y muestra el
+beneficio que queda después de costes fijos e impuestos.
 
-Registra cada trabajo desde el día en que llega hasta el día en que sale. Lab
-Ledger le pone precio con tu tarifa, calcula su coste con los materiales que usa
-de verdad y suma alquiler, personal e impuestos: así sabes en todo momento lo
-que queda, este año, este mes, hoy.
+Funciona en Windows, macOS y Linux, también sin internet, y guarda todos los
+datos en tu ordenador.
 
-Tu equipo trabaja en la misma app, cada uno con su cuenta: los técnicos
-registran sus trabajos y el dinero solo lo ve quien tú elijas.
-
-Gratis para Windows, macOS y Linux · funciona sin internet · tus datos se quedan
-en tu ordenador.
-
-**[Descarga la app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Prueba la demo](https://vladpereverzyev.github.io/lab-ledger/)**
+[**Descargar**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novedades**](CHANGELOG.md)
 
 ## ¿Por qué Lab Ledger?
 
@@ -171,7 +166,8 @@ Ajustes: actualizaciones, copia automática en Excel y código de recuperación.
   una tarjeta con cada valor etiquetado por su columna.
 - **Un solo desplegable** para todas las opciones, en lugar de la lista que
   dibuja cada sistema operativo.
-- **El símbolo del euro va siempre detrás del número**, en todos los idiomas.
+- **Un solo formato de números en todos los idiomas**: 1.234,56 €, punto para
+  los miles, coma para los decimales y el euro detrás.
 - **Claro por defecto**, oscuro a un clic, recordado en el ordenador.
 
 ## Roles y permisos

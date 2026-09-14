@@ -12,20 +12,14 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**L'app desktop per i laboratori odontotecnici che vogliono sapere quanto rende davvero ogni lavoro.**
+**Lab Ledger** è un'app desktop gratuita per laboratori odontotecnici. Segue ogni
+lavoro dall'arrivo alla spedizione, calcola il costo dei materiali dai prezzi
+reali delle confezioni e mostra l'utile che resta dopo costi fissi e tasse.
 
-Registra ogni lavoro dal giorno in cui arriva al giorno in cui parte. Lab Ledger
-lo valorizza col tuo listino, ne calcola il costo dai materiali che usa davvero
-e ci aggiunge affitto, personale e tasse: così sai in ogni momento quanto resta,
-quest'anno, questo mese, oggi.
+Funziona su Windows, macOS e Linux, anche senza internet, e tiene tutti i dati
+sul tuo computer.
 
-Il tuo team lavora nella stessa app, ognuno col suo account: i tecnici
-registrano i lavori, e i soldi li vede solo chi scegli tu.
-
-Gratis per Windows, macOS e Linux · funziona senza internet · i dati restano sul
-tuo computer.
-
-**[Scarica l'app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Prova la demo](https://vladpereverzyev.github.io/lab-ledger/)**
+[**Scarica**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Novità**](CHANGELOG.md)
 
 ## Perché Lab Ledger?
 
@@ -177,8 +171,8 @@ Impostazioni: aggiornamenti, copia Excel automatica e codice di recupero.
   lista da dodici colonne resta leggibile senza pizzicare e trascinare.
 - **Una sola tendina** - ogni scelta apre lo stesso pannello arrotondato, invece
   dell'elenco che ciascun sistema operativo disegna a modo suo.
-- **Il simbolo dell'euro sta sempre dopo il numero**, in ogni lingua; i
-  separatori delle migliaia e dei decimali continuano a seguire la lingua.
+- **Un solo formato dei numeri in ogni lingua**: 1.234,56 €, il punto per le
+  migliaia, la virgola per i decimali, l'euro dopo il numero.
 - **Chiaro di default**, scuro a un clic, ricordato sul computer.
 
 ## Ruoli e permessi

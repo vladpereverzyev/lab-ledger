@@ -12,21 +12,15 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Die Desktop-App für Dentallabore, die wissen wollen, was jede Arbeit wirklich einbringt.**
+**Lab Ledger** ist eine kostenlose Desktop-App für Dentallabore. Sie begleitet
+jede Arbeit vom Eingang bis zum Versand, berechnet die Materialkosten aus den
+echten Packungspreisen und zeigt den Gewinn, der nach Fixkosten und Steuern
+übrig bleibt.
 
-Erfasse jede Arbeit vom Tag, an dem sie ankommt, bis zum Tag, an dem sie
-rausgeht. Lab Ledger bepreist sie nach deiner Preisliste, berechnet ihre Kosten
-aus den Materialien, die sie wirklich verbraucht, und rechnet Miete, Personal
-und Steuern dazu - so weißt du jederzeit, was übrig bleibt: dieses Jahr, diesen
-Monat, heute.
+Sie läuft unter Windows, macOS und Linux, auch ohne Internet, und behält alle
+Daten auf deinem Computer.
 
-Dein Team arbeitet in derselben App, jeder mit eigenem Konto: die Techniker
-erfassen ihre Arbeiten, und das Geld sieht nur, wen du auswählst.
-
-Kostenlos für Windows, macOS und Linux · funktioniert ohne Internet · deine
-Daten bleiben auf deinem Computer.
-
-**[App herunterladen](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Demo ausprobieren](https://vladpereverzyev.github.io/lab-ledger/)**
+[**Herunterladen**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Demo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Änderungen**](CHANGELOG.md)
 
 ## Warum Lab Ledger?
 
@@ -172,7 +166,8 @@ Einstellungen: Updates, automatische Excel-Kopie und Wiederherstellungscode.
   einer Karte, in der jeder Wert den Namen seiner Spalte trägt.
 - **Ein Dropdown für jede Auswahl**, statt der Liste, die jedes Betriebssystem
   anders zeichnet.
-- **Das Eurozeichen steht immer hinter der Zahl**, in jeder Sprache.
+- **Ein Zahlenformat in jeder Sprache**: 1.234,56 € - Punkt für Tausender, Komma
+  für Dezimalstellen, das Eurozeichen dahinter.
 - **Hell als Standard**, dunkel auf einen Klick, pro Rechner gemerkt.
 
 ## Rollen und Rechte

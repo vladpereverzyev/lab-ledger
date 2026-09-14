@@ -12,21 +12,15 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**L'application de bureau pour les laboratoires dentaires qui veulent savoir ce que rapporte vraiment chaque travail.**
+**Lab Ledger** est une application de bureau gratuite pour les laboratoires
+dentaires. Elle suit chaque travail de son arrivée à son expédition, calcule le
+coût des matériaux à partir des prix réels des lots et montre le bénéfice qui
+reste après les charges fixes et les impôts.
 
-Enregistrez chaque travail du jour où il arrive au jour où il part. Lab Ledger
-lui donne son prix d'après votre tarif, calcule son coût d'après les matériaux
-qu'il utilise vraiment et ajoute loyer, personnel et impôts : vous savez à tout
-moment ce qui reste, cette année, ce mois-ci, aujourd'hui.
+Elle fonctionne sous Windows, macOS et Linux, même sans internet, et garde
+toutes les données sur votre ordinateur.
 
-Votre équipe travaille dans la même application, chacun avec son compte : les
-techniciens enregistrent leurs travaux, et seules les personnes que vous
-choisissez voient l'argent.
-
-Gratuit pour Windows, macOS et Linux · fonctionne sans internet · vos données
-restent sur votre ordinateur.
-
-**[Télécharger l'application](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Essayer la démo](https://vladpereverzyev.github.io/lab-ledger/)**
+[**Télécharger**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Démo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Nouveautés**](CHANGELOG.md)
 
 ## Pourquoi Lab Ledger ?
 
@@ -174,7 +168,8 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
   carte dont chaque valeur porte le nom de sa colonne.
 - **Une seule liste déroulante** pour tous les choix, au lieu de celle que
   chaque système dessine à sa façon.
-- **Le symbole euro suit toujours le nombre**, dans toutes les langues.
+- **Un seul format de nombres dans toutes les langues** : 1.234,56 €, un point
+  pour les milliers, une virgule pour les décimales, l'euro après.
 - **Clair par défaut**, sombre en un clic, mémorisé par ordinateur.
 
 ## Rôles et permissions
