@@ -12,15 +12,16 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Application de bureau gratuite et hors ligne pour les laboratoires
-dentaires** : enregistrez ce qui sort de l'établi et voyez ce qu'il reste
-vraiment en fin d'année.
+**Lab Ledger montre à un laboratoire dentaire ce qu'il gagne vraiment.**
 
-### [**Essayer la démo en ligne**](https://vladpereverzyev.github.io/lab-ledger/)
+Enregistrez chaque travail à l'entrée et à la sortie. Lab Ledger calcule ce
+qu'il a coûté en matériaux, ajoute le loyer, le personnel et les impôts, et
+vous donne le bénéfice par an, par mois et par jour ouvré.
 
-Données d'exemple, rien à installer : tout reste dans votre navigateur. Vous
-préférez la vraie application ? Téléchargez-la depuis la
-[dernière version](https://github.com/vladpereverzyev/lab-ledger/releases/latest).
+Gratuit pour Windows, macOS et Linux. Sans compte, sans connexion, sans
+abonnement : chaque chiffre reste sur votre ordinateur.
+
+**[Télécharger l'application](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[L'essayer dans le navigateur](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Pourquoi Lab Ledger ?
 
@@ -79,8 +80,8 @@ Catalogue : chaque type de travail relie aux materiaux qu'il consomme.
 - **Au premier démarrage**, le programme demande les données du laboratoire et
   crée l'administrateur. Ensuite l'application s'ouvre sur un écran de connexion.
 - **Les opérateurs** sont ajoutés par l'administrateur, qui coche ce que chacun
-  a le droit de faire : voir les prix et les bénéfices, ajouter et modifier des
-  travaux, les supprimer, modifier le catalogue, exporter et sauvegarder. Qui ne
+  a le droit de faire (et peut le changer ensuite) : voir les prix et les bénéfices, ajouter de nouveaux
+  travaux, modifier les existants, les supprimer, modifier le catalogue, exporter et sauvegarder. Qui ne
   peut pas voir l'argent n'a ni l'onglet Résumé, ni les colonnes prix et marge,
   ni les prix du catalogue.
 - **Les mots de passe ne sont jamais enregistrés** : seulement PBKDF2-SHA256 sur

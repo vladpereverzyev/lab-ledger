@@ -5,6 +5,20 @@ All notable changes to Lab Ledger are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+- **macOS on Intel.** The Mac download is now a universal build that runs
+  natively on both Intel and Apple Silicon.
+- An operator's name, username, password and permissions can be changed after
+  the account is created, from **Catalog > Users**.
+
+### Changed
+- **Adding a work and editing one are separate permissions.** An operator can
+  be allowed to record new jobs without being able to change the ones already
+  there - or to mark them done and shipped, which is editing too. Operators who
+  could "add and edit" before keep both.
+- Built on Electron 44 (from 34, which no longer receives security fixes). The
+  window content now runs sandboxed, under a Content Security Policy.
+
 ### Fixed
 - A change made less than a quarter of a second before closing the window is
   no longer lost, and the companion workbook written on quit includes it.

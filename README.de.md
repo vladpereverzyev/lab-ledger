@@ -12,14 +12,16 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Kostenlose Offline-Desktop-App für Dentallabore**: erfasse, was den Tisch
-verlässt, und sieh, was am Jahresende wirklich übrig bleibt.
+**Lab Ledger zeigt einem Dentallabor, was es wirklich verdient.**
 
-### [**Live-Demo ausprobieren**](https://vladpereverzyev.github.io/lab-ledger/)
+Erfasse jede Arbeit, wenn sie kommt und wenn sie geht. Lab Ledger rechnet aus,
+was sie an Material gekostet hat, zieht Miete, Personal und Steuern ab und
+zeigt dir den Gewinn pro Jahr, pro Monat und pro Arbeitstag.
 
-Beispieldaten, nichts zu installieren - alles bleibt im Browser. Lieber die
-echte App? Hol sie aus der
-[neuesten Version](https://github.com/vladpereverzyev/lab-ledger/releases/latest).
+Kostenlos für Windows, macOS und Linux. Kein Konto, kein Internet, kein Abo:
+jede Zahl bleibt auf deinem Computer.
+
+**[App herunterladen](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Im Browser ausprobieren](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Warum Lab Ledger?
 
@@ -76,8 +78,10 @@ Katalog: jeder Arbeitstyp mit den Materialien verdrahtet, die er verbraucht.
 ### Wer damit arbeitet
 - **Der erste Start** fragt die Daten des Labors ab und legt den Administrator
   an. Danach öffnet die App mit einer Anmeldung.
-- **Bediener** legt der Administrator an und hakt ab, was jeder darf: Preise und
-  Gewinn sehen, Arbeiten anlegen und ändern, löschen, den Katalog bearbeiten,
+- **Bediener** legt der Administrator an und hakt ab, was jeder darf
+  (und kann es später ändern): Preise und
+  Gewinn sehen, neue Arbeiten anlegen,
+  bestehende ändern, löschen, den Katalog bearbeiten,
   exportieren und sichern. Wer das Geld nicht sehen darf, bekommt weder den
   Reiter Übersicht noch die Spalten Preis und Marge noch die Preise im Katalog.
 - **Passwörter werden nie gespeichert**: nur PBKDF2-SHA256 über ein zufälliges

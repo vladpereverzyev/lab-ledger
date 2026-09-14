@@ -12,14 +12,16 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**A free, offline desktop app for dental labs** - record what leaves the bench,
-and find out what is actually left at the end of the year.
+**Lab Ledger shows a dental lab what it really earns.**
 
-### [**Try the live demo**](https://vladpereverzyev.github.io/lab-ledger/)
+Record each job as it comes in and goes out. Lab Ledger works out what it cost
+in materials, adds rent, staff and taxes, and tells you the profit per year,
+per month and per working day.
 
-Sample data, nothing to install - everything stays in your browser. Prefer the
-real thing? Get the app from the
-[latest release](https://github.com/vladpereverzyev/lab-ledger/releases/latest).
+Free for Windows, macOS and Linux. No account, no internet, no subscription:
+every number stays on your computer.
+
+**[Download the app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Try it in your browser](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Why Lab Ledger?
 
@@ -74,8 +76,10 @@ Catalog - each work type wired to the materials it consumes:
 ### Who uses it
 - **First run** asks for the lab's details and creates the administrator. After
   that the app opens on a sign-in screen and nothing is behind it.
-- **Operators** are added by the administrator, who ticks what each one may do:
-  see prices and profit, add and edit works, delete them, edit the catalog,
+- **Operators** are added by the administrator, who ticks what each one may do,
+  and can change it later:
+  see prices and profit, add new works, edit existing
+  ones, delete them, edit the catalog,
   export and back up. An operator who cannot see the money gets no Summary tab,
   no price and margin columns, no prices in the catalog.
 - **Passwords are never stored** - only PBKDF2-SHA256 over a random per-user

@@ -12,14 +12,16 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**App desktop gratuita e offline per laboratori odontotecnici**: registra quello
-che esce dal banco e scopri quanto resta davvero a fine anno.
+**Lab Ledger mostra a un laboratorio odontotecnico quanto guadagna davvero.**
 
-### [**Prova la demo live**](https://vladpereverzyev.github.io/lab-ledger/)
+Registra ogni lavoro quando entra e quando esce. Lab Ledger calcola quanto è
+costato di materiali, aggiunge affitto, personale e tasse, e ti dice l'utile
+all'anno, al mese e per giorno lavorativo.
 
-Dati di esempio, niente da installare: tutto resta nel tuo browser. Preferisci
-l'app vera? Scaricala dall'
-[ultima release](https://github.com/vladpereverzyev/lab-ledger/releases/latest).
+Gratis per Windows, macOS e Linux. Nessun account, nessuna connessione, nessun
+abbonamento: ogni numero resta sul tuo computer.
+
+**[Scarica l'app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Provala nel browser](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## Perché Lab Ledger?
 
@@ -79,7 +81,8 @@ Catalogo: ogni tipo di lavoro collegato ai materiali che consuma.
   l'amministratore. Da lì in poi si apre su una schermata di accesso, e dietro
   non c'è niente finché non entri.
 - **Gli operatori** li aggiunge l'amministratore, spuntando cosa ciascuno può
-  fare: vedere prezzi e utili, aggiungere e modificare lavori, eliminarli,
+  fare (e può cambiarlo in seguito): vedere prezzi e utili, aggiungere lavori nuovi,
+  modificare quelli esistenti, eliminarli,
   modificare il catalogo, esportare e fare backup. Un operatore che non può
   vedere i soldi non vede la scheda Riepilogo, né le colonne prezzo e margine,
   né i prezzi nel catalogo.

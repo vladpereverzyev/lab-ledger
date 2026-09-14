@@ -12,14 +12,16 @@
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](./README.fr.md)
 [![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](./README.de.md)
 
-**Aplicación de escritorio gratuita y sin conexión para laboratorios dentales**:
-registra lo que sale del banco y descubre qué queda realmente a final de año.
+**Lab Ledger muestra a un laboratorio dental lo que gana de verdad.**
 
-### [**Prueba la demo en vivo**](https://vladpereverzyev.github.io/lab-ledger/)
+Registra cada trabajo cuando entra y cuando sale. Lab Ledger calcula lo que ha
+costado en materiales, suma alquiler, personal e impuestos, y te dice el
+beneficio por año, por mes y por día laborable.
 
-Datos de ejemplo, nada que instalar: todo se queda en tu navegador. ¿Prefieres la
-aplicación de verdad? Descárgala de la
-[última versión](https://github.com/vladpereverzyev/lab-ledger/releases/latest).
+Gratis para Windows, macOS y Linux. Sin cuenta, sin conexión, sin suscripción:
+cada número se queda en tu ordenador.
+
+**[Descarga la app](https://github.com/vladpereverzyev/lab-ledger/releases/latest)** · **[Pruébala en el navegador](https://vladpereverzyev.github.io/lab-ledger/)**
 
 ## ¿Por qué Lab Ledger?
 
@@ -77,7 +79,8 @@ Catalogo: cada tipo de trabajo conectado a los materiales que consume.
 - **El primer arranque** pide los datos del laboratorio y crea el administrador.
   A partir de ahí la aplicación abre en una pantalla de acceso.
 - **Los operadores** los añade el administrador, marcando lo que cada uno puede
-  hacer: ver precios y beneficios, añadir y editar trabajos, eliminarlos, editar
+  hacer (y puede cambiarlo después): ver precios y beneficios, añadir trabajos nuevos, editar
+  los existentes, eliminarlos, editar
   el catálogo, exportar y copiar. Quien no puede ver el dinero no ve la pestaña
   Resumen, ni las columnas de precio y margen, ni los precios del catálogo.
 - **Las contraseñas nunca se guardan**: solo PBKDF2-SHA256 sobre una sal
