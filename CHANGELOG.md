@@ -3,7 +3,7 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [1.4.8] - 2026-09-29
 
 ### Changed
 - Electron updated from 44.3.0 to 44.4.4.
