@@ -3,6 +3,20 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+- Electron updated from 44.3.0 to 44.4.4.
+- The build and demo workflows use newer GitHub Actions: `actions/checkout` v5,
+  `actions/setup-node` v7, `actions/upload-artifact` v7 and
+  `actions/upload-pages-artifact` v5. Installers checked on Windows, macOS and
+  Linux with a manual build run.
+
+### Removed
+- The `allowScripts` entry for Electron 44.3.0 in `package.json`: Electron 44
+  has no install script any more (it downloads its binary on first run), so the
+  entry did nothing.
+
 ## [1.4.7] - 2026-09-14
 
 ### Fixed
