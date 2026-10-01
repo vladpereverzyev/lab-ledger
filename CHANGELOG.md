@@ -5,6 +5,13 @@ All notable changes to Lab Ledger Dental are documented here. The format is base
 
 ## [Unreleased]
 
+## [1.5.2] - 2026-10-01
+
+### Fixed
+- The macOS icon fills its whole canvas again, as it did up to 1.5.0. In 1.5.1
+  it sat inside a transparent margin and showed smaller than it should in App
+  Store Connect.
+
 ## [1.5.1] - 2026-10-01
 
 ### Added
@@ -14,10 +21,6 @@ All notable changes to Lab Ledger Dental are documented here. The format is base
 - Favicons for every device. The iPhone and iPad home-screen icon is a full
   square, since iOS rounds it itself, and Android gets a web manifest with a
   maskable icon.
-
-### Changed
-- The macOS icon follows Apple's icon grid, so in the Dock it is the same size
-  as the icons around it.
 
 ## [1.5.0] - 2026-10-01
 

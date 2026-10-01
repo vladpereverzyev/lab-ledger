@@ -13,9 +13,8 @@ dependency - no SVG engine needed.
 
 Outputs:
     build/icon.ico   multi-size Windows icon (16 -> 256), light
-    build/icon.png   1024 px on Apple's icon grid (an 824 px tile with a
-                     transparent margin), used for the macOS (.icns) and Linux
-                     builds, light
+    build/icon.png   1024 px, the tile filling the canvas, used for the macOS
+                     (.icns) and Linux builds, light
     build/icon.svg, build/icon-light.svg, build/icon-dark.svg
     build/appx/      Microsoft Store tiles, light
     src/assets/      favicon.ico, icon.svg and icon-32/180/192/256/512.png
@@ -62,8 +61,10 @@ ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
 PNG_SIZES = [32, 180, 192, 256, 512]   # the sizes index.html and the README link
 SUPERSAMPLE = 8
 
-# Apple's macOS icon grid: on a 1024 canvas the tile is 824 px, centred.
-MAC_CANVAS, MAC_TILE = 1024, 824
+# The macOS icon fills its whole 1024 canvas, as the original artwork did: with
+# Apple's 824 px grid and a transparent margin it showed shrunken in App
+# Store Connect and on the store page.
+MAC_CANVAS, MAC_TILE = 1024, 1024
 
 # Microsoft Store tiles: name -> (width, height, mark size).
 APPX_TILES = {
@@ -207,7 +208,7 @@ def main():
         return canvas
 
     on_mac_grid(cache[MAC_TILE]).save(os.path.join(HERE, "icon.png"))
-    # The Dock icon the app sets at run time, on the same grid as the bundle's.
+    # The Dock icon the app sets at run time, drawn like the bundle's.
     for v in VARIANTS:
         on_mac_grid(draw_mark(MAC_TILE, v)).save(os.path.join(ASSETS, f"icon-{v}-mac.png"))
 

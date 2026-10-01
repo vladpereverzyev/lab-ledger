@@ -48,8 +48,8 @@ function currentIcon() {
   return ICONS.includes(v) ? v : "light";
 }
 
-// The window and taskbar icon, and on macOS the Dock icon, which sits on
-// Apple's icon grid like the one in the app bundle.
+// The window and taskbar icon, and on macOS the Dock icon, drawn like the
+// one in the app bundle.
 function iconFile(variant, forDock) {
   return path.join(__dirname, "..", "src", "assets", `icon-${variant}-${forDock ? "mac" : "512"}.png`);
 }
