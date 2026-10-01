@@ -5,6 +5,10 @@ All notable changes to Lab Ledger Dental are documented here. The format is base
 
 ## [Unreleased]
 
+### Security
+- `brace-expansion`, used only by the build tools and never shipped in the app,
+  updated to 1.1.21, 2.1.7 and 5.0.12 (Dependabot alerts).
+
 ## [1.5.2] - 2026-10-01
 
 ### Fixed
