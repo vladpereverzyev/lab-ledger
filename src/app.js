@@ -358,7 +358,16 @@ function renderAll() {
   refreshDropdowns();
 }
 
+// The app icon is a choice of this computer: shown only where the app can
+// change its own icon, which the browser demo cannot.
+async function loadIconChoice() {
+  if (!window.api.getIcon) return;
+  $("#kvIcon").hidden = false;
+  setSegValue("#setIcon", (await window.api.getIcon()) || "light");
+}
+
 async function loadAppInfo() {
+  loadIconChoice();
   if (!window.api.appInfo) return;
   appInfo = (await window.api.appInfo()) || appInfo;
   const v = $("#btnUpdate");
@@ -836,6 +845,10 @@ function bindUI() {
 
   ["#search", "#fYear", "#fMonth", "#fWho", "#fShip", "#fRedo"].forEach((s) =>
     $(s).addEventListener("input", renderWorks));
+  bindSegmented("#setIcon", async (v) => {
+    const r = window.api.setIcon ? await window.api.setIcon(v) : null;
+    if (!r || !r.ok) loadIconChoice();
+  });
   bindSegmented("#workSec", () => { selected.clear(); renderWorks(); });
   // The totals live in their own box so they stay put while the rows scroll
   // vertically; sideways they have to follow, or they would stop lining up.

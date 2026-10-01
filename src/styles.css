@@ -92,6 +92,7 @@ body {
 .toolbar .seg { padding: 0; }
 .toolbar .seg-btn { padding: 8px 14px; border-radius: 7px; min-width: 92px; }
 .seg-btn:hover { color: var(--ink); }
+.seg-ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; }
 .seg-btn.active { background: var(--panel); color: var(--ink); box-shadow: var(--shadow); }
 
 /* ---------------- Views ---------------- */

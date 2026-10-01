@@ -13,7 +13,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#f5f6f8" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -507,6 +509,12 @@
               <span data-i18n="set_autoupdate">Check for updates on startup</span>
             </label>
             <p class="hint" data-i18n="set_autoupdate_hint"></p>
+            <div class="kv" id="kvIcon" hidden><span data-i18n="set_icon">App icon</span>
+              <div class="seg" id="setIcon" role="group">
+                <button class="seg-btn" data-v="light"><img src="assets/icon-32.png" alt="" class="seg-ico" /><span data-i18n="icon_light">Light</span></button>
+                <button class="seg-btn" data-v="dark"><img src="assets/icon-dark-512.png" alt="" class="seg-ico" /><span data-i18n="icon_dark">Dark</span></button>
+              </div>
+            </div>
             <div class="kv"><span data-i18n="set_version">Version</span><b id="setVersion">-</b></div>
             <div class="kv"><span data-i18n="set_license">License</span><b id="setLicense">-</b></div>
             <div class="kv" id="kvRecovery" hidden><span data-i18n="set_recovery">Recovery code</span><b id="setRecovery">-</b></div>

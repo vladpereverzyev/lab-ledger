@@ -25,6 +25,8 @@ ipcMain.handle("app:info", async () => ({
 ipcMain.handle("update:check", async () => ({ ok: false, error: "offline" }));
 ipcMain.handle("app:openExternal", async () => {});
 ipcMain.handle("recovery:read", async () => ({ ok: false }));
+ipcMain.handle("icon:get", async () => "light");
+ipcMain.handle("icon:set", async (_e, v) => ({ ok: true, icon: v }));
 
 const outDir = path.join(__dirname, "..", "docs");
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -38,6 +40,8 @@ async function shoot() {
     width: WIDTH, height: HEIGHT, show: false,
     webPreferences: { preload: path.join(__dirname, "..", "electron", "preload.js") }
   });
+  // Chromium remembers a zoom level per page; a screenshot is always at 100%.
+  win.webContents.on("did-finish-load", () => win.webContents.setZoomFactor(1));
   await win.loadFile(path.join(__dirname, "..", "src", "index.html"));
 
   for (const theme of ["dark", "light"]) {

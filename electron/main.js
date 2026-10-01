@@ -1,6 +1,6 @@
 "use strict";
 
-const { app, BrowserWindow, ipcMain, dialog, shell, Menu, net } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu, net, nativeImage } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
@@ -29,6 +29,39 @@ const RELEASES_PAGE = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/release
 const STORE = !!process.windowsStore || !!process.mas;
 
 let mainWindow = null;
+
+// ---------------------------------------------------------------------------
+// The app icon, light (the default) or dark, chosen in Settings. It is a
+// setting of this computer, not of the lab's data, so it lives in its own
+// small file next to the data file and is read before the window opens.
+// ---------------------------------------------------------------------------
+const PREFS_FILE = path.join(app.getPath("userData"), "prefs.json");
+const ICONS = ["light", "dark"];
+
+function readPrefs() {
+  try { return JSON.parse(fs.readFileSync(PREFS_FILE, "utf8")) || {}; }
+  catch (_) { return {}; }
+}
+
+function currentIcon() {
+  const v = readPrefs().icon;
+  return ICONS.includes(v) ? v : "light";
+}
+
+// The window and taskbar icon, and on macOS the Dock icon, which sits on
+// Apple's icon grid like the one in the app bundle.
+function iconFile(variant, forDock) {
+  return path.join(__dirname, "..", "src", "assets", `icon-${variant}-${forDock ? "mac" : "512"}.png`);
+}
+
+function applyIcon(variant) {
+  if (mainWindow && !mainWindow.isDestroyed() && process.platform !== "darwin") {
+    mainWindow.setIcon(nativeImage.createFromPath(iconFile(variant, false)));
+  }
+  if (process.platform === "darwin" && app.dock) {
+    app.dock.setIcon(nativeImage.createFromPath(iconFile(variant, true)));
+  }
+}
 
 // ---------------------------------------------------------------------------
 // The companion workbook. Written when the app opens and when it closes, to
@@ -70,7 +103,7 @@ function createWindow() {
     minHeight: 620,
     backgroundColor: "#f5f6f8",
     title: "Lab Ledger Dental",
-    icon: path.join(__dirname, "..", "src", "assets", "icon-256.png"),
+    icon: iconFile(currentIcon(), false),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -115,6 +148,9 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
+  // The bundle already carries the light icon; only a different choice needs
+  // setting, so the Dock does not flicker on every start.
+  if (currentIcon() !== "light") applyIcon(currentIcon());
   syncExcel("open");
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -139,6 +175,19 @@ ipcMain.handle("app:info", async () => ({
   dataPath: DATA_FILE,
   store: STORE
 }));
+
+ipcMain.handle("icon:get", async () => currentIcon());
+
+ipcMain.handle("icon:set", async (_event, variant) => {
+  if (!ICONS.includes(variant)) return { ok: false, error: "unknown icon" };
+  try {
+    fs.writeFileSync(PREFS_FILE, JSON.stringify({ ...readPrefs(), icon: variant }, null, 2), "utf8");
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+  applyIcon(variant);
+  return { ok: true, icon: variant };
+});
 
 ipcMain.handle("app:openExternal", async (_event, url) => {
   if (typeof url === "string" && /^https:\/\//.test(url)) await shell.openExternal(url);

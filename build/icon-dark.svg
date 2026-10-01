@@ -1,18 +1,18 @@
 <svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-  <!-- Lab Ledger Dental mark, light variant: an "L" whose three ledger lines
+  <!-- Lab Ledger Dental mark, dark variant: an "L" whose three ledger lines
        also read as an "E". Written by build/make-icons.py - edit that file,
        not this one. -->
   <defs>
     <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#f2f2f7"/>
+      <stop offset="0" stop-color="#0a0a0a"/>
+      <stop offset="1" stop-color="#0a0a0a"/>
     </linearGradient>
     <linearGradient id="mark" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="256">
-      <stop offset="0" stop-color="#8e8e93"/>
-      <stop offset="1" stop-color="#8e8e93"/>
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
   </defs>
-  <rect x="0.5" y="0.5" width="255" height="255" rx="48" fill="url(#tile)" stroke="#d1d1d6" stroke-width="1"/>
+  <rect x="0.5" y="0.5" width="255" height="255" rx="48" fill="url(#tile)"/>
   <g fill="url(#mark)" transform="translate(128 128) scale(1.0) translate(-128 -128)">
     <path d="M69.0 65.25
              A11.5 11.5 0 0 1 92.0 65.25

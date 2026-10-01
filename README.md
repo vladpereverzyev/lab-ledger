@@ -342,7 +342,7 @@ npm run dist
 Installers are produced in the `release/` folder: NSIS installer and portable
 `.exe` on Windows, a universal `.dmg` and `.zip` on macOS (Intel and Apple Silicon), `AppImage` and `.deb` on Linux.
 
-Icons are regenerated from `build/icon.svg` with
+Icons, light (the default) and dark, are drawn by `build/make-icons.py` with
 [Pillow](https://pillow.readthedocs.io/):
 
 ```bash

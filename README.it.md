@@ -357,7 +357,7 @@ npm run dist
 Gli installer finiscono nella cartella `release/`: installer NSIS ed eseguibile
 portable su Windows, `.dmg` e `.zip` universali su macOS (Intel e Apple Silicon), `AppImage` e `.deb` su Linux.
 
-Le icone si rigenerano da `build/icon.svg` con
+Le icone, chiara (predefinita) e scura, le disegna `build/make-icons.py` con
 [Pillow](https://pillow.readthedocs.io/):
 
 ```bash

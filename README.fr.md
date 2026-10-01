@@ -362,7 +362,7 @@ Les installeurs sont produits dans le dossier `release/` : installeur NSIS et
 `.exe` portable sous Windows, `.dmg` et `.zip` universels sous macOS (Intel et Apple Silicon), `AppImage` et `.deb`
 sous Linux.
 
-Les icônes se régénèrent depuis `build/icon.svg` avec
+Les icônes, claire (par défaut) et sombre, sont dessinées par `build/make-icons.py` avec
 [Pillow](https://pillow.readthedocs.io/) :
 
 ```bash

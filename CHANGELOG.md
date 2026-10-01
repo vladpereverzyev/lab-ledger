@@ -5,6 +5,20 @@ All notable changes to Lab Ledger Dental are documented here. The format is base
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-10-01
+
+### Added
+- Two app icons, light and dark, to choose from in **Catalog > Settings**.
+  Light, a white tile with a grey mark, is the new default for the app and
+  the favicon. Dark is the black icon the app had until now, unchanged.
+- Favicons for every device. The iPhone and iPad home-screen icon is a full
+  square, since iOS rounds it itself, and Android gets a web manifest with a
+  maskable icon.
+
+### Changed
+- The macOS icon follows Apple's icon grid, so in the Dock it is the same size
+  as the icons around it.
+
 ## [1.5.0] - 2026-10-01
 
 ### Added

@@ -20,6 +20,8 @@ contextBridge.exposeInMainWorld("api", {
   installUpdate: (file) => ipcRenderer.invoke("update:install", file),
   onUpdateProgress: (cb) => ipcRenderer.on("update:progress", (_e, p) => cb(p)),
   openExternal: (url) => ipcRenderer.invoke("app:openExternal", url),
+  getIcon: () => ipcRenderer.invoke("icon:get"),
+  setIcon: (variant) => ipcRenderer.invoke("icon:set", variant),
   chooseExcel: (title) => ipcRenderer.invoke("excel:choose", title),
   syncExcel: () => ipcRenderer.invoke("excel:sync")
 });

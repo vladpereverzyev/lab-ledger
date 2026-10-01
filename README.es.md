@@ -350,7 +350,7 @@ npm run dist
 Los instaladores se generan en la carpeta `release/`: instalador NSIS y `.exe`
 portable en Windows, `.dmg` y `.zip` universales en macOS (Intel y Apple Silicon), `AppImage` y `.deb` en Linux.
 
-Los iconos se regeneran desde `build/icon.svg` con
+Los iconos, claro (predeterminado) y oscuro, los dibuja `build/make-icons.py` con
 [Pillow](https://pillow.readthedocs.io/):
 
 ```bash
