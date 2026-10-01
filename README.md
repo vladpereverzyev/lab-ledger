@@ -313,7 +313,7 @@ recovery code - and tells you where, instead of starting over on top of it.
 Lab Ledger collects nothing. There is no account, no analytics, no tracking, no
 advertising and no crash reporting, and your data is never uploaded.
 
-- **Microsoft Store version** - makes no network requests of its own; updates
+- **Microsoft Store and Mac App Store versions** - make no network requests of their own; updates
   come through the Store.
 - **Version from GitHub** - if the update check is on (it can be switched off
   in Settings), it asks GitHub at most once a day for the latest version number.

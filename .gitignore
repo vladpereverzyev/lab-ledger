@@ -8,3 +8,6 @@ npm-debug.log*
 # Local app data (never versioned)
 data.json
 *.local.json
+
+# Apple provisioning profile: downloaded from the developer portal, never versioned
+build/*.provisionprofile

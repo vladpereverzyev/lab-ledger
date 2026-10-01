@@ -323,7 +323,7 @@ Wiederherstellungscode - und sagt dir, wo, statt darüber neu anzufangen.
 Lab Ledger sammelt nichts. Kein Konto, keine Statistik, kein Tracking, keine
 Werbung und keine Absturzberichte, und Ihre Daten werden nie hochgeladen.
 
-- **Version aus dem Microsoft Store**: stellt selbst keine Netzwerkanfragen;
+- **Versionen aus dem Microsoft Store und dem Mac App Store**: stellen selbst keine Netzwerkanfragen;
   Updates kommen über den Store.
 - **Version von GitHub**: ist die Update-Prüfung eingeschaltet (sie lässt sich
   in den Einstellungen abschalten), fragt sie GitHub höchstens einmal am Tag

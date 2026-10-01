@@ -15,10 +15,23 @@ All notable changes to Lab Ledger are documented here. The format is based on
   translated into Italian, Spanish, French and German (`privacy.it.html`,
   `privacy.es.html`, `privacy.fr.html`, `privacy.de.html`), each linked from
   the README in its language.
+- A Mac App Store build: `npm run dist:mas` makes a sandboxed `.pkg`, and the
+  `Mac App Store` workflow builds it on a macOS runner and can upload it to
+  App Store Connect. Certificates, profile and API key come from the
+  repository secrets only.
 
 ### Changed
 - A Store install leaves updates to the Store: the update check, its button and
   its switch in Settings are off there.
+- The same goes for a Mac App Store install. There the automatic Excel copy
+  goes into a folder you pick, which the sandbox lets the app keep writing to
+  after a restart.
+- The macOS `.dmg` is signed and notarized when the Apple secrets are set, so
+  it opens without a security warning.
+
+### Fixed
+- On macOS, Cmd+C, Cmd+V, Cmd+A and Cmd+Q work: the app keeps a minimal menu
+  there instead of none.
 
 ## [1.4.8] - 2026-09-29
 

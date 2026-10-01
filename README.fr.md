@@ -330,7 +330,7 @@ Lab Ledger ne collecte rien. Pas de compte, pas de statistiques, pas de
 pistage, pas de publicité ni de rapports de plantage, et vos données ne sont
 jamais envoyées nulle part.
 
-- **Version Microsoft Store** : ne fait aucune requête réseau ; les mises à
+- **Versions Microsoft Store et Mac App Store** : ne font aucune requête réseau ; les mises à
   jour passent par le Store.
 - **Version GitHub** : si la vérification des mises à jour est activée (elle
   se coupe dans les Réglages), elle demande à GitHub au plus une fois par

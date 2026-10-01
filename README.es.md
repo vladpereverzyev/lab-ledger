@@ -320,7 +320,7 @@ encima.
 Lab Ledger no recoge nada. Sin cuenta, sin estadísticas, sin rastreo, sin
 publicidad ni informes de errores, y tus datos nunca se suben a ningún sitio.
 
-- **Versión de Microsoft Store**: no hace ninguna petición de red; las
+- **Versiones de Microsoft Store y Mac App Store**: no hacen ninguna petición de red; las
   actualizaciones llegan por la Store.
 - **Versión de GitHub**: si la comprobación de actualizaciones está activada
   (se desactiva en Ajustes), pregunta a GitHub como mucho una vez al día cuál

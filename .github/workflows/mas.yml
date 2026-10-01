@@ -1,0 +1,73 @@
+name: Mac App Store
+
+# Builds the sandboxed Mac App Store package and, when asked, uploads it to
+# App Store Connect. Submitting it for review stays a manual step there.
+#
+# Everything personal lives in the repository secrets, never in the repo:
+#   MAS_CERTS            base64 .p12 with the Apple Distribution certificate
+#   MAS_CERTS_PASSWORD   its password
+#   MAS_INSTALLER_CERTS  base64 .p12 with the Mac Installer Distribution
+#                        certificate
+#   MAS_INSTALLER_CERTS_PASSWORD its password
+#   MAS_PROVISION_PROFILE base64 Mac App Store provisioning profile
+#   APPLE_API_KEY        App Store Connect API key (.p8 contents)
+#   APPLE_API_KEY_ID     its key ID
+#   APPLE_API_ISSUER     its issuer ID
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: "Upload the package to App Store Connect"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  mas:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Provisioning profile and API key
+        env:
+          MAS_PROVISION_PROFILE: ${{ secrets.MAS_PROVISION_PROFILE }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY }}
+        run: |
+          printf '%s' "$MAS_PROVISION_PROFILE" | base64 --decode > build/embedded.provisionprofile
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s' "$APPLE_API_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8
+
+      - name: Build Mac App Store package
+        run: npm run dist:mas
+        env:
+          CSC_LINK: ${{ secrets.MAS_CERTS }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAS_CERTS_PASSWORD }}
+          CSC_INSTALLER_LINK: ${{ secrets.MAS_INSTALLER_CERTS }}
+          CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.MAS_INSTALLER_CERTS_PASSWORD }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: lab-ledger-mas
+          path: release/*.pkg
+
+      - name: Upload to App Store Connect
+        if: inputs.upload
+        run: |
+          xcrun altool --upload-app --type macos \
+            --file "$(ls release/*.pkg | head -1)" \
+            --apiKey "${{ secrets.APPLE_API_KEY_ID }}" \
+            --apiIssuer "${{ secrets.APPLE_API_ISSUER }}"
+
+      - name: Remove the secrets from the runner
+        if: always()
+        run: rm -f build/embedded.provisionprofile ~/.appstoreconnect/private_keys/*.p8

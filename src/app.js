@@ -965,6 +965,9 @@ function bindUI() {
     const r = await window.api.chooseExcel(t("dlg_excel_copy"));
     if (!r || r.canceled) return;
     state.config.excel.path = r.path;
+    // Only the Mac App Store build returns one; any other build clears a stale
+    // one rather than keep a bookmark to a place the path no longer names.
+    state.config.excel.bookmark = r.bookmark || "";
     state.config.excel.enabled = true;
     save();
     renderCatalog();

@@ -12,7 +12,8 @@
     "test": "node --test test/*.test.js",
     "dist": "electron-builder --publish never",
     "dist:portable": "electron-builder --win portable --publish never",
-    "dist:store": "electron-builder --win appx:x64 --publish never"
+    "dist:store": "electron-builder --win appx:x64 --publish never",
+    "dist:mas": "electron-builder --mac mas:universal --publish never"
   },
   "dependencies": {
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
@@ -71,7 +72,18 @@
         { "target": "zip", "arch": ["universal"] }
       ],
       "icon": "build/icon.png",
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": { "ITSAppUsesNonExemptEncryption": false }
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false,
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/embedded.provisionprofile"
     },
     "linux": {
       "target": ["AppImage", "deb"],

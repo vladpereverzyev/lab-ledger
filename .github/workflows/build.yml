@@ -16,6 +16,8 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      HAS_APPLE_KEY: ${{ secrets.APPLE_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v5
 
@@ -27,11 +29,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # The App Store Connect API key notarizes the macOS build. It lives in
+      # the repository secrets only and is written to the runner's temp folder.
+      - name: Apple API key
+        if: runner.os == 'macOS' && env.HAS_APPLE_KEY == 'true'
+        env:
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY }}
+        run: printf '%s' "$APPLE_API_KEY_P8" > "$RUNNER_TEMP/apple-api-key.p8"
+
       - name: Build installer
         run: npm run dist
         env:
-          # Do not attempt macOS code signing (no certificate configured).
-          CSC_IDENTITY_AUTO_DISCOVERY: false
+          # macOS is signed with the Developer ID certificate and notarized when
+          # the secrets are there; Windows and Linux are never signed here.
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ runner.os == 'macOS' && secrets.MAC_CERTS != '' }}
+          CSC_LINK: ${{ runner.os == 'macOS' && secrets.MAC_CERTS || '' }}
+          CSC_KEY_PASSWORD: ${{ runner.os == 'macOS' && secrets.MAC_CERTS_PASSWORD || '' }}
+          APPLE_API_KEY: ${{ runner.os == 'macOS' && secrets.APPLE_API_KEY != '' && format('{0}/apple-api-key.p8', runner.temp) || '' }}
+          APPLE_API_KEY_ID: ${{ runner.os == 'macOS' && secrets.APPLE_API_KEY_ID || '' }}
+          APPLE_API_ISSUER: ${{ runner.os == 'macOS' && secrets.APPLE_API_ISSUER || '' }}
 
       # SHA-256 of every file this runner publishes, so a download can be
       # verified with `sha256sum -c`. Only the published installers are listed
