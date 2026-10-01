@@ -21,6 +21,10 @@ on:
         description: "Upload the package to App Store Connect"
         type: boolean
         default: false
+      build_version:
+        description: "Build number (CFBundleVersion), when the same version is uploaded again"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -80,7 +84,7 @@ jobs:
           security find-identity -v "$KC" | grep -c "valid identities" || true
 
       - name: Build Mac App Store package
-        run: npm run dist:mas
+        run: npm run dist:mas -- ${{ inputs.build_version && format('-c.buildVersion={0}', inputs.build_version) || '' }}
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: true
           CSC_KEYCHAIN: ${{ runner.temp }}/mas.keychain
