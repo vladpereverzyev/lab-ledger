@@ -110,7 +110,9 @@ app.on("window-all-closed", () => {
 ipcMain.handle("app:info", async () => ({
   version: app.getVersion(),
   apiVersion: GITHUB_API_VERSION,
-  dataPath: DATA_FILE
+  dataPath: DATA_FILE,
+  // A Microsoft Store install is updated by the Store, never by the app.
+  store: !!process.windowsStore
 }));
 
 ipcMain.handle("app:openExternal", async (_event, url) => {
@@ -323,6 +325,7 @@ function pickAsset(assets) {
 
 ipcMain.handle("update:check", async () => {
   const current = app.getVersion();
+  if (process.windowsStore) return { ok: false, current, error: "store", url: RELEASES_PAGE };
   try {
     const rel = await getJson(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`);
     const latest = String(rel.tag_name || rel.name || "").replace(/^v/, "");
@@ -373,6 +376,7 @@ async function verifyDownload(filePath, assetName, assetUrl) {
 // folder under its published name, so it is an ordinary file the user can see,
 // keep or delete - not something hidden inside the program.
 ipcMain.handle("update:download", async (_event, asset) => {
+  if (process.windowsStore) return { ok: false, error: "store" };
   if (!asset || !asset.url || !/^https:\/\/github\.com\//.test(asset.url)) {
     return { ok: false, error: "bad asset" };
   }
@@ -435,6 +439,7 @@ ipcMain.handle("update:download", async (_event, asset) => {
 // files. A Linux AppImage needs the execute bit set by hand, so there we just
 // show the file where it landed.
 ipcMain.handle("update:install", async (_event, file) => {
+  if (process.windowsStore) return { ok: false, error: "store" };
   if (!file || !fs.existsSync(file)) return { ok: false, error: "file missing" };
   if (process.platform === "linux") {
     shell.showItemInFolder(file);

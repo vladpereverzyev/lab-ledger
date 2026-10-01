@@ -11,7 +11,8 @@
     "start": "electron .",
     "test": "node --test test/*.test.js",
     "dist": "electron-builder --publish never",
-    "dist:portable": "electron-builder --win portable --publish never"
+    "dist:portable": "electron-builder --win portable --publish never",
+    "dist:store": "electron-builder --win appx:x64 --publish never"
   },
   "dependencies": {
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
@@ -47,6 +48,15 @@
         }
       ],
       "icon": "build/icon.ico"
+    },
+    "appx": {
+      "identityName": "PARTNER_CENTER_PACKAGE_IDENTITY_NAME",
+      "publisher": "CN=PARTNER_CENTER_PUBLISHER_ID",
+      "publisherDisplayName": "PARTNER_CENTER_PUBLISHER_DISPLAY_NAME",
+      "applicationId": "LabLedger",
+      "displayName": "Lab Ledger",
+      "backgroundColor": "transparent",
+      "languages": ["en-US", "it-IT", "de-DE", "fr-FR", "es-ES"]
     },
     "nsis": {
       "oneClick": false,

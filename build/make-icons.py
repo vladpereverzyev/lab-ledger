@@ -11,6 +11,8 @@ same proportions. Pillow is the only dependency - no SVG engine needed.
 Outputs:
     build/icon.ico  multi-size Windows icon (16 -> 256), used by electron-builder
     build/icon.png  1024 px, used for the macOS (.icns) and Linux builds
+    build/appx/     Microsoft Store tiles (StoreLogo, Square44x44Logo,
+                    Square150x150Logo, Wide310x150Logo), used by the appx target
     src/assets/     the same mark as app/web assets: favicon.ico, icon.svg and
                     icon-32/180/192/256/512.png (shipped inside the app,
                     so the packaged build and the browser demo share one set)
@@ -41,6 +43,16 @@ MID_Y = 116.5 + R                # centre of the middle ledger line
 ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
 PNG_SIZES = [32, 180, 192, 256, 512]   # the sizes index.html and the README link
 SUPERSAMPLE = 8
+
+# Microsoft Store tiles: name -> (width, height, mark size). The mark keeps
+# its own black rounded tile and sits centred on a transparent canvas, so it
+# looks the same on the Start menu as it does on the taskbar.
+APPX_TILES = {
+    "StoreLogo": (50, 50, 50),
+    "Square44x44Logo": (44, 44, 44),
+    "Square150x150Logo": (150, 150, 100),
+    "Wide310x150Logo": (310, 150, 100),
+}
 
 
 def draw_mark(size):
@@ -95,8 +107,16 @@ def main():
             sizes=[(s, s) for s in ICO_SIZES],
             append_images=[cache[s] for s in ICO_SIZES if s != 256],
         )
+    appx = os.path.join(HERE, "appx")
+    os.makedirs(appx, exist_ok=True)
+    for name, (w, h, m) in APPX_TILES.items():
+        tile = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        tile.paste(draw_mark(m), ((w - m) // 2, (h - m) // 2))
+        tile.save(os.path.join(appx, name + ".png"))
+
     shutil.copyfile(os.path.join(HERE, "icon.svg"), os.path.join(ASSETS, "icon.svg"))
-    print("wrote build/icon.ico, build/icon.png and %d assets in src/assets/" % (len(PNG_SIZES) + 2))
+    print("wrote build/icon.ico, build/icon.png, %d tiles in build/appx/ and %d assets in src/assets/"
+          % (len(APPX_TILES), len(PNG_SIZES) + 2))
 
 
 if __name__ == "__main__":

@@ -375,6 +375,16 @@ async function loadAppInfo() {
   });
   $("#setDataPath").textContent = appInfo.dataPath || "-";
 
+  // The Store keeps its own installs up to date, so the version stays on show
+  // but the update check, its button and its switch step aside.
+  if (appInfo.store) {
+    if (v) v.disabled = true;
+    const sw = $("#setAutoUpdate").closest("label");
+    sw.style.display = "none";
+    if (sw.nextElementSibling && sw.nextElementSibling.classList.contains("hint")) sw.nextElementSibling.style.display = "none";
+    return;
+  }
+
   if (state.config.autoUpdateCheck && dueForUpdateCheck()) checkUpdates(false);
 }
 
@@ -2245,7 +2255,7 @@ function dueForUpdateCheck() {
 }
 
 async function checkUpdates(manual) {
-  if (!window.api.checkUpdate) return;
+  if (!window.api.checkUpdate || appInfo.store) return;
   if (manual) {
     $("#updateState").className = "update-state";
     $("#updateState").textContent = t("update_checking");
