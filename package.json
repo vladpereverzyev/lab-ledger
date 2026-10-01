@@ -1,7 +1,7 @@
 {
   "name": "lab-ledger-dental",
   "productName": "Lab Ledger Dental",
-  "version": "1.4.8",
+  "version": "1.5.0",
   "description": "Desktop app for a dental lab: works, patients, shipping, material costs from real pack prices, running costs, taxes and the profit that is actually left. All data stays local.",
   "author": "Vladyslav Pereverzyev",
   "license": "BUSL-1.1",
@@ -23,7 +23,7 @@
     "electron-builder": "26.15.3"
   },
   "build": {
-    "appId": "com.labledger.app",
+    "appId": "com.labledgerdental.app",
     "productName": "Lab Ledger Dental",
     "directories": {
       "output": "release"
@@ -60,6 +60,7 @@
       "languages": ["en-US", "it-IT", "de-DE", "fr-FR", "es-ES"]
     },
     "nsis": {
+      "guid": "6cd59d17-d5e2-558c-b9e9-ddb46d616c91",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,

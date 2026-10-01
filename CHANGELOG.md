@@ -1,9 +1,11 @@
 # Changelog
 
-All notable changes to Lab Ledger are documented here. The format is based on
+All notable changes to Lab Ledger Dental are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
+
+## [1.5.0] - 2026-10-01
 
 ### Added
 - A Microsoft Store package: `npm run dist:store` builds an `.appx` (MSIX) for
@@ -22,8 +24,10 @@ All notable changes to Lab Ledger are documented here. The format is based on
 
 ### Changed
 - The app is now called **Lab Ledger Dental**, and the repository moved to
-  `vladpereverzyev/lab-ledger-dental`. Its data folder keeps the old name, so
-  an update finds the archive and the recovery code where they were, and
+  `vladpereverzyev/lab-ledger-dental`, with the bundle ID
+  `com.labledgerdental.app`. On Windows the update replaces the installed Lab
+  Ledger instead of installing beside it. Its data folder keeps the old name,
+  so an update finds the archive and the recovery code where they were, and
   encrypted backups made before still restore.
 - A Store install leaves updates to the Store: the update check, its button and
   its switch in Settings are off there.
