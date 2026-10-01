@@ -13,6 +13,7 @@ name: Mac App Store
 #   APPLE_API_KEY        App Store Connect API key (.p8 contents)
 #   APPLE_API_KEY_ID     its key ID
 #   APPLE_API_ISSUER     its issuer ID
+#   APPLE_TEAM_ID        only loaded so the logs mask it
 
 on:
   workflow_dispatch:
@@ -31,6 +32,10 @@ permissions:
 
 jobs:
   mas:
+    env:
+      # Never used, only loaded so the runner masks the Apple Team ID that
+      # electron-builder prints while signing.
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
     # macOS 26 with Xcode 26: its actool compiles the Icon Composer icon
     # (build/icon.icon) the App Store build carries.
     runs-on: macos-26
@@ -84,10 +89,19 @@ jobs:
           security find-identity -v "$KC" | grep -c "valid identities" || true
 
       - name: Build Mac App Store package
-        run: npm run dist:mas -- ${{ inputs.build_version && format('-c.buildVersion={0}', inputs.build_version) || '' }}
+        # The build number reaches the shell as a variable, never pasted into
+        # the command, and only as digits and dots.
         env:
+          BUILD_VERSION: ${{ inputs.build_version }}
           CSC_IDENTITY_AUTO_DISCOVERY: true
           CSC_KEYCHAIN: ${{ runner.temp }}/mas.keychain
+        run: |
+          if [ -n "$BUILD_VERSION" ]; then
+            case "$BUILD_VERSION" in *[!0-9.]*) echo "build_version must be digits and dots"; exit 1;; esac
+            npm run dist:mas -- "-c.buildVersion=$BUILD_VERSION"
+          else
+            npm run dist:mas
+          fi
 
       - uses: actions/upload-artifact@v7
         with:

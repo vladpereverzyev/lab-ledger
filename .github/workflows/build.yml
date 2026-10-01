@@ -18,6 +18,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       HAS_APPLE_KEY: ${{ secrets.APPLE_API_KEY != '' }}
+      # Never used, only loaded so the runner masks the Apple Team ID that
+      # electron-builder prints while signing.
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       HAS_MAC_CERTS: ${{ secrets.MAC_CERTS != '' }}
     steps:
       - uses: actions/checkout@v5
