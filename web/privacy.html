@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Ledger Privacy Policy</title>
+  <meta name="description" content="What Lab Ledger does with your data: it keeps it on your computer and sends it nowhere." />
+  <link rel="icon" href="assets/favicon.ico" />
+  <style>
+    :root {
+      --bg: #f5f6f8; --panel: #ffffff; --ink: #14181f; --ink-soft: #667085;
+      --line: #e4e7ec; --brand: #2f6bff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1218; --panel: #161a22; --ink: #e6e9ef; --ink-soft: #98a2b3; --line: #262c37; --brand: #6c95ff; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    main {
+      max-width: 760px; margin: 40px auto; padding: 32px 40px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    h2 { font-size: 19px; margin: 32px 0 8px; }
+    .meta { color: var(--ink-soft); margin: 0 0 24px; }
+    a { color: var(--brand); }
+    ul { padding-left: 22px; }
+    li { margin: 4px 0; }
+    code { font-size: 14px; }
+    @media (max-width: 640px) {
+      main { margin: 0; padding: 24px 16px; border: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Lab Ledger Privacy Policy</h1>
+  <p class="meta">Last updated: 1 October 2026</p>
+
+  <p>Lab Ledger is a desktop app for dental labs, made by Vladyslav Pereverzyev.
+  This page explains what happens to the data you put into it. In short: it stays
+  on your computer. I do not collect it, I do not see it and nobody else gets it
+  through the app.</p>
+
+  <h2>What the app stores</h2>
+  <p>Everything you enter in Lab Ledger is saved in a file on your own computer:
+  works, patients, clients, shipping, materials, costs, taxes, lab details and the
+  users of the app. The app shows where this file is under Settings.</p>
+  <ul>
+    <li>There is no account to create and no server to sign in to.</li>
+    <li>Passwords of the app users are never saved as text. Only a salted
+    PBKDF2-SHA256 hash is kept, in the same local file.</li>
+    <li>Backups, Excel exports and the automatic Excel copy are written only where
+    you choose to save them.</li>
+  </ul>
+
+  <h2>What the app sends</h2>
+  <p>Lab Ledger has no analytics, no tracking, no advertising and no crash
+  reports. Your data is never uploaded anywhere.</p>
+  <ul>
+    <li><strong>Microsoft Store version:</strong> the app makes no network
+    requests of its own. Updates come through the Microsoft Store.</li>
+    <li><strong>Version downloaded from GitHub:</strong> if the update check is
+    switched on (you can turn it off in Settings), the app asks GitHub at most
+    once a day which is the latest version. That request contains only the app
+    name and version number. GitHub sees your IP address, as with any visit to
+    a website, and handles it under the
+    <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub
+    Privacy Statement</a>. An update is downloaded only when you press the
+    button.</li>
+    <li>Links in the app, such as the licence or the author's website, open in
+    your browser only when you click them.</li>
+  </ul>
+
+  <h2>Patient data</h2>
+  <p>Lab Ledger can hold personal data about patients and clients. Since it never
+  leaves your computer, the lab that uses the app remains the controller of that
+  data and is responsible for keeping it as the law requires, for example under
+  the GDPR. Protect the computer and its backups as you would any other
+  patient record, and give each person in the lab their own user with only
+  the permissions they need.</p>
+
+  <h2>Browser demo</h2>
+  <p>The online demo runs entirely in your browser with sample data. Anything you
+  change there is kept only in your browser's storage. The page is hosted on
+  GitHub Pages, which may log visits under the GitHub Privacy Statement.</p>
+
+  <h2>Children</h2>
+  <p>Lab Ledger is a work tool for dental labs and is not meant for children.</p>
+
+  <h2>Changes</h2>
+  <p>If the app ever starts handling data differently, this page will be updated
+  before that version is released, with a new date at the top.</p>
+
+  <h2>Contact</h2>
+  <p>For any question about privacy, open an issue on
+  <a href="https://github.com/vladpereverzyev/lab-ledger/issues">GitHub</a> or
+  write to me through <a href="https://www.vladpereverzyev.com">vladpereverzyev.com</a>.</p>
+</main>
+</body>
+</html>

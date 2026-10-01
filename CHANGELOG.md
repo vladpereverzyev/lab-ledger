@@ -3,6 +3,20 @@
 All notable changes to Lab Ledger are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- A Microsoft Store package: `npm run dist:store` builds an `.appx` (MSIX) for
+  upload to Partner Center, with its identity in the `appx` block of
+  `package.json` and the Store tiles in `build/appx/`, drawn by
+  `build/make-icons.py`.
+- A privacy policy page, `web/privacy.html`, published with the demo at
+  `https://vladpereverzyev.github.io/lab-ledger/privacy.html`.
+
+### Changed
+- A Store install leaves updates to the Store: the update check, its button and
+  its switch in Settings are off there.
+
 ## [1.4.8] - 2026-09-29
 
 ### Changed
