@@ -27,9 +27,17 @@ permissions:
 
 jobs:
   mas:
-    runs-on: macos-latest
+    # macOS 26 with Xcode 26: its actool compiles the Icon Composer icon
+    # (build/icon.icon) the App Store build carries.
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
+
+      - name: Xcode 26
+        run: |
+          XC=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XC" ]; then sudo xcode-select -s "$XC"; fi
+          xcrun actool --version | head -5
 
       - uses: actions/setup-node@v7
         with:

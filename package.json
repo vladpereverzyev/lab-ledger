@@ -81,6 +81,7 @@
     },
     "mas": {
       "type": "distribution",
+      "icon": "build/icon.icon",
       "hardenedRuntime": false,
       "entitlements": "build/entitlements.mas.plist",
       "entitlementsInherit": "build/entitlements.mas.inherit.plist",

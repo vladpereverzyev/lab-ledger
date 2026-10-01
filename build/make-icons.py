@@ -15,6 +15,8 @@ Outputs:
     build/icon.ico   multi-size Windows icon (16 -> 256), light
     build/icon.png   1024 px, the tile filling the canvas, used for the macOS
                      (.icns) and Linux builds, light
+    build/icon.icon  the macOS 26 icon (Icon Composer bundle), light, used only
+                     by the Mac App Store build. macOS draws its shape and edge
     build/icon.svg, build/icon-light.svg, build/icon-dark.svg
     build/appx/      Microsoft Store tiles, light
     src/assets/      favicon.ico, icon.svg and icon-32/180/192/256/512.png
@@ -192,6 +194,49 @@ def svg(variant):
 '''
 
 
+def icon_composer(variant=DEFAULT):
+    """The macOS 26 icon, as an Icon Composer bundle (build/icon.icon). The
+    tile colour goes in icon.json and the mark is one SVG layer on the
+    1024 canvas, at the master's own proportions; macOS draws the shape, the
+    edge and the margin itself, so the icon sits in the system's icon slot
+    like any other app's, App Store Connect included."""
+    import json
+    top, bottom, _edge, fg_top, fg_bottom = VARIANTS[variant]
+    srgb = lambda c: "srgb:%.5f,%.5f,%.5f,1.00000" % tuple(x / 255 for x in c)
+    hexc = lambda c: "#%02x%02x%02x" % c
+    root = os.path.join(HERE, "icon.icon")
+    os.makedirs(os.path.join(root, "Assets"), exist_ok=True)
+    S = MARK_SCALE
+    mark = f'''<svg width="1024" height="1024" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mark" gradientUnits="userSpaceOnUse" x1="0" y1="{128 - 128 / S:g}" x2="0" y2="{128 + 128 / S:g}">
+      <stop offset="0" stop-color="{hexc(fg_top)}"/>
+      <stop offset="1" stop-color="{hexc(fg_bottom)}"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#mark)" transform="translate(128 128) scale({S}) translate(-128 -128)">
+    <path d="M69 65.25 A11.5 11.5 0 0 1 92 65.25 L92 175 A4.25 4.25 0 0 0 96.25 179.25 L175.375 179.25 A11.5 11.5 0 0 1 175.375 202.25 L80.5 202.25 A11.5 11.5 0 0 1 69 190.75 Z"/>
+    <rect x="100.625" y="53.75" width="86.25" height="23" rx="11.5"/>
+    <rect x="100.625" y="116.5" width="86.25" height="23" rx="11.5"/>
+  </g>
+</svg>
+'''
+    with open(os.path.join(root, "Assets", "mark.svg"), "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(mark)
+    spec = {
+        "fill": {"linear-gradient": [srgb(top), srgb(bottom)]},
+        "groups": [{
+            "layers": [{"glass": False, "image-name": "mark.svg", "name": "mark"}],
+            "shadow": {"kind": "neutral", "opacity": 0.5},
+            "translucency": {"enabled": False, "value": 0.5},
+        }],
+        "supported-platforms": {"squares": ["macOS"]},
+    }
+    with open(os.path.join(root, "icon.json"), "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(spec, fh, indent=2)
+        fh.write("\n")
+
+
 def main():
     os.makedirs(ASSETS, exist_ok=True)
     cache = {s: draw_mark(s) for s in sorted(set(ICO_SIZES + PNG_SIZES + [MAC_TILE]))}
@@ -230,6 +275,7 @@ def main():
         tile.paste(draw_mark(ms), ((w - ms) // 2, (h - ms) // 2))
         tile.save(os.path.join(appx, name + ".png"))
 
+    icon_composer()
     for v in VARIANTS:
         with open(os.path.join(HERE, f"icon-{v}.svg"), "w", encoding="utf-8", newline="\n") as fh:
             fh.write(svg(v))
