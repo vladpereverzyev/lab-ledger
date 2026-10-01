@@ -64,7 +64,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: lab-ledger-${{ matrix.os }}
+          name: lab-ledger-dental-${{ matrix.os }}
           path: |
             release/*.exe
             release/*.dmg

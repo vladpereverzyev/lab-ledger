@@ -1,6 +1,6 @@
-# Contributing to Lab Ledger
+# Contributing to Lab Ledger Dental
 
-Thanks for your interest! Lab Ledger is a small, focused, offline tool for dental
+Thanks for your interest! Lab Ledger Dental is a small, focused, offline tool for dental
 labs. Contributions of any size are welcome, especially **translations**.
 
 ## Add or improve a language (great first contribution)
@@ -23,7 +23,7 @@ in order. A key you leave out falls back to English rather than breaking.
 
 ## Report a bug or request a feature
 
-Open an [issue](https://github.com/vladpereverzyev/lab-ledger/issues). For bugs,
+Open an [issue](https://github.com/vladpereverzyev/lab-ledger-dental/issues). For bugs,
 please include your OS, what you did, and what you expected. Screenshots help.
 
 ## Run from source
@@ -42,7 +42,7 @@ The whole app is plain HTML/CSS/JS in `src/` plus a thin Electron shell in
 
 ## Guidelines
 
-- Keep it simple. Lab Ledger's value is being small, offline and private.
+- Keep it simple. Lab Ledger Dental's value is being small, offline and private.
 - No telemetry, no network calls, no third-party CDNs (Chart.js and SheetJS are
   bundled locally).
 - Match the surrounding code style; every catalog change saves automatically.
@@ -50,7 +50,7 @@ The whole app is plain HTML/CSS/JS in `src/` plus a thin Electron shell in
 
 ## License
 
-Lab Ledger is published under the [Business Source License 1.1](LICENSE), which
+Lab Ledger Dental is published under the [Business Source License 1.1](LICENSE), which
 is source-available rather than open source: any lab may use it, nobody may
 resell it, and each version turns into Apache 2.0 four years after its release.
 

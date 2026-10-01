@@ -1,6 +1,6 @@
 {
-  "name": "lab-ledger",
-  "productName": "Lab Ledger",
+  "name": "lab-ledger-dental",
+  "productName": "Lab Ledger Dental",
   "version": "1.4.8",
   "description": "Desktop app for a dental lab: works, patients, shipping, material costs from real pack prices, running costs, taxes and the profit that is actually left. All data stays local.",
   "author": "Vladyslav Pereverzyev",
@@ -24,7 +24,7 @@
   },
   "build": {
     "appId": "com.labledger.app",
-    "productName": "Lab Ledger",
+    "productName": "Lab Ledger Dental",
     "directories": {
       "output": "release"
     },
@@ -55,7 +55,7 @@
       "publisher": "CN=PARTNER_CENTER_PUBLISHER_ID",
       "publisherDisplayName": "PARTNER_CENTER_PUBLISHER_DISPLAY_NAME",
       "applicationId": "LabLedger",
-      "displayName": "Lab Ledger",
+      "displayName": "Lab Ledger Dental",
       "backgroundColor": "transparent",
       "languages": ["en-US", "it-IT", "de-DE", "fr-FR", "es-ES"]
     },
@@ -64,7 +64,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Lab Ledger"
+      "shortcutName": "Lab Ledger Dental"
     },
     "mac": {
       "target": [

@@ -1,7 +1,7 @@
 "use strict";
 
 // ===========================================================================
-// The workbook Lab Ledger keeps in step with its own data file.
+// The workbook Lab Ledger Dental keeps in step with its own data file.
 //
 // Why it exists: a lab already has a cloud drive, and a spreadsheet in it can
 // be opened and shared by anyone without installing anything. So the app
@@ -20,7 +20,7 @@
 
 const XLSX = require("xlsx");
 
-const COPYRIGHT = "Lab Ledger - Copyright © 2026 Vladyslav Pereverzyev - Business Source License 1.1";
+const COPYRIGHT = "Lab Ledger Dental - Copyright © 2026 Vladyslav Pereverzyev - Business Source License 1.1";
 
 // Sheet names and column headers, in the language the app is set to. Kept
 // here rather than in the renderer because the workbook is also written on
@@ -41,7 +41,7 @@ const L = {
     n_costs: "Rent, energy, insurance, accountant, staff. The lab must earn this before it earns anything.",
     t_clients: "PRACTICES", n_clients: "The practices that send work.",
     t_operators: "WHO WORKS HERE", n_operators: "And the work types each one is set up to make.",
-    t_about: "LAB LEDGER", n_about: "This workbook is written by Lab Ledger every time the app opens and closes.",
+    t_about: "LAB LEDGER DENTAL", n_about: "This workbook is written by Lab Ledger Dental every time the app opens and closes.",
     date: "Date", status: "Status", client: "Client", patient: "Patient", work: "Work",
     units: "Units", doneby: "Done by", redo: "Redo", shipped: "Shipped", shipdate: "Ship date",
     courier: "Courier", tracking: "Tracking", matcost: "Material cost", price: "Price",
@@ -74,7 +74,7 @@ const L = {
     n_costs: "Affitto, energia, assicurazione, commercialista, dipendenti. Va guadagnato prima di guadagnare.",
     t_clients: "STUDI", n_clients: "Gli studi che mandano lavoro.",
     t_operators: "CHI LAVORA QUI", n_operators: "E le lavorazioni che ciascuno e' abilitato a fare.",
-    t_about: "LAB LEDGER", n_about: "Questo file viene scritto da Lab Ledger ogni volta che il programma si apre e si chiude.",
+    t_about: "LAB LEDGER DENTAL", n_about: "Questo file viene scritto da Lab Ledger Dental ogni volta che il programma si apre e si chiude.",
     date: "Data", status: "Stato", client: "Cliente", patient: "Paziente", work: "Lavoro",
     units: "Unita'", doneby: "Eseguito da", redo: "Rifacimento", shipped: "Spedito",
     shipdate: "Data spedizione", courier: "Corriere", tracking: "Tracking",
@@ -142,10 +142,10 @@ function buildWorkbook(state, appVersion) {
   const works = (state.works || []).slice().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
   const wb = XLSX.utils.book_new();
   wb.Props = {
-    Title: "Lab Ledger",
+    Title: "Lab Ledger Dental",
     Subject: "Dental lab production and costs",
-    Author: "Lab Ledger",
-    Company: "Lab Ledger",
+    Author: "Lab Ledger Dental",
+    Company: "Lab Ledger Dental",
     Comments: COPYRIGHT
   };
 
@@ -245,7 +245,7 @@ function buildWorkbook(state, appVersion) {
       [t.version, appVersion || ""],
       [t.generated, new Date().toISOString().slice(0, 16).replace("T", " ")],
       ["", ""],
-      ["Lab Ledger", "https://github.com/vladpereverzyev/lab-ledger"],
+      ["Lab Ledger Dental", "https://github.com/vladpereverzyev/lab-ledger-dental"],
       ["", COPYRIGHT]
     ], [22, 60]), t.about);
 

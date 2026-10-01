@@ -9,13 +9,18 @@ const { buildWorkbook } = require("./excel");
 
 // Local data file: it ALWAYS stays on the user's computer. Path: the app's
 // user-data folder.
+//
+// That folder is named after the product, and the product was called just
+// "Lab Ledger" before it became Lab Ledger Dental. It keeps the old name, so
+// a lab that updates finds its archive and recovery code where they were.
+app.setPath("userData", path.join(app.getPath("appData"), "Lab Ledger"));
 const DATA_FILE = path.join(app.getPath("userData"), "data.json");
 
 // The only network call the app ever makes: the public GitHub REST API, read
 // only, unauthenticated, to learn the latest published release. Nothing about
 // the user or their data is sent - see README, "GitHub API".
 const GITHUB_OWNER = "vladpereverzyev";
-const GITHUB_REPO = "lab-ledger";
+const GITHUB_REPO = "lab-ledger-dental";
 const GITHUB_API_VERSION = "2022-11-28";
 const RELEASES_PAGE = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
 
@@ -29,7 +34,7 @@ let mainWindow = null;
 // The companion workbook. Written when the app opens and when it closes, to
 // wherever the user pointed it - typically a folder their cloud drive already
 // syncs, so the lab's numbers are shareable without anyone installing the app.
-// Nothing is uploaded by Lab Ledger itself: it only writes a local file.
+// Nothing is uploaded by Lab Ledger Dental itself: it only writes a local file.
 // ---------------------------------------------------------------------------
 function syncExcel(reason) {
   try {
@@ -64,7 +69,7 @@ function createWindow() {
     minWidth: 940,
     minHeight: 620,
     backgroundColor: "#f5f6f8",
-    title: "Lab Ledger",
+    title: "Lab Ledger Dental",
     icon: path.join(__dirname, "..", "src", "assets", "icon-256.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -226,7 +231,7 @@ ipcMain.handle("recovery:save", async (_event, payload) => {
   try {
     const p = payload || {};
     const body = [
-      "Lab Ledger - recovery code",
+      "Lab Ledger Dental - recovery code",
       "",
       "This code resets the administrator password on this computer, from the",
       "sign-in screen: Forgotten password.",
@@ -279,13 +284,13 @@ ipcMain.handle("excel:choose", async (_event, title) => {
     if (res.canceled || !res.filePaths.length) return { canceled: true };
     return {
       ok: true,
-      path: path.join(res.filePaths[0], "Lab Ledger.xlsx"),
+      path: path.join(res.filePaths[0], "Lab Ledger Dental.xlsx"),
       bookmark: (res.bookmarks && res.bookmarks[0]) || ""
     };
   }
   const res = await dialog.showSaveDialog(mainWindow, {
     title: dialogTitle(title, "Where should the automatic Excel copy be saved?"),
-    defaultPath: path.join(app.getPath("documents"), "Lab Ledger.xlsx"),
+    defaultPath: path.join(app.getPath("documents"), "Lab Ledger Dental.xlsx"),
     filters: [{ name: "Excel", extensions: ["xlsx"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };
@@ -303,7 +308,7 @@ ipcMain.handle("excel:sync", async () => syncExcel("manual"));
 // left the check switched on.
 // ---------------------------------------------------------------------------
 
-const USER_AGENT = () => `LabLedger/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`;
+const USER_AGENT = () => `LabLedgerDental/${app.getVersion()} (+https://github.com/${GITHUB_OWNER}/${GITHUB_REPO})`;
 
 // A small GET that resolves to the body as text, or rejects on a non-2xx
 // status, a network error or eight seconds of silence.
@@ -347,7 +352,7 @@ function isNewer(latest, current) {
 
 // Of the five files hanging off a release, exactly one is the right one for
 // the computer asking. Windows gets the installer rather than the portable
-// build: someone who already has Lab Ledger installed wants it replaced, not a
+// build: someone who already has Lab Ledger Dental installed wants it replaced, not a
 // second copy in Downloads.
 function pickAsset(assets) {
   const list = Array.isArray(assets) ? assets : [];
@@ -394,8 +399,8 @@ async function verifyDownload(filePath, assetName, assetUrl) {
   let text;
   try { text = await getText(sumsUrlFor(assetUrl)); }
   catch (_) { return { verified: false }; }
-  // "<sum>  <name>": the name must match whole, or "Lab Ledger 1.3.exe" would
-  // also find the line of "Lab Ledger Setup 1.3.exe". And GitHub turns the
+  // "<sum>  <name>": the name must match whole, or "Lab Ledger Dental 1.3.exe" would
+  // also find the line of "Lab Ledger Dental Setup 1.3.exe". And GitHub turns the
   // spaces of an uploaded file name into dots, so the sums file (written
   // before upload) and the asset spell the same file differently.
   const norm = (s) => s.trim().replace(/^\*/, "").replace(/\s+/g, ".");
@@ -417,7 +422,7 @@ ipcMain.handle("update:download", async (_event, asset) => {
   if (!asset || !asset.url || !/^https:\/\/github\.com\//.test(asset.url)) {
     return { ok: false, error: "bad asset" };
   }
-  const target = path.join(app.getPath("downloads"), path.basename(asset.name || "lab-ledger-update"));
+  const target = path.join(app.getPath("downloads"), path.basename(asset.name || "lab-ledger-dental-update"));
 
   return new Promise((resolve) => {
     const request = net.request({ method: "GET", url: asset.url });
@@ -495,7 +500,7 @@ ipcMain.handle("update:install", async (_event, file) => {
 ipcMain.handle("json:export", async (_event, data, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
     title: dialogTitle(title, "Save backup"),
-    defaultPath: `lab-ledger-backup-${today()}.json`,
+    defaultPath: `lab-ledger-dental-backup-${today()}.json`,
     filters: [{ name: "JSON", extensions: ["json"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };
@@ -514,8 +519,8 @@ ipcMain.handle("json:export", async (_event, data, title) => {
 ipcMain.handle("json:exportEncrypted", async (_event, text, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
     title: dialogTitle(title, "Save encrypted backup"),
-    defaultPath: `lab-ledger-backup-${today()}.llb`,
-    filters: [{ name: "Lab Ledger backup", extensions: ["llb"] }]
+    defaultPath: `lab-ledger-dental-backup-${today()}.llb`,
+    filters: [{ name: "Lab Ledger Dental backup", extensions: ["llb"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };
   try {
@@ -532,7 +537,7 @@ ipcMain.handle("json:importText", async (_event, title) => {
   const res = await dialog.showOpenDialog(mainWindow, {
     title: dialogTitle(title, "Import backup"),
     properties: ["openFile"],
-    filters: [{ name: "Lab Ledger backup", extensions: ["llb", "json"] }]
+    filters: [{ name: "Lab Ledger Dental backup", extensions: ["llb", "json"] }]
   });
   if (res.canceled || res.filePaths.length === 0) return { canceled: true };
   try {
@@ -549,7 +554,7 @@ ipcMain.handle("json:importText", async (_event, title) => {
 ipcMain.handle("xlsx:export", async (_event, payload, title) => {
   const res = await dialog.showSaveDialog(mainWindow, {
     title: dialogTitle(title, "Export to Excel"),
-    defaultPath: `lab-ledger-works-${today()}.xlsx`,
+    defaultPath: `lab-ledger-dental-works-${today()}.xlsx`,
     filters: [{ name: "Excel", extensions: ["xlsx"] }]
   });
   if (res.canceled || !res.filePath) return { canceled: true };

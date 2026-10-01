@@ -11,7 +11,7 @@ All notable changes to Lab Ledger are documented here. The format is based on
   `package.json` and the Store tiles in `build/appx/`, drawn by
   `build/make-icons.py`.
 - A privacy policy page, `web/privacy.html`, published with the demo at
-  `https://vladpereverzyev.github.io/lab-ledger/privacy.html`,
+  `https://vladpereverzyev.github.io/lab-ledger-dental/privacy.html`,
   translated into Italian, Spanish, French and German (`privacy.it.html`,
   `privacy.es.html`, `privacy.fr.html`, `privacy.de.html`), each linked from
   the README in its language.
@@ -21,6 +21,10 @@ All notable changes to Lab Ledger are documented here. The format is based on
   repository secrets only.
 
 ### Changed
+- The app is now called **Lab Ledger Dental**, and the repository moved to
+  `vladpereverzyev/lab-ledger-dental`. Its data folder keeps the old name, so
+  an update finds the archive and the recovery code where they were, and
+  encrypted backups made before still restore.
 - A Store install leaves updates to the Store: the update check, its button and
   its switch in Settings are off there.
 - The same goes for a Mac App Store install. There the automatic Excel copy

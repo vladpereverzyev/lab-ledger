@@ -176,7 +176,7 @@
     couriers: COURIERS.slice(),
     clients: CLIENTS,
     // The catalog the demo lab works with. It lives here rather than in the
-    // app's defaults, because a lab that installs Lab Ledger starts with an
+    // app's defaults, because a lab that installs Lab Ledger Dental starts with an
     // empty catalog and types its own materials and prices.
     materials: [
       { id: "zirconia", name: "Zirconia disc", packCost: 130, pieces: 20, unit: "element", note: "Crowns and bridges" },

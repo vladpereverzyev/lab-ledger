@@ -1,4 +1,4 @@
-# Where Lab Ledger could go next
+# Where Lab Ledger Dental could go next
 
 Notes for the roadmap, written from the bench rather than from the code. Each
 one is here because it answers a question a dental technician actually asks,

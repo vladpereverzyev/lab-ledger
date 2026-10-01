@@ -1,18 +1,18 @@
-# Lab Ledger
+# Lab Ledger Dental
 
-[![Version](https://img.shields.io/github/v/release/vladpereverzyev/lab-ledger)](https://github.com/vladpereverzyev/lab-ledger/releases/latest)
-[![Téléchargements](https://img.shields.io/github/downloads/vladpereverzyev/lab-ledger/total)](https://github.com/vladpereverzyev/lab-ledger/releases)
-[![Licence](https://img.shields.io/badge/licence-BUSL--1.1-blue)](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/v/release/vladpereverzyev/lab-ledger-dental)](https://github.com/vladpereverzyev/lab-ledger-dental/releases/latest)
+[![Téléchargements](https://img.shields.io/github/downloads/vladpereverzyev/lab-ledger-dental/total)](https://github.com/vladpereverzyev/lab-ledger-dental/releases)
+[![Licence](https://img.shields.io/badge/licence-BUSL--1.1-blue)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/LICENSE)
 ![Plateforme](https://img.shields.io/badge/plateforme-Windows%20%7C%20macOS%20%7C%20Linux-0078D6)
 [![GitHub REST API](https://img.shields.io/badge/GitHub%20REST%20API-2022--11--28-181717?logo=github&logoColor=white)](#github-api)
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.md)
-[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.it.md)
-[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.es.md)
-[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.fr.md)
-[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/lab-ledger/blob/main/README.de.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/README.md)
+[![it](https://img.shields.io/badge/lang-it-green.svg)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/README.it.md)
+[![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/README.es.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/README.fr.md)
+[![de](https://img.shields.io/badge/lang-de-lightgrey.svg)](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/README.de.md)
 
-**Lab Ledger** est une application de bureau gratuite pour les laboratoires
+**Lab Ledger Dental** est une application de bureau gratuite pour les laboratoires
 dentaires. Elle suit chaque travail de son arrivée à son expédition, calcule le
 coût des matériaux à partir des prix réels des lots et montre le bénéfice qui
 reste après les charges fixes et les impôts.
@@ -20,9 +20,9 @@ reste après les charges fixes et les impôts.
 Elle fonctionne sous Windows, macOS et Linux, même sans internet, et garde
 toutes les données sur votre ordinateur.
 
-[**Télécharger**](https://github.com/vladpereverzyev/lab-ledger/releases/latest) · [**Démo**](https://vladpereverzyev.github.io/lab-ledger/) · [**Nouveautés**](https://github.com/vladpereverzyev/lab-ledger/blob/main/CHANGELOG.md)
+[**Télécharger**](https://github.com/vladpereverzyev/lab-ledger-dental/releases/latest) · [**Démo**](https://vladpereverzyev.github.io/lab-ledger-dental/) · [**Nouveautés**](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/CHANGELOG.md)
 
-## Pourquoi Lab Ledger ?
+## Pourquoi Lab Ledger Dental ?
 
 - **Un vrai programme de bureau** : il s'installe comme les autres, fonctionne
   sans connexion et ne demande aucune inscription.
@@ -158,7 +158,7 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
 ### Partout
 - **Importer / Exporter** : export Excel des travaux, du résumé par type, du
   catalogue et des charges fixes ; import Excel des travaux, depuis votre propre
-  feuille ou un fichier écrit par Lab Ledger ; sauvegardes complètes, en clair
+  feuille ou un fichier écrit par Lab Ledger Dental ; sauvegardes complètes, en clair
   ou **chiffrées par mot de passe** (AES-256-GCM), restaurables sur n'importe
   quel ordinateur. Restaurer une sauvegarde remplace aussi les comptes : seul
   l'administrateur peut le faire.
@@ -174,7 +174,7 @@ Réglages : mises à jour, copie Excel automatique et code de récupération.
 
 ## Rôles et permissions
 
-Lab Ledger a deux rôles.
+Lab Ledger Dental a deux rôles.
 
 **Administrateur** : la personne qui a configuré le laboratoire. Voit et fait
 tout : prix et bénéfices, tout le catalogue, les utilisateurs et leurs
@@ -218,11 +218,11 @@ Configurations typiques :
 
 Les permissions sont vérifiées par l'application elle-même, pas seulement en
 cachant des boutons. Elles protègent les écrans de l'application, pas le fichier
-de données sur le disque : voir [SECURITY.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/SECURITY.md).
+de données sur le disque : voir [SECURITY.md](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/SECURITY.md).
 
 ## Hors ligne par conception
 
-Lab Ledger n'a pas besoin d'internet pour fonctionner. Les données vivent dans un
+Lab Ledger Dental n'a pas besoin d'internet pour fonctionner. Les données vivent dans un
 fichier JSON sur votre ordinateur : pas de compte, pas de serveur, pas de
 télémétrie, et rien de ce que vous saisissez n'est jamais envoyé nulle part. La
 seule façon dont une copie quitte l'ordinateur, c'est vous qui la choisissez :
@@ -248,7 +248,7 @@ versions ; tout le reste fonctionne pareil. Les détails sont dans
 ## La copie Excel automatique
 
 **Ce que c'est.** Un fichier Excel ordinaire (.xlsx) avec tous les chiffres du
-laboratoire, que Lab Ledger réécrit tout seul à chaque ouverture et à chaque
+laboratoire, que Lab Ledger Dental réécrit tout seul à chaque ouverture et à chaque
 fermeture de l'application. Elle reste désactivée tant que vous ne l'activez pas
 dans **Catalogue > Réglages** en choisissant où enregistrer le fichier.
 
@@ -259,13 +259,13 @@ ordinateur ou un téléphone - sans rien installer.
 **La partager par le cloud.** Enregistrez le fichier dans un dossier que
 OneDrive, Google Drive ou Dropbox synchronise déjà, et ce service envoie tout
 seul chaque nouvelle version : ceux qui ont accès au dossier - votre comptable,
-un associé - trouvent toujours les chiffres à jour. Lab Ledger n'envoie rien
+un associé - trouvent toujours les chiffres à jour. Lab Ledger Dental n'envoie rien
 lui-même : il écrit seulement le fichier sur votre ordinateur, et l'envoi est
 fait par votre service cloud. Comme le fichier contient toutes les données,
 l'application vous demande de confirmer avant de commencer à l'écrire.
 
 **Elle ne va que dans un sens.** Le fichier est une copie à lire. Les
-modifications qu'on y fait ne reviennent pas dans Lab Ledger et sont écrasées la
+modifications qu'on y fait ne reviennent pas dans Lab Ledger Dental et sont écrasées la
 prochaine fois que l'application écrit le fichier. Pour faire entrer dans
 l'application des lignes d'un tableur, utilisez **Importer Excel**, qui les
 ajoute comme nouveaux travaux.
@@ -282,18 +282,18 @@ en italien quand l'application est en italien, en anglais sinon.
 L'interface est disponible en **anglais, italien, espagnol, français et
 allemand** : basculez avec le bouton de langue de la barre. Ajouter une langue
 est une contribution de traduction uniquement : voir
-[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/CONTRIBUTING.md).
 
 ## GitHub API
 
 [![GitHub REST API](https://img.shields.io/badge/Powered%20by%20the-GitHub%20REST%20API-181717?logo=github&logoColor=white)](https://docs.github.com/rest)
 
-Lab Ledger utilise l'**API REST GitHub** pour une seule chose : vous dire qu'une
+Lab Ledger Dental utilise l'**API REST GitHub** pour une seule chose : vous dire qu'une
 version plus récente existe.
 
 | | |
 |---|---|
-| Endpoint | `GET /repos/vladpereverzyev/lab-ledger/releases/latest` |
+| Endpoint | `GET /repos/vladpereverzyev/lab-ledger-dental/releases/latest` |
 | Version de l'API | `X-GitHub-Api-Version: 2022-11-28` |
 | Authentification | aucune : l'API publique non authentifiée |
 | Limite d'appels | les 60 par heure et par IP de l'API publique ; l'application demande au plus une fois par jour |
@@ -307,7 +307,7 @@ de version en bas à droite de la fenêtre pour vérifier à la main, ou sur
 **Télécharger**. Les Réglages indiquent aussi la version installée et la version
 de l'API GitHub utilisée.
 
-GitHub et le logo GitHub sont des marques de GitHub, Inc. Lab Ledger est un
+GitHub et le logo GitHub sont des marques de GitHub, Inc. Lab Ledger Dental est un
 projet indépendant, sans affiliation, parrainage ni approbation de
 GitHub.
 
@@ -326,7 +326,7 @@ au lieu de repartir de zéro par-dessus.
 
 ## Confidentialité
 
-Lab Ledger ne collecte rien. Pas de compte, pas de statistiques, pas de
+Lab Ledger Dental ne collecte rien. Pas de compte, pas de statistiques, pas de
 pistage, pas de publicité ni de rapports de plantage, et vos données ne sont
 jamais envoyées nulle part.
 
@@ -341,7 +341,7 @@ jamais envoyées nulle part.
   laboratoire qui utilise l'application reste responsable de ces données (par
   exemple au sens du RGPD).
 
-Le texte complet se trouve dans la [politique de confidentialité](https://vladpereverzyev.github.io/lab-ledger/privacy.fr.html).
+Le texte complet se trouve dans la [politique de confidentialité](https://vladpereverzyev.github.io/lab-ledger-dental/privacy.fr.html).
 
 ## Lancer depuis les sources
 
@@ -380,17 +380,17 @@ python build/make-icons.py
 ## Contribuer
 
 Les contributions sont bienvenues, surtout les traductions. Voir
-[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger/blob/main/CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/CONTRIBUTING.md).
 
 ## Licence
 
-Lab Ledger est **source-available**, pas open source : libre d'usage dans votre
+Lab Ledger Dental est **source-available**, pas open source : libre d'usage dans votre
 propre laboratoire, pas libre à la revente. La
-[Business Source License 1.1](https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE) s'applique.
+[Business Source License 1.1](https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/LICENSE) s'applique.
 
 - **Tout laboratoire dentaire ou cabinet peut l'utiliser en production,
   gratuitement** - sur autant de postes et de sites qu'il veut.
-- **Une licence commerciale est nécessaire** pour fournir Lab Ledger, ou une
+- **Une licence commerciale est nécessaire** pour fournir Lab Ledger Dental, ou une
   version modifiée, à des tiers contre paiement : comme produit, comme service
   hébergé, avec du matériel ou intégré à un autre logiciel. Écrivez à
   <info@vladpereverzyev.com>.

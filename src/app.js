@@ -1,7 +1,7 @@
 "use strict";
 
 // ===========================================================================
-// Lab Ledger - renderer
+// Lab Ledger Dental - renderer
 //
 // Everything lives in one local state object, saved to a JSON file by the
 // Electron side (or to localStorage in the browser demo). Money rules:
@@ -28,7 +28,7 @@ const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const Auth = window.LLAuth;
 const AUTHOR_URL = "https://www.vladpereverzyev.com";
 const LICENSE_NAME = "Business Source License 1.1";
-const LICENSE_URL = "https://github.com/vladpereverzyev/lab-ledger/blob/main/LICENSE";
+const LICENSE_URL = "https://github.com/vladpereverzyev/lab-ledger-dental/blob/main/LICENSE";
 const COST_CATEGORIES = ["property", "energy", "insurance", "accounting", "staff", "other"];
 
 // ===========================================================================

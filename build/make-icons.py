@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rasterize the Lab Ledger mark into every icon size the project ships.
+"""Rasterize the Lab Ledger Dental mark into every icon size the project ships.
 
 The geometry below was measured pixel by pixel on the 2048 px master artwork
 and divided by 8, so this file and icon.svg draw exactly the same shape at the

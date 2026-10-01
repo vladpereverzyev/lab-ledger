@@ -1,6 +1,6 @@
 // Default configuration for a brand new installation.
 //
-// Every catalog starts EMPTY. A lab that installs Lab Ledger finds no
+// Every catalog starts EMPTY. A lab that installs Lab Ledger Dental finds no
 // materials, no work types and no operators waiting for it: it types its own,
 // in the "Catalog" tab, and they are stored in the local data file. Nothing
 // here is someone else's lab.

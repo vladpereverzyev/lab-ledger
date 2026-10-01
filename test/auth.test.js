@@ -1,6 +1,6 @@
 "use strict";
 
-// The recovery code is the one piece of Lab Ledger that can lock a lab out of
+// The recovery code is the one piece of Lab Ledger Dental that can lock a lab out of
 // its own archive, or let the wrong person in. It gets tested.
 //
 //   node --test

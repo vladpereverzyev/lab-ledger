@@ -1,7 +1,7 @@
 "use strict";
 
 // ===========================================================================
-// Browser demo shim for Lab Ledger.
+// Browser demo shim for Lab Ledger Dental.
 //
 // The desktop app talks to an Electron backend through `window.api` (load/save
 // to a local file, Excel/JSON export dialogs). In the browser there is no
@@ -39,7 +39,7 @@
   } catch (_) {}
 
   const DESKTOP_ONLY = "Available in the desktop app";
-  const REPO = "vladpereverzyev/lab-ledger";
+  const REPO = "vladpereverzyev/lab-ledger-dental";
   const GITHUB_API_VERSION = "2022-11-28";
   const RELEASE_URL = `https://github.com/${REPO}/releases/latest`;
 

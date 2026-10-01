@@ -134,7 +134,7 @@ async function shootExtras(win) {
     "document.querySelector('[data-sec=\"settings\"]').click();" +
     "document.querySelector('#setRecovery').textContent = 'K7QM-3VXA-P9TD-W2HN-8RCF-YE4B';" +
     "document.querySelector('#kvRecovery').hidden = false;" +
-    "state.config.excel = { enabled: true, path: 'C:\\\\Users\\\\Lab\\\\OneDrive\\\\Lab Ledger.xlsx' }; renderCatalog();" +
+    "state.config.excel = { enabled: true, path: 'C:\\\\Users\\\\Lab\\\\OneDrive\\\\Lab Ledger Dental.xlsx' }; renderCatalog();" +
     "document.querySelector('[data-sec=\"settings\"]').click();");
 
   // What an operator sees: the sample operator, who records works and sees no

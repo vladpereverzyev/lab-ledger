@@ -1,6 +1,6 @@
 name: Deploy browser demo (GitHub Pages)
 
-# Publishes the live browser demo at https://<user>.github.io/lab-ledger/
+# Publishes the live browser demo at https://<user>.github.io/lab-ledger-dental/
 # The site is assembled from the app source in src/ plus the demo-only shim in
 # web/demo.js - no framework, no build tooling, just a copy + one <script> line.
 
@@ -46,7 +46,7 @@ jobs:
           # Load the browser demo shim right before the app script.
           sed -i 's#<script src="app.js"></script>#<script src="sample-data.js"></script>\n    <script src="demo.js"></script>\n    <script src="app.js"></script>#' site/index.html
           # Demo-specific tab title.
-          sed -i 's#<title>Lab Ledger</title>#<title>Lab Ledger - Live Demo</title>#' site/index.html
+          sed -i 's#<title>Lab Ledger Dental</title>#<title>Lab Ledger Dental - Live Demo</title>#' site/index.html
 
       - uses: actions/configure-pages@v5
 

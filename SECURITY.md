@@ -1,6 +1,6 @@
 # Security Policy
 
-Lab Ledger is an offline desktop app. It has no account and no server: your data
+Lab Ledger Dental is an offline desktop app. It has no account and no server: your data
 stays in a local file on your computer and is never uploaded.
 
 It needs no internet connection. It goes online only for updates, through
@@ -46,7 +46,7 @@ allows only the app's own files, and it cannot be navigated anywhere else.
 ## Supported versions
 
 Only the latest release receives security fixes. Please update to the newest
-version from the [releases page](https://github.com/vladpereverzyev/lab-ledger/releases/latest)
+version from the [releases page](https://github.com/vladpereverzyev/lab-ledger-dental/releases/latest)
 before reporting an issue.
 
 | Version | Supported |
@@ -65,4 +65,4 @@ Please report vulnerabilities privately, not in a public issue.
 
 Please include steps to reproduce, the app version, and your operating system.
 You can expect an initial response within a few days. Thank you for helping keep
-Lab Ledger and its users safe.
+Lab Ledger Dental and its users safe.
