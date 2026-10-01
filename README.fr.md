@@ -324,6 +324,25 @@ l'archive précédente intacte. Si un jour le fichier est illisible, l'applicati
 le met de côté sans y toucher, avec son code de récupération, et vous dit où,
 au lieu de repartir de zéro par-dessus.
 
+## Confidentialité
+
+Lab Ledger ne collecte rien. Pas de compte, pas de statistiques, pas de
+pistage, pas de publicité ni de rapports de plantage, et vos données ne sont
+jamais envoyées nulle part.
+
+- **Version Microsoft Store** : ne fait aucune requête réseau ; les mises à
+  jour passent par le Store.
+- **Version GitHub** : si la vérification des mises à jour est activée (elle
+  se coupe dans les Réglages), elle demande à GitHub au plus une fois par
+  jour quelle est la dernière version. La requête ne contient que le nom de
+  l'application et sa version. Une mise à jour n'est téléchargée que lorsque
+  vous appuyez sur le bouton.
+- **Les données des patients** ne quittent jamais votre ordinateur : le
+  laboratoire qui utilise l'application reste responsable de ces données (par
+  exemple au sens du RGPD).
+
+Le texte complet se trouve dans la [politique de confidentialité](https://vladpereverzyev.github.io/lab-ledger/privacy.html) (en anglais).
+
 ## Lancer depuis les sources
 
 Nécessite [Node.js](https://nodejs.org/) 22.12 ou plus récent.

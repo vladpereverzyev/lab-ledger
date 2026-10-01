@@ -322,6 +322,23 @@ giorno il file non si può leggere, il programma lo sposta da parte intatto,
 insieme al suo codice di recupero, e ti dice dove, invece di ripartire da zero
 sopra di lui.
 
+## Privacy
+
+Lab Ledger non raccoglie niente. Non c'è nessun account, nessuna statistica,
+nessun tracciamento, nessuna pubblicità e nessun rapporto sui crash, e i tuoi
+dati non vengono mai caricati da nessuna parte.
+
+- **Versione Microsoft Store**: non fa nessuna richiesta di rete; gli
+  aggiornamenti arrivano dallo Store.
+- **Versione da GitHub**: se il controllo aggiornamenti è acceso (si spegne
+  nelle Impostazioni), chiede a GitHub al massimo una volta al giorno qual è
+  l'ultima versione. La richiesta contiene solo il nome dell'app e la versione.
+  Un aggiornamento si scarica solo quando premi il pulsante.
+- **I dati dei pazienti** non lasciano mai il tuo computer, quindi il titolare
+  del trattamento resta il laboratorio che usa l'app (per esempio secondo il GDPR).
+
+Il testo completo è nella [privacy policy](https://vladpereverzyev.github.io/lab-ledger/privacy.html).
+
 ## Eseguire dal codice
 
 Serve [Node.js](https://nodejs.org/) 22.12 o più recente.

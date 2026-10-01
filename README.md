@@ -308,6 +308,22 @@ crash or a power cut in the middle leaves the previous archive whole. If the
 file ever cannot be read, the app moves it aside untouched - together with its
 recovery code - and tells you where, instead of starting over on top of it.
 
+## Privacy
+
+Lab Ledger collects nothing. There is no account, no analytics, no tracking, no
+advertising and no crash reporting, and your data is never uploaded.
+
+- **Microsoft Store version** - makes no network requests of its own; updates
+  come through the Store.
+- **Version from GitHub** - if the update check is on (it can be switched off
+  in Settings), it asks GitHub at most once a day for the latest version number.
+  The request carries only the app name and version. An update is downloaded
+  only when you press the button.
+- **Patient data** never leaves your computer, so the lab using the app stays
+  the controller of that data (for example under the GDPR).
+
+The full text is in the [privacy policy](https://vladpereverzyev.github.io/lab-ledger/privacy.html).
+
 ## Run from source
 
 Requires [Node.js](https://nodejs.org/) 22.12 or newer.

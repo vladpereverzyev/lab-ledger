@@ -318,6 +318,22 @@ ein Absturz oder Stromausfall mittendrin lässt das bisherige Archiv ganz. Ist
 die Datei einmal nicht lesbar, legt die App sie unverändert beiseite - samt
 Wiederherstellungscode - und sagt dir, wo, statt darüber neu anzufangen.
 
+## Datenschutz
+
+Lab Ledger sammelt nichts. Kein Konto, keine Statistik, kein Tracking, keine
+Werbung und keine Absturzberichte, und Ihre Daten werden nie hochgeladen.
+
+- **Version aus dem Microsoft Store**: stellt selbst keine Netzwerkanfragen;
+  Updates kommen über den Store.
+- **Version von GitHub**: ist die Update-Prüfung eingeschaltet (sie lässt sich
+  in den Einstellungen abschalten), fragt sie GitHub höchstens einmal am Tag
+  nach der neuesten Version. Die Anfrage enthält nur den App-Namen und die
+  Version. Ein Update wird erst heruntergeladen, wenn Sie den Knopf drücken.
+- **Patientendaten** verlassen nie Ihren Computer, daher bleibt das Labor, das
+  die App nutzt, Verantwortlicher für diese Daten (zum Beispiel nach der DSGVO).
+
+Der vollständige Text steht in der [Datenschutzerklärung](https://vladpereverzyev.github.io/lab-ledger/privacy.html) (auf Englisch).
+
 ## Aus dem Quellcode starten
 
 Benötigt [Node.js](https://nodejs.org/) 22.12 oder neuer.
