@@ -337,7 +337,7 @@ dati non vengono mai caricati da nessuna parte.
 - **I dati dei pazienti** non lasciano mai il tuo computer, quindi il titolare
   del trattamento resta il laboratorio che usa l'app (per esempio secondo il GDPR).
 
-Il testo completo è nella [privacy policy](https://vladpereverzyev.github.io/lab-ledger/privacy.html).
+Il testo completo è nella [privacy policy](https://vladpereverzyev.github.io/lab-ledger/privacy.it.html).
 
 ## Eseguire dal codice
 

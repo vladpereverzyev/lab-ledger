@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Ledger: Datenschutzerklärung</title>
+  <meta name="description" content="Was Lab Ledger mit deinen Daten macht: es behält sie auf deinem Computer und schickt sie nirgendwohin." />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="alternate" hreflang="en" href="https://vladpereverzyev.github.io/lab-ledger/privacy.html" />
+  <link rel="alternate" hreflang="it" href="https://vladpereverzyev.github.io/lab-ledger/privacy.it.html" />
+  <link rel="alternate" hreflang="es" href="https://vladpereverzyev.github.io/lab-ledger/privacy.es.html" />
+  <link rel="alternate" hreflang="fr" href="https://vladpereverzyev.github.io/lab-ledger/privacy.fr.html" />
+  <link rel="alternate" hreflang="de" href="https://vladpereverzyev.github.io/lab-ledger/privacy.de.html" />
+  <style>
+    :root {
+      --bg: #f5f6f8; --panel: #ffffff; --ink: #14181f; --ink-soft: #667085;
+      --line: #e4e7ec; --brand: #2f6bff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1218; --panel: #161a22; --ink: #e6e9ef; --ink-soft: #98a2b3; --line: #262c37; --brand: #6c95ff; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    main {
+      max-width: 760px; margin: 40px auto; padding: 32px 40px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    h2 { font-size: 19px; margin: 32px 0 8px; }
+    .meta { color: var(--ink-soft); margin: 0 0 24px; }
+    a { color: var(--brand); }
+    ul { padding-left: 22px; }
+    li { margin: 4px 0; }
+    code { font-size: 14px; }
+    .langs { margin: 0 0 20px; font-size: 14px; color: var(--ink-soft); }
+    .langs a { margin-right: 12px; }
+    .langs a[aria-current] { color: var(--ink); font-weight: 600; text-decoration: none; }
+    @media (max-width: 640px) {
+      main { margin: 0; padding: 24px 16px; border: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <nav class="langs" aria-label="Sprache">
+    <a href="privacy.html" hreflang="en" lang="en">English</a>
+    <a href="privacy.it.html" hreflang="it" lang="it">Italiano</a>
+    <a href="privacy.es.html" hreflang="es" lang="es">Español</a>
+    <a href="privacy.fr.html" hreflang="fr" lang="fr">Français</a>
+    <a href="privacy.de.html" hreflang="de" lang="de" aria-current="page">Deutsch</a>
+  </nav>
+  <h1>Lab Ledger: Datenschutzerklärung</h1>
+  <p class="meta">Zuletzt aktualisiert: 1. Oktober 2026</p>
+
+  <p>Lab Ledger ist eine Desktop-App für Dentallabore, entwickelt von Vladyslav
+  Pereverzyev. Diese Seite erklärt, was mit den Daten passiert, die du eingibst.
+  Kurz gesagt: sie bleiben auf deinem Computer. Ich sammle sie nicht, ich sehe sie
+  nicht und niemand sonst bekommt sie über die App.</p>
+
+  <h2>Was die App speichert</h2>
+  <p>Alles, was du in Lab Ledger eingibst, wird in einer Datei auf deinem eigenen
+  Computer gespeichert: Arbeiten, Patienten, Praxen, Versand, Materialien, Kosten,
+  Steuern, Labordaten und die Benutzer der App. Wo diese Datei liegt, zeigt die App
+  unter Einstellungen.</p>
+  <ul>
+    <li>Es gibt kein Konto zu erstellen und keinen Server, bei dem man sich
+    anmeldet.</li>
+    <li>Die Passwörter der Benutzer werden nie als Text gespeichert. Gespeichert
+    wird nur ein gesalzener PBKDF2-SHA256-Hash, in derselben lokalen Datei.</li>
+    <li>Sicherungen, Excel-Exporte und die automatische Excel-Kopie werden nur
+    dort geschrieben, wo du sie speichern willst.</li>
+  </ul>
+
+  <h2>Was die App sendet</h2>
+  <p>Lab Ledger hat keine Nutzungsstatistik, kein Tracking, keine Werbung und keine
+  Fehlerberichte. Deine Daten werden nie irgendwohin hochgeladen.</p>
+  <ul>
+    <li><strong>Version aus dem Microsoft Store:</strong> die App stellt von sich
+    aus keine Netzwerkanfragen. Updates kommen über den Microsoft Store.</li>
+    <li><strong>Von GitHub heruntergeladene Version:</strong> wenn die
+    Update-Prüfung eingeschaltet ist (du kannst sie unter Einstellungen
+    ausschalten), fragt die App höchstens einmal am Tag bei GitHub nach der neuesten
+    Version. Diese Anfrage enthält nur den Namen der App und die Versionsnummer.
+    GitHub sieht deine IP-Adresse, wie bei jedem Besuch einer Website, und
+    behandelt sie nach dem <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub
+    Privacy Statement</a>. Ein Update wird nur heruntergeladen, wenn du auf den
+    Button drückst.</li>
+    <li>Links in der App, etwa zur Lizenz oder zur Website des Autors, öffnen sich
+    nur dann im Browser, wenn du sie anklickst.</li>
+  </ul>
+
+  <h2>Patientendaten</h2>
+  <p>Lab Ledger kann personenbezogene Daten von Patienten und Praxen enthalten. Da
+  sie deinen Computer nie verlassen, bleibt das Labor, das die App nutzt, der
+  Verantwortliche für diese Daten und muss sie so aufbewahren, wie es das Gesetz
+  verlangt, zum Beispiel die DSGVO. Schütze den Computer und seine Sicherungen wie
+  jede andere Patientenakte und gib jeder Person im Labor einen eigenen Benutzer
+  mit nur den Rechten, die sie braucht.</p>
+
+  <h2>Demo im Browser</h2>
+  <p>Die Online-Demo läuft vollständig in deinem Browser mit Beispieldaten. Was du
+  dort änderst, bleibt nur im Speicher deines Browsers. Die Seite liegt auf GitHub
+  Pages, das Besuche nach dem GitHub Privacy Statement protokollieren kann.</p>
+
+  <h2>Kinder</h2>
+  <p>Lab Ledger ist ein Arbeitswerkzeug für Dentallabore und nicht für Kinder
+  gedacht.</p>
+
+  <h2>Änderungen</h2>
+  <p>Sollte die App Daten einmal anders behandeln, wird diese Seite vor dem
+  Erscheinen dieser Version aktualisiert, mit einem neuen Datum oben.</p>
+
+  <h2>Kontakt</h2>
+  <p>Bei Fragen zum Datenschutz öffne ein Issue auf
+  <a href="https://github.com/vladpereverzyev/lab-ledger/issues">GitHub</a> oder
+  schreib mir über <a href="https://www.vladpereverzyev.com">vladpereverzyev.com</a>.</p>
+</main>
+</body>
+</html>

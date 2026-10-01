@@ -330,7 +330,7 @@ publicidad ni informes de errores, y tus datos nunca se suben a ningún sitio.
   laboratorio que usa la app sigue siendo el responsable de esos datos (por
   ejemplo según el RGPD).
 
-El texto completo está en la [política de privacidad](https://vladpereverzyev.github.io/lab-ledger/privacy.html) (en inglés).
+El texto completo está en la [política de privacidad](https://vladpereverzyev.github.io/lab-ledger/privacy.es.html).
 
 ## Ejecutar desde el código
 

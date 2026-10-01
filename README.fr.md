@@ -341,7 +341,7 @@ jamais envoyées nulle part.
   laboratoire qui utilise l'application reste responsable de ces données (par
   exemple au sens du RGPD).
 
-Le texte complet se trouve dans la [politique de confidentialité](https://vladpereverzyev.github.io/lab-ledger/privacy.html) (en anglais).
+Le texte complet se trouve dans la [politique de confidentialité](https://vladpereverzyev.github.io/lab-ledger/privacy.fr.html).
 
 ## Lancer depuis les sources
 

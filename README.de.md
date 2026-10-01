@@ -332,7 +332,7 @@ Werbung und keine Absturzberichte, und Ihre Daten werden nie hochgeladen.
 - **Patientendaten** verlassen nie Ihren Computer, daher bleibt das Labor, das
   die App nutzt, Verantwortlicher für diese Daten (zum Beispiel nach der DSGVO).
 
-Der vollständige Text steht in der [Datenschutzerklärung](https://vladpereverzyev.github.io/lab-ledger/privacy.html) (auf Englisch).
+Der vollständige Text steht in der [Datenschutzerklärung](https://vladpereverzyev.github.io/lab-ledger/privacy.de.html).
 
 ## Aus dem Quellcode starten
 

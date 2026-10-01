@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Ledger : politique de confidentialité</title>
+  <meta name="description" content="Ce que Lab Ledger fait de vos données : il les garde sur votre ordinateur et ne les envoie nulle part." />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="alternate" hreflang="en" href="https://vladpereverzyev.github.io/lab-ledger/privacy.html" />
+  <link rel="alternate" hreflang="it" href="https://vladpereverzyev.github.io/lab-ledger/privacy.it.html" />
+  <link rel="alternate" hreflang="es" href="https://vladpereverzyev.github.io/lab-ledger/privacy.es.html" />
+  <link rel="alternate" hreflang="fr" href="https://vladpereverzyev.github.io/lab-ledger/privacy.fr.html" />
+  <link rel="alternate" hreflang="de" href="https://vladpereverzyev.github.io/lab-ledger/privacy.de.html" />
+  <style>
+    :root {
+      --bg: #f5f6f8; --panel: #ffffff; --ink: #14181f; --ink-soft: #667085;
+      --line: #e4e7ec; --brand: #2f6bff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1218; --panel: #161a22; --ink: #e6e9ef; --ink-soft: #98a2b3; --line: #262c37; --brand: #6c95ff; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    main {
+      max-width: 760px; margin: 40px auto; padding: 32px 40px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    h2 { font-size: 19px; margin: 32px 0 8px; }
+    .meta { color: var(--ink-soft); margin: 0 0 24px; }
+    a { color: var(--brand); }
+    ul { padding-left: 22px; }
+    li { margin: 4px 0; }
+    code { font-size: 14px; }
+    .langs { margin: 0 0 20px; font-size: 14px; color: var(--ink-soft); }
+    .langs a { margin-right: 12px; }
+    .langs a[aria-current] { color: var(--ink); font-weight: 600; text-decoration: none; }
+    @media (max-width: 640px) {
+      main { margin: 0; padding: 24px 16px; border: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <nav class="langs" aria-label="Langue">
+    <a href="privacy.html" hreflang="en" lang="en">English</a>
+    <a href="privacy.it.html" hreflang="it" lang="it">Italiano</a>
+    <a href="privacy.es.html" hreflang="es" lang="es">Español</a>
+    <a href="privacy.fr.html" hreflang="fr" lang="fr" aria-current="page">Français</a>
+    <a href="privacy.de.html" hreflang="de" lang="de">Deutsch</a>
+  </nav>
+  <h1>Lab Ledger : politique de confidentialité</h1>
+  <p class="meta">Dernière mise à jour : 1er octobre 2026</p>
+
+  <p>Lab Ledger est une application de bureau pour les laboratoires dentaires,
+  créée par Vladyslav Pereverzyev. Cette page explique ce que deviennent les
+  données que vous y saisissez. En bref : elles restent sur votre ordinateur. Je
+  ne les collecte pas, je ne les vois pas et personne d'autre ne les reçoit par
+  l'application.</p>
+
+  <h2>Ce que l'application enregistre</h2>
+  <p>Tout ce que vous saisissez dans Lab Ledger est enregistré dans un fichier sur
+  votre propre ordinateur : travaux, patients, cabinets, expéditions, matériaux,
+  coûts, impôts, informations du laboratoire et utilisateurs de l'application.
+  L'application indique où se trouve ce fichier dans Réglages.</p>
+  <ul>
+    <li>Il n'y a aucun compte à créer ni aucun serveur auquel se connecter.</li>
+    <li>Les mots de passe des utilisateurs ne sont jamais enregistrés en clair.
+    Seul un hachage PBKDF2-SHA256 salé est conservé, dans le même fichier
+    local.</li>
+    <li>Les sauvegardes, les exports Excel et la copie Excel automatique sont
+    écrits uniquement là où vous choisissez de les enregistrer.</li>
+  </ul>
+
+  <h2>Ce que l'application envoie</h2>
+  <p>Lab Ledger n'a ni statistiques d'utilisation, ni suivi, ni publicité, ni
+  rapports d'erreur. Vos données ne sont jamais envoyées nulle part.</p>
+  <ul>
+    <li><strong>Version Microsoft Store :</strong> l'application ne fait aucune
+    requête réseau d'elle-même. Les mises à jour passent par le Microsoft
+    Store.</li>
+    <li><strong>Version téléchargée sur GitHub :</strong> si la recherche de mises
+    à jour est activée (vous pouvez la désactiver dans Réglages), l'application
+    demande à GitHub au plus une fois par jour quelle est la dernière version.
+    Cette requête ne contient que le nom de l'application et son numéro de
+    version. GitHub voit votre adresse IP, comme pour toute visite d'un site, et la
+    traite selon le <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub
+    Privacy Statement</a>. Une mise à jour n'est téléchargée que lorsque vous
+    appuyez sur le bouton.</li>
+    <li>Les liens de l'application, comme la licence ou le site de l'auteur,
+    s'ouvrent dans votre navigateur seulement quand vous cliquez dessus.</li>
+  </ul>
+
+  <h2>Données des patients</h2>
+  <p>Lab Ledger peut contenir des données personnelles de patients et de cabinets.
+  Comme elles ne quittent jamais votre ordinateur, le laboratoire qui utilise
+  l'application reste responsable du traitement de ces données et doit les
+  conserver comme la loi l'exige, par exemple le RGPD. Protégez l'ordinateur et ses
+  sauvegardes comme tout autre dossier patient et donnez à chaque personne du
+  laboratoire son propre utilisateur avec seulement les droits dont elle a
+  besoin.</p>
+
+  <h2>Démo dans le navigateur</h2>
+  <p>La démo en ligne fonctionne entièrement dans votre navigateur avec des données
+  d'exemple. Ce que vous y modifiez reste uniquement dans le stockage de votre
+  navigateur. La page est hébergée sur GitHub Pages, qui peut enregistrer les
+  visites selon le GitHub Privacy Statement.</p>
+
+  <h2>Enfants</h2>
+  <p>Lab Ledger est un outil de travail pour les laboratoires dentaires et n'est
+  pas destiné aux enfants.</p>
+
+  <h2>Modifications</h2>
+  <p>Si un jour l'application traite les données autrement, cette page sera mise à
+  jour avant la sortie de cette version, avec une nouvelle date en haut.</p>
+
+  <h2>Contact</h2>
+  <p>Pour toute question sur la confidentialité, ouvrez une issue sur
+  <a href="https://github.com/vladpereverzyev/lab-ledger/issues">GitHub</a> ou
+  écrivez-moi via <a href="https://www.vladpereverzyev.com">vladpereverzyev.com</a>.</p>
+</main>
+</body>
+</html>

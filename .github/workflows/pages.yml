@@ -38,8 +38,9 @@ jobs:
           cp -r src/. site/
           cp web/demo.js site/demo.js
           cp web/sample-data.js site/sample-data.js
-          # The privacy policy the Microsoft Store listing links to.
-          cp web/privacy.html site/privacy.html
+          # The privacy policy the Microsoft Store listing links to, one page per
+          # app language.
+          cp web/privacy*.html site/
           # The favicons ship inside src/assets and are already linked from
           # index.html, so the copy above is all the icon work there is.
           # Load the browser demo shim right before the app script.
